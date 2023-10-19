@@ -62,9 +62,23 @@ $config = [
                     'route' => '/site/register',
                     'verb' => 'POST',
                 ],
+                [
+                    'pattern' => '/addvisit',
+                    'route' => '/site/addvisit',
+                    'verb' => 'POST',
+                ],
+                [
+                    'pattern' => '/visits/<barber_id:\d+>',
+                    'route' => '/site/getvisits',
+                    'verb' => 'GET',
+                ],
+                [
+                    'pattern' => '/uservisits',
+                    'route' => '/site/getuservisit',
+                    'verb' => 'GET',
+                ],
             ],
         ],
-
     ],
     'params' => $params,
 ];

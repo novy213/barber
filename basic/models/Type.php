@@ -9,7 +9,9 @@ use Yii;
  *
  * @property int $id
  * @property string $type
+ * @property int $time
  *
+ * @property Price[] $prices
  * @property Visit[] $visits
  */
 class Type extends \yii\db\ActiveRecord
@@ -28,7 +30,8 @@ class Type extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['type'], 'required'],
+            [['type', 'time'], 'required'],
+            [['time'], 'integer'],
             [['type'], 'string', 'max' => 255],
         ];
     }
@@ -41,7 +44,18 @@ class Type extends \yii\db\ActiveRecord
         return [
             'id' => 'ID',
             'type' => 'Type',
+            'time' => 'Time',
         ];
+    }
+
+    /**
+     * Gets query for [[Prices]].
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function getPrices()
+    {
+        return $this->hasMany(Price::class, ['type_id' => 'id']);
     }
 
     /**

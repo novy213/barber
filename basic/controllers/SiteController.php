@@ -2,8 +2,11 @@
 
 namespace app\controllers;
 
+use app\models\Price;
+use app\models\Type;
 use app\models\User;
 use app\models\Visit;
+use PhpParser\Node\Expr\Print_;
 use Yii;
 use yii\base\ViewEvent;
 use yii\filters\AccessControl;
@@ -102,7 +105,6 @@ class SiteController extends \app\components\Controller
     public function actionAddvisit(){
         $post = $this->getJsonInput();
         $user = Yii::$app->user->identity;
-        //date', 'barber_id', 'price', 'type_id', 'time', 'user_id'
         $visit = new Visit();
         if(isset($post->date)){
             $visit->date = $post->date;
@@ -110,15 +112,16 @@ class SiteController extends \app\components\Controller
         if(isset($post->barber_id)){
             $visit->barber_id = $post->barber_id;
         }
-        if(isset($post->price)){
-            $visit->price = $post->price;
-        }
         if(isset($post->type_id)){
             $visit->type_id = $post->type_id;
         }
-        if(isset($post->time)){
-            $visit->time = $post->time;
+        if(isset($post->additional_info)){
+            $visit->additional_info = $post->additional_info;
         }
+        $price = Price::find()->andWhere(['type_id'=>$post->type_id])->one();
+        $visit->price = $price->price;
+        $time = Type::find()->andWhere(['id'=>$post->type_id])->one();
+        $visit->time = $time->time;
         $visit->user_id = $user->id;
         if($visit->validate()){
             $visit->save();
@@ -129,8 +132,32 @@ class SiteController extends \app\components\Controller
         } else {
             return [
                 'error' => true,
-                'message_user' => $visit->getErrorSummary(false),
+                'message' => $visit->getErrorSummary(false),
             ];
         }
+    }
+    public function actionGetvisits($barber_id){
+        $visit = Visit::find()->andWhere(['barber_id'=>$barber_id])->all();
+        $visits = array();
+        for($i=0;$i<count($visit);$i++){
+            $visits[]=[
+              'id'=>$visit[$i]->id,
+              'date'=>$visit[$i]->date
+            ];
+        }
+        return [
+            'error' => FALSE,
+            'message' => NULL,
+            'visit' => $visits
+        ];
+    }
+    public function actionGetuservisit(){
+        $user = Yii::$app->user->identity;
+        $visit = Visit::find()->andWhere(['user_id'=>$user->id])->all();
+        return [
+            'error' => FALSE,
+            'message' => NULL,
+            'visit' => $visit
+        ];
     }
 }
