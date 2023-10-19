@@ -26,18 +26,24 @@ class AuthController extends Controller
         $post = $this->getJsonInput();
         $email = isset($post->email) ? $post->email : NULL;
         $password = isset($post->password) ? $post->password : NULL;
-        if (is_null($email) || is_null($password)) {
+        $phone = isset($post->phone) ? $post->phone : NULL;
+        if(is_null($email) && is_null($phone)){
             Yii::$app->response->statusCode = 400;
-            return ['error' => TRUE, 'message' => 'Both user name and password are required.'];
+            return ['error' => TRUE, 'message' => 'Phone or Email are required.'];
         }
-        $user = User::findByEmail($email);
+        if (is_null($password)) {
+            Yii::$app->response->statusCode = 400;
+            return ['error' => TRUE, 'message' => 'Password is required.'];
+        }
+        if(is_null($phone)) $user = User::findByEmail($email);
+        else $user = User::findByPhone($phone);
         if (is_null($user)) {
             Yii::$app->response->statusCode = 400;
-            return ['error' => TRUE, 'message' => 'Incorrect user name or password.'];
+            return ['error' => TRUE, 'message' => 'Incorrect email or phone or password.'];
         }
         if (!$user->validatePassword($password)) {
             Yii::$app->response->statusCode = 400;
-            return ['error' => TRUE, 'message' => 'Incorrect user name or password.'];
+            return ['error' => TRUE, 'message' => 'Incorrect email or phone or password.'];
         }
         $token = $user->createApiToken();
         return [

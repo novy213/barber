@@ -21,7 +21,7 @@ class Controller extends \yii\web\Controller
         $behaviors =  parent::behaviors();
         $behaviors['userTokenAuth'] = [
             'class' => HttpBearerAuth::className(),
-            'except' => ['login', 'register', 'setresult','getclasses'],
+            'except' => ['login', 'register'],
         ];
         $behaviors['corsFilter'] = [
             'class' => \yii\filters\Cors::class,
