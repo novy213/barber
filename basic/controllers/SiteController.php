@@ -167,4 +167,22 @@ class SiteController extends \app\components\Controller
             'visit' => $visit
         ];
     }
+    public function actionChangephone(){
+        $post = $this->getJsonInput();
+        $user = Yii::$app->user->identity;
+        if(isset($post->phone)){
+            $user->phone = $post->phone;
+            $user->update();
+            return [
+                'error' => FALSE,
+                'message' => NULL,
+            ];
+        }
+        else {
+            return [
+                'error' => TRUE,
+                'message' => "new phone number is required",
+            ];
+        }
+    }
 }
