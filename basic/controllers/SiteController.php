@@ -105,6 +105,13 @@ class SiteController extends \app\components\Controller
     public function actionAddvisit(){
         $post = $this->getJsonInput();
         $user = Yii::$app->user->identity;
+        $visit = Visit::find()->andWhere(['date'=>$post->date])->one();
+        if(isset($visit)){
+            return [
+                'error' => true,
+                'message_user' => 'ta godzina jest zajeta',
+            ];
+        }
         $visit = new Visit();
         if(isset($post->date)){
             $visit->date = $post->date;
