@@ -2,6 +2,7 @@
 
 namespace app\controllers;
 
+use app\models\Ban;
 use app\models\Teacher;
 use Yii;
 
@@ -44,6 +45,13 @@ class AuthController extends Controller
         if (!$user->validatePassword($password)) {
             Yii::$app->response->statusCode = 400;
             return ['error' => TRUE, 'message' => 'Incorrect email or phone or password.'];
+        }
+        $ban = Ban::find()->andWhere(['user_id'=>$user->id])->one();
+        if(isset($ban)) {
+            return [
+                'error' => TRUE,
+                'message' => 'you are banned'
+            ];
         }
         $token = $user->createApiToken();
         return [

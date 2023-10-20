@@ -2,6 +2,7 @@
 
 namespace app\controllers;
 
+use app\models\Ban;
 use app\models\Price;
 use app\models\Type;
 use app\models\User;
@@ -184,5 +185,80 @@ class SiteController extends \app\components\Controller
                 'message' => "new phone number is required",
             ];
         }
+    }
+    public function actionDeletevisit(){
+        $user = Yii::$app->user->identity;
+        $post = $this->getJsonInput();
+        $visit = Visit::find()->andWhere(['id' => $post->visit_id])->one();
+        if(is_null($visit)){
+            return [
+                'error' => TRUE,
+                'message' => "nie ma takiej wizyty",
+            ];
+        }
+        if($user->admin==0){
+            if($visit->user_id!=$user->id){
+                return [
+                    'error' => TRUE,
+                    'message' => "ta wizyta nie nalezy do ciebie",
+                ];
+            }
+        }
+        $visit->delete();
+        return [
+            'error' => FALSE,
+            'message' => null,
+        ];
+    }
+    public function actionBanuser($phone){
+        $user = Yii::$app->user->identity;
+        if($user->admin==0){
+            return [
+                'error' => TRUE,
+                'message' => 'you are not an admin',
+            ];
+        }
+        $ban = User::find()->andWhere(['phone'=>$phone])->one();
+        if(is_null($ban)){
+            return [
+                'error' => TRUE,
+                'message' => 'This user does not exist',
+            ];
+        }
+        $banUser = new Ban();
+        $banUser->user_id = $ban->id;
+        $banUser->save();
+        return [
+            'error' => FALSE,
+            'message' => null,
+        ];
+    }
+    public function actionUnbanuser($phone){
+        $user = Yii::$app->user->identity;
+        if($user->admin==0){
+            return [
+                'error' => TRUE,
+                'message' => 'you are not an admin',
+            ];
+        }
+        $banUser = User::find()->andWhere(['phone'=>$phone])->one();
+        if(is_null($banUser)){
+            return [
+                'error' => TRUE,
+                'message' => 'This user does not exist',
+            ];
+        }
+        $ban = Ban::find()->andWhere(['user_id'=>$banUser->id])->one();
+        if(is_null($ban)){
+            return [
+                'error' => TRUE,
+                'message' => 'This user is not banned',
+            ];
+        }
+        $ban->delete();
+        return [
+            'error' => FALSE,
+            'message' => null,
+        ];
     }
 }

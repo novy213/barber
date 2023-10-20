@@ -82,6 +82,21 @@ $config = [
                     'route' => '/site/changephone',
                     'verb' => 'POST',
                 ],
+                [
+                    'pattern' => '/deletevisit',
+                    'route' => '/site/deletevisit',
+                    'verb' => 'DELETE',
+                ],
+                [
+                    'pattern' => '/banuser/<phone:\d+>',
+                    'route' => '/site/banuser',
+                    'verb' => 'POST',
+                ],
+                [
+                    'pattern' => '/unbanuser/<phone:\d+>',
+                    'route' => '/site/unbanuser',
+                    'verb' => 'POST',
+                ],
             ],
         ],
     ],

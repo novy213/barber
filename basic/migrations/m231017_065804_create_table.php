@@ -53,6 +53,19 @@ class m231017_065804_create_table extends Migration
             'price' => $this->integer()->notNull(),
         ]);
         $this -> alterColumn('price','id', $this->integer().' AUTO_INCREMENT');
+        $this->createTable('ban', [
+            'id' => $this->primaryKey()->notNull()->unique(),
+            'user_id' => $this->integer()->notNull(),
+        ]);
+        $this -> alterColumn('ban','id', $this->integer().' AUTO_INCREMENT');
+        $this->addForeignKey(
+            'fk-ban-user',
+            'ban',
+            'user_id',
+            'user',
+            'id',
+            'CASCADE'
+        );
         $this->addForeignKey(
             'fk-price-type',
             'price',
@@ -92,10 +105,12 @@ class m231017_065804_create_table extends Migration
      */
     public function safeDown()
     {
+        $this->dropForeignKey('fk-ban-user', 'ban');
         $this->dropForeignKey('fk-visit-barber', 'visit');
         $this->dropForeignKey('fk-visit-type', 'visit');
         $this->dropForeignKey('fk-visit-user', 'visit');
         $this->dropForeignKey('fk-price-type', 'price');
+        $this->dropTable('ban');
         $this->dropTable('user');
         $this->dropTable('visit');
         $this->dropTable('type');
