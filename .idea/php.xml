@@ -99,6 +99,10 @@
       <path value="$PROJECT_DIR$/basic/vendor/yiisoft/yii2-composer" />
       <path value="$PROJECT_DIR$/basic/vendor/yiisoft/yii2-bootstrap5" />
       <path value="$PROJECT_DIR$/basic/vendor/yiisoft/yii2" />
+      <path value="$PROJECT_DIR$/basic/vendor/symfony/polyfill-php80" />
+      <path value="$PROJECT_DIR$/basic/vendor/symfony/polyfill-php73" />
+      <path value="$PROJECT_DIR$/basic/vendor/doctrine/deprecations" />
+      <path value="$PROJECT_DIR$/basic/vendor/codeception/phpunit-wrapper" />
     </include_path>
   </component>
   <component name="PhpProjectSharedConfiguration" php_language_level="7.4" />

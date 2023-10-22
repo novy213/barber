@@ -196,13 +196,11 @@ class SiteController extends \app\components\Controller
                 'message' => "nie ma takiej wizyty",
             ];
         }
-        if($user->admin==0){
-            if($visit->user_id!=$user->id){
-                return [
-                    'error' => TRUE,
-                    'message' => "ta wizyta nie nalezy do ciebie",
-                ];
-            }
+        if($visit->user_id!=$user->id && $user->admin==0){
+            return [
+                'error' => TRUE,
+                'message' => "ta wizyta nie nalezy do ciebie, lub nie jestes adminem",
+            ];
         }
         $visit->delete();
         return [
