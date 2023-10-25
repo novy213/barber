@@ -145,13 +145,30 @@ class SiteController extends \app\components\Controller
         }
     }
     public function actionGetvisits($barber_id){
+        $day = "25-10-2023";
         $visit = Visit::find()->andWhere(['barber_id'=>$barber_id])->all();
         $visits = array();
-        for($i=0;$i<count($visit);$i++){
-            $visits[]=[
-              'id'=>$visit[$i]->id,
-              'date'=>$visit[$i]->date
+        $minutes =0;
+        $hours=9;
+        for($i=0;$i<19;$i++) {
+            $string = "0";
+            if ($minutes == 60) {
+                $hours++;
+                $minutes = 0;
+            }
+            $visits[] = [
+                'date' => $day . " " . $hours . ":" . $minutes,
+                'status' => 0
             ];
+            if ($minutes == 0) $visits[$i]['date'] .= $string;
+            $minutes += 30;
+        }
+        for($i=0;$i<count($visits);$i++) {
+            for($j=0;$j<count($visit);$j++) {
+                if (str_contains($visits[$i]['date'], $visit[$j]['date'])) {
+                    $visits[$i]['status'] = 1;
+                }
+            }
         }
         return [
             'error' => FALSE,

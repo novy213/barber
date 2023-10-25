@@ -43,6 +43,7 @@ class m231019_071907_fake_data extends Migration
         $this->insert('type', ['id'=>1, 'type'=>'combo', 'time'=>45]);
         $this->insert('type', ['id'=>2, 'type'=>'wlosy', 'time'=>30]);
         $this->insert('type', ['id'=>3, 'type'=>'broda', 'time'=>30]);
+        $this->insert('type', ['id'=>4, 'type'=>'wolne', 'time'=>30]);
         $this->insert('price', ['id'=>1, 'type_id'=>1, 'price'=>90]);
         $this->insert('price', ['id'=>2, 'type_id'=>2, 'price'=>50]);
         $this->insert('price', ['id'=>3, 'type_id'=>3, 'price'=>40]);
