@@ -149,7 +149,7 @@ class SiteController extends \app\components\Controller
         $post = $this->getJsonInput();
         if(isset($post->date)){
             $day = $post->date;
-        }bash
+        }
         $visit = Visit::find()->andWhere(['barber_id'=>$barber_id])->all();
         $visits = array();
         $minutes =0;
