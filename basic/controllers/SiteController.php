@@ -145,7 +145,11 @@ class SiteController extends \app\components\Controller
         }
     }
     public function actionGetvisits($barber_id){
-        $day = "25-10-2023";
+        $day = "";
+        $post = $this->getJsonInput();
+        if(isset($post->date)){
+            $day = $post->date;
+        }bash
         $visit = Visit::find()->andWhere(['barber_id'=>$barber_id])->all();
         $visits = array();
         $minutes =0;
