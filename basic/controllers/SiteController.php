@@ -8,6 +8,7 @@ use app\models\Type;
 use app\models\User;
 use app\models\Visit;
 use PhpParser\Node\Expr\Print_;
+use Symfony\Component\Finder\Finder;
 use Yii;
 use yii\base\ViewEvent;
 use yii\filters\AccessControl;
@@ -16,6 +17,7 @@ use yii\web\Response;
 use yii\filters\VerbFilter;
 use app\models\LoginForm;
 use app\models\ContactForm;
+use function PHPUnit\Framework\stringContains;
 
 class SiteController extends \app\components\Controller
 {
@@ -62,10 +64,10 @@ class SiteController extends \app\components\Controller
      *
      * @return string
      */
-    /*public function actionIndex()
+    public function actionIndex()
     {
         return $this->render('index');
-    }*/
+    }
     public function actionRegister(){
         $post = $this->getJsonInput();
         if(User::find()->andWhere(['email'=>$post->email])->one()!=null){
@@ -145,12 +147,23 @@ class SiteController extends \app\components\Controller
         }
     }
     public function actionGetvisits($barber_id){
-        $day = "";
         $post = $this->getJsonInput();
         if(isset($post->date)){
             $day = $post->date;
         }
+        if(!isset($day)){
+            return[
+                'error'=>TRUE,
+                'message'=>'Date is required'
+            ];
+        }
         $visit = Visit::find()->andWhere(['barber_id'=>$barber_id])->all();
+        if(isset($visit)){
+            return[
+                'error'=>TRUE,
+                'message'=>'this visit does not exist'
+            ];
+        }
         $visits = array();
         $minutes =0;
         $hours=9;
@@ -278,6 +291,82 @@ class SiteController extends \app\components\Controller
         return [
             'error' => FALSE,
             'message' => null,
+        ];
+    }
+    public function actionDayoff(){
+        $user = Yii::$app->user->identity;
+        $post = $this->getJsonInput();
+        if(!isset($post->date)){
+            return[
+                'error'=>TRUE,
+                'message'=>'Date is required'
+            ];
+        }
+        $visits = Visit::find()->all();
+        $date = $post->date;
+        for($i=0;$i<count($visits);$i++){
+            if(str_contains($visits[$i]->date, $date))
+                $visits[$i]->delete();
+        }
+        $allDay = false;
+        if(strlen($date)<11){
+            $allDay=true;
+        }
+        $visits = array();
+        $minutes =0;
+        $hours=9;
+        if($allDay) {
+            for ($i = 0; $i < 19; $i++) {
+                $string = "0";
+                if ($minutes == 60) {
+                    $hours++;
+                    $minutes = 0;
+                }
+                $visits[] = $date . " " . $hours . ":" . $minutes;
+                if ($minutes == 0) $visits[$i] .= $string;
+                $minutes += 30;
+            }
+
+            for ($i = 0; $i < 19; $i++) {
+                $visit = new Visit();
+                $visit->date = $visits[$i];
+                $visit->barber_id = $user->id;
+                $visit->user_id = $user->id;
+                $visit->price = 0;
+                $visit->type_id = 4;
+                $visit->hair = 0;
+                $visit->time = 30;
+                if ($visit->validate()) {
+                    $visit->save();
+                } else {
+                    return [
+                        'error' => true,
+                        'message' => $visit->getErrorSummary(false),
+                    ];
+                }
+            }
+        }
+        else{
+            $visit = new Visit();
+            $visit->date = $date;
+            $visit->barber_id = $user->id;
+            $visit->user_id = $user->id;
+            $visit->price = 0;
+            $visit->type_id = 4;
+            $visit->hair = 0;
+            $visit->time = 30;
+            if ($visit->validate()) {
+                $visit->save();
+            } else {
+                return [
+                    'error' => true,
+                    'message' => $visit->getErrorSummary(false),
+                ];
+            }
+        }
+        return [
+            'error' => FALSE,
+            'message' => NULL,
         ];
     }
 }

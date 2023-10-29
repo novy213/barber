@@ -97,6 +97,11 @@ $config = [
                     'route' => '/site/unbanuser',
                     'verb' => 'POST',
                 ],
+                [
+                    'pattern' => '/dayoff',
+                    'route' => '/site/dayoff',
+                    'verb' => 'POST',
+                ],
             ],
         ],
     ],
@@ -116,7 +121,7 @@ if (YII_ENV_DEV) {
     $config['modules']['gii'] = [
         'class' => 'yii\gii\Module',
         // uncomment the following to add your IP if you are not connecting from localhost.
-        'allowedIPs' => ['127.0.0.1', '::1', '172.20.0.1'],
+        'allowedIPs' => ['127.0.0.1', '::1', '172.18.0.1'],
     ];
 }
 

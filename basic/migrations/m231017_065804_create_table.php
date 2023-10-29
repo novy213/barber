@@ -39,6 +39,7 @@ class m231017_065804_create_table extends Migration
             'id' => $this->primaryKey()->notNull()->unique(),
             'name' => $this->string()->notNull(),
             'last_name' => $this->string()->notNull(),
+            'user_id' => $this->integer()->notNull(),
         ]);
         $this -> alterColumn('barber','id', $this->integer().' AUTO_INCREMENT');
         $this->createTable('type', [
@@ -58,6 +59,14 @@ class m231017_065804_create_table extends Migration
             'user_id' => $this->integer()->notNull(),
         ]);
         $this -> alterColumn('ban','id', $this->integer().' AUTO_INCREMENT');
+        $this->addForeignKey(
+            'fk-barber-user',
+            'barber',
+            'user_id',
+            'user',
+            'id',
+            'CASCADE'
+        );
         $this->addForeignKey(
             'fk-ban-user',
             'ban',
@@ -105,6 +114,7 @@ class m231017_065804_create_table extends Migration
      */
     public function safeDown()
     {
+        $this->dropForeignKey('fk-barber-user', 'barber');
         $this->dropForeignKey('fk-ban-user', 'ban');
         $this->dropForeignKey('fk-visit-barber', 'visit');
         $this->dropForeignKey('fk-visit-type', 'visit');

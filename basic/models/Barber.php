@@ -10,7 +10,9 @@ use Yii;
  * @property int $id
  * @property string $name
  * @property string $last_name
+ * @property int $user_id
  *
+ * @property User $user
  * @property Visit[] $visits
  */
 class Barber extends \yii\db\ActiveRecord
@@ -29,8 +31,10 @@ class Barber extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['name', 'last_name'], 'required'],
+            [['name', 'last_name', 'user_id'], 'required'],
+            [['user_id'], 'integer'],
             [['name', 'last_name'], 'string', 'max' => 255],
+            [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::class, 'targetAttribute' => ['user_id' => 'id']],
         ];
     }
 
@@ -43,7 +47,18 @@ class Barber extends \yii\db\ActiveRecord
             'id' => 'ID',
             'name' => 'Name',
             'last_name' => 'Last Name',
+            'user_id' => 'User ID',
         ];
+    }
+
+    /**
+     * Gets query for [[User]].
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function getUser()
+    {
+        return $this->hasOne(User::class, ['id' => 'user_id']);
     }
 
     /**
