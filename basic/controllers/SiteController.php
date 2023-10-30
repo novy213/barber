@@ -147,7 +147,7 @@ class SiteController extends \app\components\Controller
         }
     }
     public function actionGetvisits($barber_id){
-        $day = ""; 
+        $day = "";
         $post = $this->getJsonInput();
         if(isset($post->date)){
             $day = $post->date;
@@ -161,8 +161,9 @@ class SiteController extends \app\components\Controller
         $visit = Visit::find()->andWhere(['barber_id'=>$barber_id])->all();
         if(isset($visit)){
             return[
-                'error'=>TRUE,
-                'message'=>'this visit does not exist'
+                'error'=>FALSE,
+                'message'=>null,
+                'visit'=>[]
             ];
         }
         $visits = array();

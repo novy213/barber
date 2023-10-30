@@ -70,7 +70,7 @@ $config = [
                 [
                     'pattern' => '/visits/<barber_id:\d+>',
                     'route' => '/site/getvisits',
-                    'verb' => 'GET',
+                    'verb' => 'POST',
                 ],
                 [
                     'pattern' => '/uservisits',
