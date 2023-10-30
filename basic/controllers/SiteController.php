@@ -147,6 +147,7 @@ class SiteController extends \app\components\Controller
         }
     }
     public function actionGetvisits($barber_id){
+        $day = "";
         $post = $this->getJsonInput();
         if(isset($post->date)){
             $day = $post->date;
