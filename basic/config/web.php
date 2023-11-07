@@ -103,8 +103,13 @@ $config = [
                     'verb' => 'POST',
                 ],
                 [
-                    'pattern' => '/banedusers',
+                    'pattern' => '/bannedusers',
                     'route' => '/site/banedusers',
+                    'verb' => 'GET',
+                ],
+                [
+                    'pattern' => '/userdata',
+                    'route' => '/site/userdata',
                     'verb' => 'GET',
                 ],
             ],
