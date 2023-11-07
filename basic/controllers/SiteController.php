@@ -289,6 +289,12 @@ class SiteController extends \app\components\Controller
     }
     public function actionDayoff(){
         $user = Yii::$app->user->identity;
+        if($user->admin==0){
+            return [
+                'error' => TRUE,
+                'message' => 'you are not an admin',
+            ];
+        }
         $post = $this->getJsonInput();
         if(!isset($post->date)){
             return[
@@ -299,8 +305,11 @@ class SiteController extends \app\components\Controller
         $visits = Visit::find()->all();
         $date = $post->date;
         for($i=0;$i<count($visits);$i++){
-            if(str_contains($visits[$i]->date, $date))
+            if(str_contains($visits[$i]->date, $date)) {
+                $user = $visits[$i]->user;
+                //kod na wyslanie smsa
                 $visits[$i]->delete();
+            }
         }
         $allDay = false;
         if(strlen($date)<11){
@@ -361,6 +370,35 @@ class SiteController extends \app\components\Controller
         return [
             'error' => FALSE,
             'message' => NULL,
+        ];
+    }
+    public function actionUserdata(){
+        $user = Yii::$app->user->identity;
+        return[
+            'error' => FALSE,
+            'message' => NULL,
+            'name'=>$user->name,
+            'last_name'=>$user->last_name,
+            'phone'=>$user->phone
+        ];
+    }
+    public function actionBanedusers(){
+        $user = Yii::$app->user->identity;
+        if($user->admin==0){
+            return [
+                'error' => TRUE,
+                'message' => 'you are not an admin',
+            ];
+        }
+        $ban = Ban::find()->all();
+        $users = array();
+        for($i=0;$i<count($ban);$i++){
+            $users[] = $ban[$i]->user;
+        }
+        return [
+            'error' => FALSE,
+            'message' => NULL,
+            'users' => $users
         ];
     }
 }

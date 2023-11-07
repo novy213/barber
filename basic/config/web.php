@@ -102,6 +102,11 @@ $config = [
                     'route' => '/site/dayoff',
                     'verb' => 'POST',
                 ],
+                [
+                    'pattern' => '/banedusers',
+                    'route' => '/site/banedusers',
+                    'verb' => 'GET',
+                ],
             ],
         ],
     ],
