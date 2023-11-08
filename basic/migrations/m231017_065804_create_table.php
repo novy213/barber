@@ -17,7 +17,6 @@ class m231017_065804_create_table extends Migration
             'password' => $this->string()->notNull(),
             'name' => $this->string()->notNull(),
             'last_name' => $this->string()->notNull(),
-            'email' => $this->string()->notNull(),
             'phone' => $this->integer()->notNull(),
             'admin' => $this->boolean()->defaultValue(0),
             'access_token' => $this->string()
@@ -29,7 +28,8 @@ class m231017_065804_create_table extends Migration
             'barber_id' => $this->integer()->notNull(),
             'price' => $this->float()->notNull(),
             'type_id' => $this->integer()->notNull(),
-            'hair' => $this->boolean()->defaultValue(0)->notNull(),
+            'coloring' => $this->boolean()->defaultValue(0)->notNull(),
+            'razor' => $this->boolean()->defaultValue(0)->notNull(),
             'time' => $this->float()->notNull(),
             'additional_info' => $this->string(),
             'user_id' => $this->integer()->notNull(),
@@ -46,14 +46,9 @@ class m231017_065804_create_table extends Migration
             'id' => $this->primaryKey()->notNull()->unique(),
             'type' => $this->string()->notNull(),
             'time' => $this->integer()->notNull(),
+            'price'=>$this->integer()->notNull(),
         ]);
         $this -> alterColumn('type','id', $this->integer().' AUTO_INCREMENT');
-        $this->createTable('price', [
-            'id' => $this->primaryKey()->notNull()->unique(),
-            'type_id' => $this->integer()->notNull(),
-            'price' => $this->integer()->notNull(),
-        ]);
-        $this -> alterColumn('price','id', $this->integer().' AUTO_INCREMENT');
         $this->createTable('ban', [
             'id' => $this->primaryKey()->notNull()->unique(),
             'user_id' => $this->integer()->notNull(),
@@ -72,14 +67,6 @@ class m231017_065804_create_table extends Migration
             'ban',
             'user_id',
             'user',
-            'id',
-            'CASCADE'
-        );
-        $this->addForeignKey(
-            'fk-price-type',
-            'price',
-            'type_id',
-            'type',
             'id',
             'CASCADE'
         );
@@ -119,12 +106,10 @@ class m231017_065804_create_table extends Migration
         $this->dropForeignKey('fk-visit-barber', 'visit');
         $this->dropForeignKey('fk-visit-type', 'visit');
         $this->dropForeignKey('fk-visit-user', 'visit');
-        $this->dropForeignKey('fk-price-type', 'price');
         $this->dropTable('ban');
         $this->dropTable('user');
         $this->dropTable('visit');
         $this->dropTable('type');
         $this->dropTable('barber');
-        $this->dropTable('price');
     }
 }

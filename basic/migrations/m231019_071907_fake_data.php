@@ -31,7 +31,6 @@ class m231019_071907_fake_data extends Migration
                 'password' => $hardcodedPasswords[$i],
                 'name' => 'John',
                 'last_name' => 'Doe',
-                'email' => 'user' . $i . '@wp.pl',
                 'phone' => rand(100000000, 999999999)
             ];
 
@@ -40,13 +39,13 @@ class m231019_071907_fake_data extends Migration
         $this->update('user',['admin'=>1],['id'=>1]);
         $this->insert('barber', ['id'=>1, 'name'=>'barber1','last_name'=>'barber1', 'user_id'=>1]);
         $this->insert('barber', ['id'=>2, 'name'=>'barber2','last_name'=>'barber2', 'user_id'=>2]);
-        $this->insert('type', ['id'=>1, 'type'=>'combo', 'time'=>45]);
-        $this->insert('type', ['id'=>2, 'type'=>'wlosy', 'time'=>30]);
-        $this->insert('type', ['id'=>3, 'type'=>'broda', 'time'=>30]);
-        $this->insert('type', ['id'=>4, 'type'=>'wolne', 'time'=>0]);
-        $this->insert('price', ['id'=>1, 'type_id'=>1, 'price'=>90]);
-        $this->insert('price', ['id'=>2, 'type_id'=>2, 'price'=>50]);
-        $this->insert('price', ['id'=>3, 'type_id'=>3, 'price'=>40]);
+        $this->insert('type', ['id'=>1, 'type'=>'combo', 'time'=>45,'price'=>50]);
+        $this->insert('type', ['id'=>2, 'type'=>'wlosy', 'time'=>30,'price'=>35]);
+        $this->insert('type', ['id'=>3, 'type'=>'broda', 'time'=>30,'price'=>30]);
+        $this->insert('type', ['id'=>4, 'type'=>'wolne', 'time'=>0,'price'=>0]);
+        $this->insert('type', ['id'=>5, 'type'=>'razor', 'time'=>0,'price'=>5]);
+        $this->insert('type', ['id'=>6, 'type'=>'coloring', 'time'=>0,'price'=>15]);
+        $this->insert('type', ['id'=>7, 'type'=>'buzz cut', 'time'=>30,'price'=>20]);
     }
 
     /**
@@ -58,7 +57,6 @@ class m231019_071907_fake_data extends Migration
         $this->delete('barber', []);
         $this->delete('type', []);
         $this->delete('visit', []);
-        $this->delete('price', []);
         $this->delete('ban', []);
     }
 

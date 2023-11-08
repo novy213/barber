@@ -12,7 +12,6 @@ use Yii;
  * @property int $barber_id
  * @property float $price
  * @property int $type_id
- * @property int $hair
  * @property float $time
  * @property string|null $additional_info
  * @property int $user_id
@@ -38,7 +37,7 @@ class Visit extends \yii\db\ActiveRecord
     {
         return [
             [['date', 'barber_id', 'price', 'type_id', 'time', 'user_id'], 'required'],
-            [['barber_id', 'type_id', 'hair', 'user_id'], 'integer'],
+            [['barber_id', 'type_id', 'user_id'], 'integer'],
             [['price', 'time'], 'number'],
             [['date', 'additional_info'], 'string', 'max' => 255],
             [['barber_id'], 'exist', 'skipOnError' => true, 'targetClass' => Barber::class, 'targetAttribute' => ['barber_id' => 'id']],
@@ -58,7 +57,6 @@ class Visit extends \yii\db\ActiveRecord
             'barber_id' => 'Barber ID',
             'price' => 'Price',
             'type_id' => 'Type ID',
-            'hair' => 'Hair',
             'time' => 'Time',
             'additional_info' => 'Additional Info',
             'user_id' => 'User ID',

@@ -128,8 +128,18 @@ class SiteController extends \app\components\Controller
         if(isset($post->additional_info)){
             $visit->additional_info = $post->additional_info;
         }
-        $price = Price::find()->andWhere(['type_id'=>$post->type_id])->one();
-        $visit->price = $price->price;
+        $type = Type::find()->andWhere(['id'=>$post->type_id])->one();
+        $visit->price = $type->price;
+        if(isset($post->razor) && $post->razor==1){
+            $type = Type::find()->andWhere(['type'=>'razor'])->one();
+            $visit->price=$visit->price+$type->price;
+            $visit->razor = 1;
+        }
+        if(isset($post->coloring) && $post->coloring==1){
+            $type = Type::find()->andWhere(['type'=>'coloring'])->one();
+            $visit->price=$visit->price+$type->price;
+            $visit->coloring = 1;
+        }
         $time = Type::find()->andWhere(['id'=>$post->type_id])->one();
         $visit->time = $time->time;
         $visit->user_id = $user->id;
@@ -337,7 +347,6 @@ class SiteController extends \app\components\Controller
                 $visit->user_id = $user->id;
                 $visit->price = 0;
                 $visit->type_id = 4;
-                $visit->hair = 0;
                 $visit->time = 30;
                 if ($visit->validate()) {
                     $visit->save();
@@ -356,7 +365,6 @@ class SiteController extends \app\components\Controller
             $visit->user_id = $user->id;
             $visit->price = 0;
             $visit->type_id = 4;
-            $visit->hair = 0;
             $visit->time = 30;
             if ($visit->validate()) {
                 $visit->save();
@@ -404,6 +412,33 @@ class SiteController extends \app\components\Controller
     public function actionCloseacc(){
         $user = Yii::$app->user->identity;
         $user->delete();
+        return [
+            'error' => FALSE,
+            'message' => NULL,
+        ];
+    }
+    public function actionGetprices(){
+        $types = Type::find()->all();
+        return [
+            'error' => FALSE,
+            'message' => NULL,
+            'types'=>$types
+        ];
+    }
+    public function actionChangeprices(){
+        $user = Yii::$app->user->identity;
+        if($user->admin==0){
+            return [
+                'error' => TRUE,
+                'message' => 'you are not an admin',
+            ];
+        }
+        $post = $this->getJsonInput();
+        for($i=0;$i<count($post->types);$i++){
+            $type = Type::find()->andWhere(['id'=>$post->types[$i]->id])->one();
+            $type->price = $post->types[$i]->price;
+            $type->update();
+        }
         return [
             'error' => FALSE,
             'message' => NULL,

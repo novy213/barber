@@ -117,6 +117,16 @@ $config = [
                     'route' => '/site/closeacc',
                     'verb' => 'DELETE',
                 ],
+                [
+                    'pattern' => '/getpries',
+                    'route' => '/site/getpries',
+                    'verb' => 'GET',
+                ],
+                [
+                    'pattern' => '/changeprices',
+                    'route' => '/site/changeprices',
+                    'verb' => 'POST',
+                ],
             ],
         ],
     ],
