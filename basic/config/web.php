@@ -112,6 +112,11 @@ $config = [
                     'route' => '/site/userdata',
                     'verb' => 'GET',
                 ],
+                [
+                    'pattern' => '/closeacc',
+                    'route' => '/site/closeacc',
+                    'verb' => 'DELETE',
+                ],
             ],
         ],
     ],

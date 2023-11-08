@@ -401,4 +401,12 @@ class SiteController extends \app\components\Controller
             'users' => $users
         ];
     }
+    public function actionCloseacc(){
+        $user = Yii::$app->user->identity;
+        $user->delete();
+        return [
+            'error' => FALSE,
+            'message' => NULL,
+        ];
+    }
 }
