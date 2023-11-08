@@ -209,8 +209,10 @@ class SiteController extends \app\components\Controller
     public function actionChangephone(){
         $post = $this->getJsonInput();
         $user = Yii::$app->user->identity;
-        if(isset($post->phone)){
+        if(isset($post->phone) && isset($post->name) && isset($post->last_name)){
             $user->phone = $post->phone;
+            $user->name = $post->name;
+            $user->last_name = $post->last_name;
             $user->update();
             return [
                 'error' => FALSE,
@@ -220,7 +222,7 @@ class SiteController extends \app\components\Controller
         else {
             return [
                 'error' => TRUE,
-                'message' => "new phone number is required",
+                'message' => "new phone number or name or last name is required",
             ];
         }
     }
