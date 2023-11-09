@@ -78,10 +78,6 @@ class User extends ActiveRecord implements \yii\web\IdentityInterface
         return $user;
     }
 
-    public static function findByEmail($email)
-    {
-        return self::findOne(['email' => $email]);
-    }
     public static function findByPhone($phone)
     {
         return self::findOne(['phone' => $phone]);

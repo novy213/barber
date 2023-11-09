@@ -86,9 +86,6 @@ class SiteController extends \app\components\Controller
         if (isset($post->last_name)) {
             $user->last_name = $post->last_name;
         }
-        if (isset($post->email)) {
-            $user->email = $post->email;
-        }
         if (isset($post->phone)) {
             $user->phone = $post->phone;
         }
