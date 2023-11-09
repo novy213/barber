@@ -132,6 +132,11 @@ $config = [
                     'route' => '/site/verificateacc',
                     'verb' => 'POST',
                 ],
+                [
+                    'pattern' => '/sendsms',
+                    'route' => '/site/sendsms',
+                    'verb' => 'POST',
+                ],
             ],
         ],
     ],

@@ -92,15 +92,6 @@ class SiteController extends \app\components\Controller
             $code->code = rand(1000, 9999);
             $code->user_id = $user->id;
             $code->save();
-            $token = "FdhwGf65s8Jsth1yrWo2TvvvwhgMxG4IrLo5XKwy";
-            $params = array(
-                'to' => $user->phone,
-                'from' => 'KBF Barber Shop',
-                'message' => $code->code,
-                'format' => 'json'
-            );
-            $sms = new SendSMS();
-            SendSMS::sms_send($params, $token);
             return [
                 'error' => FALSE,
                 'message' => NULL,
@@ -494,5 +485,27 @@ class SiteController extends \app\components\Controller
     }
     public function actionChangepass(){
 
+    }
+    public function actionSendsms(){
+        $user = Yii::$app->user->identity;
+        $code = Code::find()->andWhere(['user_id'=>$user->id])->one();
+        if(!isset($code)){
+            return [
+                'error' => TRUE,
+                'message' => 'there is no code for user',
+            ];
+        }
+        $token = "FdhwGf65s8Jsth1yrWo2TvvvwhgMxG4IrLo5XKwy";
+        $params = array(
+            'to' => $user->phone,
+            'from' => 'Test',
+            'message' => $code->code,
+            'format' => 'json'
+        );
+        SendSMS::sms_send($params, $token);
+        return [
+            'error' => FALSE,
+            'message' => NULL,
+        ];
     }
 }
