@@ -34,7 +34,9 @@ class SendSMS
         ];
     }
 
-    public static function sendSMS($params, $token, $backup = false){
+    function sms_send($params, $token, $backup = false)
+    {
+
         static $content;
 
         if ($backup == true) {
@@ -63,4 +65,5 @@ class SendSMS
         curl_close($c);
         return $content;
     }
+
 }

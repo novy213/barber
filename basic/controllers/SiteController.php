@@ -100,7 +100,7 @@ class SiteController extends \app\components\Controller
                 'format' => 'json'
             );
             $sms = new SendSMS();
-            SendSMS::sendSMS($params, $token);
+            SendSMS::sms_send($params, $token);
             return [
                 'error' => FALSE,
                 'message' => NULL,
