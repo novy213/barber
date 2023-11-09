@@ -70,12 +70,6 @@ class SiteController extends \app\components\Controller
     }
     public function actionRegister(){
         $post = $this->getJsonInput();
-        if(User::find()->andWhere(['email'=>$post->email])->one()!=null){
-            return [
-                'error' => TRUE,
-                'message' => "there is user with that email or login",
-            ];
-        }
         $user = new User();
         if (isset($post->password)) {
             $user->password = $post->password;
