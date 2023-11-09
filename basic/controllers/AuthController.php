@@ -57,7 +57,8 @@ class AuthController extends Controller
             'message' => NULL,
             'token' => $token,
             'userId' => $user->id,
-            'admin' => $user->admin
+            'admin' => $user->admin,
+            'verified' => $user->verified,
         ];
     }
     /**

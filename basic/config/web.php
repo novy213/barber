@@ -127,6 +127,11 @@ $config = [
                     'route' => '/site/changeprices',
                     'verb' => 'POST',
                 ],
+                [
+                    'pattern' => '/verify',
+                    'route' => '/site/verificateacc',
+                    'verb' => 'POST',
+                ],
             ],
         ],
     ],

@@ -3,7 +3,9 @@
 namespace app\controllers;
 
 use app\models\Ban;
+use app\models\Code;
 use app\models\Price;
+use app\models\SendSMS;
 use app\models\Type;
 use app\models\User;
 use app\models\Visit;
@@ -81,10 +83,24 @@ class SiteController extends \app\components\Controller
             $user->last_name = $post->last_name;
         }
         if (isset($post->phone)) {
-            $user->phone = $post->phone;
+            $user->phone = 48;
+            $user->phone.=$post->phone;
         }
         if ($user->validate()) {
             $user->save();
+            $code = new Code();
+            $code->code = rand(1000, 9999);
+            $code->user_id = $user->id;
+            $code->save();
+            $token = "FdhwGf65s8Jsth1yrWo2TvvvwhgMxG4IrLo5XKwy";
+            $params = array(
+                'to' => $user->phone,
+                'from' => 'KBF Barber Shop',
+                'message' => $code->code,
+                'format' => 'json'
+            );
+            $sms = new SendSMS();
+            SendSMS::sendSMS($params, $token);
             return [
                 'error' => FALSE,
                 'message' => NULL,
@@ -436,5 +452,47 @@ class SiteController extends \app\components\Controller
             'error' => FALSE,
             'message' => NULL,
         ];
+    }
+    public function actionAddtype(){
+        $user = Yii::$app->user->identity;
+        if($user->admin==0){
+            return [
+                'error' => TRUE,
+                'message' => 'you are not an admin',
+            ];
+        }
+    }
+    public function actionVerificateacc(){
+        $post = $this->getJsonInput();
+        if(!isset($post->code)){
+            return [
+                'error' => TRUE,
+                'message' => 'code is required',
+            ];
+        }
+        $code = Code::find()->andWhere(['code'=>$post->code])->one();
+        if(is_null($code)){
+            return [
+                'error' => TRUE,
+                'message' => 'code is incorrect',
+            ];
+        }
+        $user = $code->user;
+        if(is_null($user)){
+            return [
+                'error' => TRUE,
+                'message' => 'try again later',
+            ];
+        }
+        $user->verified = 1;
+        $user->update();
+        $code->delete();
+        return [
+            'error' => FALSE,
+            'message' => NULL,
+        ];
+    }
+    public function actionChangepass(){
+
     }
 }

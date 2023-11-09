@@ -19,6 +19,7 @@ class m231017_065804_create_table extends Migration
             'last_name' => $this->string()->notNull(),
             'phone' => $this->bigInteger()->notNull(),
             'admin' => $this->boolean()->defaultValue(0),
+            'verified' => $this->boolean()->defaultValue(0),
             'access_token' => $this->string()
         ]);
         $this -> alterColumn('user','id', $this->integer().' AUTO_INCREMENT');
@@ -54,6 +55,20 @@ class m231017_065804_create_table extends Migration
             'user_id' => $this->integer()->notNull(),
         ]);
         $this -> alterColumn('ban','id', $this->integer().' AUTO_INCREMENT');
+        $this->createTable('code', [
+            'id' => $this->primaryKey()->notNull()->unique(),
+            'code' => $this->integer()->notNull(),
+            'user_id' => $this->integer()->notNull(),
+        ]);
+        $this -> alterColumn('code','id', $this->integer().' AUTO_INCREMENT');
+        $this->addForeignKey(
+            'fk-code-user',
+            'code',
+            'user_id',
+            'user',
+            'id',
+            'CASCADE'
+        );
         $this->addForeignKey(
             'fk-barber-user',
             'barber',
@@ -106,7 +121,9 @@ class m231017_065804_create_table extends Migration
         $this->dropForeignKey('fk-visit-barber', 'visit');
         $this->dropForeignKey('fk-visit-type', 'visit');
         $this->dropForeignKey('fk-visit-user', 'visit');
+        $this->dropForeignKey('fk-code-user', 'code');
         $this->dropTable('ban');
+        $this->dropTable('code');
         $this->dropTable('user');
         $this->dropTable('visit');
         $this->dropTable('type');

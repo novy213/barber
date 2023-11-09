@@ -13,8 +13,12 @@ use yii\db\ActiveRecord;
  * @property string $last_name
  * @property int $phone
  * @property int|null $admin
+ * @property int|null $verified
  * @property string|null $access_token
  *
+ * @property Ban[] $bans
+ * @property Barber[] $barbers
+ * @property Code[] $codes
  * @property Visit[] $visits
  */
 
@@ -28,7 +32,7 @@ class User extends ActiveRecord implements \yii\web\IdentityInterface
     {
         return [
             [['password', 'name', 'last_name', 'phone'], 'required'],
-            [['phone', 'admin'], 'integer'],
+            [['phone', 'admin', 'verified'], 'integer'],
             [['password', 'name', 'last_name', 'access_token'], 'string', 'max' => 255],
         ];
     }
@@ -45,6 +49,7 @@ class User extends ActiveRecord implements \yii\web\IdentityInterface
             'last_name' => 'Last Name',
             'phone' => 'Phone',
             'admin' => 'Admin',
+            'verified' => 'Verified',
             'access_token' => 'Access Token',
         ];
     }
@@ -119,6 +124,36 @@ class User extends ActiveRecord implements \yii\web\IdentityInterface
         }
         return false;
     }
+    public function getBans()
+    {
+        return $this->hasMany(Ban::class, ['user_id' => 'id']);
+    }
+
+    /**
+     * Gets query for [[Barbers]].
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function getBarbers()
+    {
+        return $this->hasMany(Barber::class, ['user_id' => 'id']);
+    }
+
+    /**
+     * Gets query for [[Codes]].
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function getCodes()
+    {
+        return $this->hasMany(Code::class, ['user_id' => 'id']);
+    }
+
+    /**
+     * Gets query for [[Visits]].
+     *
+     * @return \yii\db\ActiveQuery
+     */
     public function getVisits()
     {
         return $this->hasMany(Visit::class, ['user_id' => 'id']);
