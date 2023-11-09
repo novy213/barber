@@ -11,7 +11,8 @@ use Yii;
  * @property string message
  */
 
-class SendSMS{
+class SendSMS
+{
     /**
      * {@inheritdoc}
      */
@@ -33,7 +34,7 @@ class SendSMS{
         ];
     }
 
-    public function sendSMS($params, $token, $backup = false){
+    public static function sendSMS($params, $token, $backup = false){
         static $content;
 
         if ($backup == true) {
