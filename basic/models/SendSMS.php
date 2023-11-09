@@ -34,7 +34,7 @@ class SendSMS
         ];
     }
 
-    function sms_send($params, $token, $backup = false)
+    public static function sms_send($params, $token, $backup = false)
     {
 
         static $content;
