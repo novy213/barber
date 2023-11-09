@@ -88,10 +88,6 @@ class SiteController extends \app\components\Controller
         }
         if ($user->validate()) {
             $user->save();
-            $code = new Code();
-            $code->code = rand(1000, 9999);
-            $code->user_id = $user->id;
-            $code->save();
             return [
                 'error' => FALSE,
                 'message' => NULL,
@@ -488,7 +484,10 @@ class SiteController extends \app\components\Controller
     }
     public function actionSendsms(){
         $user = Yii::$app->user->identity;
-        $code = Code::find()->andWhere(['user_id'=>$user->id])->one();
+        $code = new Code();
+        $code->code = rand(1000, 9999);
+        $code->user_id = $user->id;
+        $code->save();
         if(!isset($code)){
             return [
                 'error' => TRUE,
