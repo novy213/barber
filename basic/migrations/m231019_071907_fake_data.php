@@ -31,7 +31,7 @@ class m231019_071907_fake_data extends Migration
                 'password' => $hardcodedPasswords[$i],
                 'name' => 'John',
                 'last_name' => 'Doe',
-                'phone' => rand(100000000, 999999999)
+                'phone' => 48111111111
             ];
 
             $this->insert('user', $data);
