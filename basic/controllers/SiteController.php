@@ -383,7 +383,8 @@ class SiteController extends \app\components\Controller
             'message' => NULL,
             'name'=>$user->name,
             'last_name'=>$user->last_name,
-            'phone'=>$user->phone
+            'phone'=>$user->phone,
+            'notification'=>$user->notification
         ];
     }
     public function actionBanedusers(){
@@ -541,6 +542,22 @@ class SiteController extends \app\components\Controller
             'format' => 'json'
         );
         SendSMS::sms_send($params, $token);
+        return [
+            'error' => FALSE,
+            'message' => NULL,
+        ];
+    }
+    public function actionChangenot(){
+        $user = Yii::$app->user->identity;
+        $post = $this->getJsonInput();
+        if(!isset($post->notification)){
+            return [
+                'error' => TRUE,
+                'message' => 'notification parameter is required',
+            ];
+        }
+        $user->notification = $post->notification;
+        $user->update();
         return [
             'error' => FALSE,
             'message' => NULL,

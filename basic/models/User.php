@@ -11,6 +11,7 @@ use yii\db\ActiveRecord;
  * @property string $password
  * @property string $name
  * @property string $last_name
+ * @property int $notification
  * @property int $phone
  * @property int|null $admin
  * @property int|null $verified
@@ -32,7 +33,7 @@ class User extends ActiveRecord implements \yii\web\IdentityInterface
     {
         return [
             [['password', 'name', 'last_name', 'phone'], 'required'],
-            [['phone', 'admin', 'verified'], 'integer'],
+            [['phone', 'admin', 'verified', 'notification'], 'integer'],
             [['password', 'name', 'last_name', 'access_token'], 'string', 'max' => 255],
         ];
     }
@@ -51,6 +52,7 @@ class User extends ActiveRecord implements \yii\web\IdentityInterface
             'admin' => 'Admin',
             'verified' => 'Verified',
             'access_token' => 'Access Token',
+            'notification' => 'Notification',
         ];
     }
     public function createApiToken()

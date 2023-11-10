@@ -19,6 +19,7 @@ class m231017_065804_create_table extends Migration
             'last_name' => $this->string()->notNull(),
             'phone' => $this->bigInteger()->notNull(),
             'admin' => $this->boolean()->defaultValue(0),
+            'notification' => $this->integer()->defaultValue(60),
             'verified' => $this->boolean()->defaultValue(0),
             'access_token' => $this->string()
         ]);

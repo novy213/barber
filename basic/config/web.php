@@ -147,6 +147,11 @@ $config = [
                     'route' => '/site/changepass',
                     'verb' => 'POST',
                 ],
+                [
+                    'pattern' => '/changenotification',
+                    'route' => '/site/changenot',
+                    'verb' => 'POST',
+                ],
             ],
         ],
     ],
