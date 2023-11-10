@@ -85,7 +85,9 @@ class User extends ActiveRecord implements \yii\web\IdentityInterface
 
     public static function findByPhone($phone)
     {
-        return self::findOne(['phone' => $phone]);
+        $userPhone = 48;
+        $userPhone.=$phone;
+        return self::findOne(['phone' => $userPhone]);
     }
     /**
      * {@inheritdoc}
