@@ -118,7 +118,7 @@ $config = [
                     'verb' => 'DELETE',
                 ],
                 [
-                    'pattern' => '/getpries',
+                    'pattern' => '/getprices',
                     'route' => '/site/getpries',
                     'verb' => 'GET',
                 ],
