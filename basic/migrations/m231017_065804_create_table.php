@@ -51,6 +51,18 @@ class m231017_065804_create_table extends Migration
             'price'=>$this->integer()->notNull(),
         ]);
         $this -> alterColumn('type','id', $this->integer().' AUTO_INCREMENT');
+        $this->createTable('additional_services', [
+            'id' => $this->primaryKey()->notNull()->unique(),
+            'type' => $this->string()->notNull(),
+            'price'=>$this->integer()->notNull(),
+        ]);
+        $this -> alterColumn('additional_services','id', $this->integer().' AUTO_INCREMENT');
+        $this->createTable('additional_type', [
+            'id' => $this->primaryKey()->notNull()->unique(),
+            'additional_id' => $this->integer()->notNull(),
+            'type_id'=>$this->integer()->notNull(),
+        ]);
+        $this -> alterColumn('additional_services','id', $this->integer().' AUTO_INCREMENT');
         $this->createTable('ban', [
             'id' => $this->primaryKey()->notNull()->unique(),
             'user_id' => $this->integer()->notNull(),
@@ -62,6 +74,22 @@ class m231017_065804_create_table extends Migration
             'user_id' => $this->integer()->notNull(),
         ]);
         $this -> alterColumn('code','id', $this->integer().' AUTO_INCREMENT');
+        $this->addForeignKey(
+            'fk-additional-add',
+            'additional_type',
+            'additional_id',
+            'additional_services',
+            'id',
+            'CASCADE'
+        );
+        $this->addForeignKey(
+            'fk-additional-type',
+            'additional_type',
+            'type_id',
+            'type',
+            'id',
+            'CASCADE'
+        );
         $this->addForeignKey(
             'fk-code-user',
             'code',
@@ -123,7 +151,11 @@ class m231017_065804_create_table extends Migration
         $this->dropForeignKey('fk-visit-type', 'visit');
         $this->dropForeignKey('fk-visit-user', 'visit');
         $this->dropForeignKey('fk-code-user', 'code');
+        $this->dropForeignKey('fk-additional-type', 'additional_type');
+        $this->dropForeignKey('fk-additional-add', 'additional_type');
         $this->dropTable('ban');
+        $this->dropTable('additional_services');
+        $this->dropTable('additional_type');
         $this->dropTable('code');
         $this->dropTable('user');
         $this->dropTable('visit');

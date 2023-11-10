@@ -5,24 +5,22 @@ namespace app\models;
 use Yii;
 
 /**
- * This is the model class for table "type".
+ * This is the model class for table "additional_services".
  *
  * @property int $id
  * @property string $type
- * @property int $time
  * @property int $price
  *
  * @property AdditionalType[] $additionalTypes
- * @property Visit[] $visits
  */
-class Type extends \yii\db\ActiveRecord
+class AdditionalServices extends \yii\db\ActiveRecord
 {
     /**
      * {@inheritdoc}
      */
     public static function tableName()
     {
-        return 'type';
+        return 'additional_services';
     }
 
     /**
@@ -31,8 +29,8 @@ class Type extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['type', 'time', 'price'], 'required'],
-            [['time', 'price'], 'integer'],
+            [['type', 'price'], 'required'],
+            [['price'], 'integer'],
             [['type'], 'string', 'max' => 255],
         ];
     }
@@ -45,7 +43,6 @@ class Type extends \yii\db\ActiveRecord
         return [
             'id' => 'ID',
             'type' => 'Type',
-            'time' => 'Time',
             'price' => 'Price',
         ];
     }
@@ -57,16 +54,6 @@ class Type extends \yii\db\ActiveRecord
      */
     public function getAdditionalTypes()
     {
-        return $this->hasMany(AdditionalType::class, ['type_id' => 'id']);
-    }
-
-    /**
-     * Gets query for [[Visits]].
-     *
-     * @return \yii\db\ActiveQuery
-     */
-    public function getVisits()
-    {
-        return $this->hasMany(Visit::class, ['type_id' => 'id']);
+        return $this->hasMany(AdditionalType::class, ['additional_id' => 'id']);
     }
 }

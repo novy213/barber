@@ -152,6 +152,11 @@ $config = [
                     'route' => '/site/changenot',
                     'verb' => 'POST',
                 ],
+                [
+                    'pattern' => '/send',
+                    'route' => '/notification/sendnoti',
+                    'verb' => 'POST',
+                ],
             ],
         ],
     ],

@@ -42,9 +42,9 @@ class m231019_071907_fake_data extends Migration
         $this->insert('type', ['id'=>1, 'type'=>'combo', 'time'=>45,'price'=>50]);
         $this->insert('type', ['id'=>2, 'type'=>'wlosy', 'time'=>30,'price'=>35]);
         $this->insert('type', ['id'=>3, 'type'=>'broda', 'time'=>30,'price'=>30]);
-        $this->insert('type', ['id'=>4, 'type'=>'wolne', 'time'=>0,'price'=>0]);
-        $this->insert('type', ['id'=>5, 'type'=>'razor', 'time'=>0,'price'=>5]);
-        $this->insert('type', ['id'=>6, 'type'=>'coloring', 'time'=>0,'price'=>15]);
+        $this->insert('type', ['id'=>4, 'type'=>'offday', 'time'=>0,'price'=>0]);
+        $this->insert('additional_services', ['id'=>1, 'type'=>'razor', 'price'=>5]);
+        $this->insert('additional_services', ['id'=>2, 'type'=>'coloring', 'price'=>15]);
         $this->insert('type', ['id'=>7, 'type'=>'buzz cut', 'time'=>30,'price'=>20]);
     }
 
@@ -58,6 +58,9 @@ class m231019_071907_fake_data extends Migration
         $this->delete('type', []);
         $this->delete('visit', []);
         $this->delete('ban', []);
+        $this->delete('additional_services', []);
+        $this->delete('additional_type', []);
+        $this->delete('code', []);
     }
 
     /*

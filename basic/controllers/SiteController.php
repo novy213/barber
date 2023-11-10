@@ -2,6 +2,8 @@
 
 namespace app\controllers;
 
+use app\models\AdditionalServices;
+use app\models\AdditionalType;
 use app\models\Ban;
 use app\models\Code;
 use app\models\Price;
@@ -416,10 +418,12 @@ class SiteController extends \app\components\Controller
     }
     public function actionGetprices(){
         $types = Type::find()->all();
+        $additional = AdditionalServices::find()->all();
         return [
             'error' => FALSE,
             'message' => NULL,
-            'types'=>$types
+            'types'=>$types,
+            'additional' => $additional
         ];
     }
     public function actionChangeprices(){
