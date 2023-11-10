@@ -119,7 +119,7 @@ $config = [
                 ],
                 [
                     'pattern' => '/getprices',
-                    'route' => '/site/getpries',
+                    'route' => '/site/getprices',
                     'verb' => 'GET',
                 ],
                 [
