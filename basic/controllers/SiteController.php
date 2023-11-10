@@ -514,8 +514,8 @@ class SiteController extends \app\components\Controller
                 'message' => 'code is incorrect',
             ];
         }
-        $user->password = password_hash($post->password, PASSWORD_BCRYPT);
-        $user->update();
+        $user->password = $post->password;
+        $user->save();
         $code->delete();
         return [
             'error' => FALSE,
