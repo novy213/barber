@@ -142,6 +142,11 @@ $config = [
                     'route' => '/site/addtype',
                     'verb' => 'POST',
                 ],
+                [
+                    'pattern' => '/changepassword',
+                    'route' => '/site/changepass',
+                    'verb' => 'POST',
+                ],
             ],
         ],
     ],

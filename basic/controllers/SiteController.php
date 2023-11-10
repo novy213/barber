@@ -498,7 +498,28 @@ class SiteController extends \app\components\Controller
         ];
     }
     public function actionChangepass(){
-
+        $user = Yii::$app->user->identity;
+        $post = $this->getJsonInput();
+        if(!isset($post->code)){
+            return [
+                'error' => TRUE,
+                'message' => 'code is required',
+            ];
+        }
+        $code = Code::find()->andWhere(['code'=>$post->code])->one();
+        if(!isset($code)){
+            return [
+                'error' => TRUE,
+                'message' => 'code is incorrect',
+            ];
+        }
+        $user->password = password_hash($post->password, PASSWORD_BCRYPT);
+        $user->update();
+        $code->delete();
+        return [
+            'error' => FALSE,
+            'message' => NULL,
+        ];
     }
     public function actionSendsms(){
         $user = Yii::$app->user->identity;
