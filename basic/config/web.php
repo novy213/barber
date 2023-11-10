@@ -137,6 +137,11 @@ $config = [
                     'route' => '/site/sendsms',
                     'verb' => 'POST',
                 ],
+                [
+                    'pattern' => '/addtype',
+                    'route' => '/site/addtype',
+                    'verb' => 'POST',
+                ],
             ],
         ],
     ],

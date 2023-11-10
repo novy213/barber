@@ -448,6 +448,24 @@ class SiteController extends \app\components\Controller
                 'message' => 'you are not an admin',
             ];
         }
+        $post = $this->getJsonInput();
+        $type = new Type();
+        $type->type = $post->type;
+        $type->price = $post->price;
+        $type->time = $post->time;
+        if($type->validate()){
+            $type->save();
+            return [
+                'error' => FALSE,
+                'message' => NULL,
+            ];
+        }
+        else {
+            return [
+                'error' => TRUE,
+                'message' => $type->getErrorSummary(false),
+            ];
+        }
     }
     public function actionVerificateacc(){
         $post = $this->getJsonInput();
