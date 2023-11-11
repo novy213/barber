@@ -567,4 +567,32 @@ class SiteController extends \app\components\Controller
             'message' => NULL,
         ];
     }
+    public function actionDeletetype(){
+        $user = Yii::$app->user->identity;
+        if($user->admin==0){
+            return [
+                'error' => TRUE,
+                'message' => 'you are not an admin',
+            ];
+        }
+        $post = $this->getJsonInput();
+        if(!isset($post->type_id)){
+            return [
+                'error' => TRUE,
+                'message' => 'type_id is required',
+            ];
+        }
+        $type = Type::find()->andWhere(['id'=>$post->type_id])->one();
+        if(is_null($post->type_id)){
+            return [
+                'error' => TRUE,
+                'message' => 'this type does not exist',
+            ];
+        }
+        $type->delete();
+        return [
+            'error' => FALSE,
+            'message' => NULL,
+        ];
+    }
 }

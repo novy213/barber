@@ -157,6 +157,11 @@ $config = [
                     'route' => '/notification/sendnoti',
                     'verb' => 'POST',
                 ],
+                [
+                    'pattern' => '/deletetype',
+                    'route' => '/notification/deletetype',
+                    'verb' => 'DELETE',
+                ],
             ],
         ],
     ],
