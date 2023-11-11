@@ -175,7 +175,11 @@ class SiteController extends \app\components\Controller
             }
             $visits[] = [
                 'date' => $day . " " . $hours . ":" . $minutes,
-                'status' => 0
+                'status' => 0,
+                'name' => null,
+                'last_name' => null,
+                'phone' => null,
+                'date_end' => null
             ];
             if ($minutes == 0) $visits[$i]['date'] .= $string;
             $minutes += 30;
@@ -184,6 +188,14 @@ class SiteController extends \app\components\Controller
             for($j=0;$j<count($visit);$j++) {
                 if (str_contains($visits[$i]['date'], $visit[$j]['date'])) {
                     $visits[$i]['status'] = 1;
+                    $user = $visit[$j]->user;
+                    $visits[$i]['name'] = $user->name;
+                    $visits[$i]['last_name'] = $user->last_name;
+                    $visits[$i]['phone'] = $user->phone;
+                    $type = Type::find()->andWhere(['id'=>$visit[$j]->type_id])->one();
+                    $dateTime = new \DateTime($visit[$j]->date);
+                    $dateTime->modify('+30 minutes');
+                    $visits[$i]['date_end'] = $dateTime->format('d-m-Y H:i');
                 }
             }
         }
