@@ -221,7 +221,7 @@ class SiteController extends \app\components\Controller
             $user->phone = $post->phone;
             $user->name = $post->name;
             $user->last_name = $post->last_name;
-            $user->update();
+            $user->save();
             return [
                 'error' => FALSE,
                 'message' => NULL,
@@ -450,7 +450,7 @@ class SiteController extends \app\components\Controller
         for($i=0;$i<count($post->types);$i++){
             $type = Type::find()->andWhere(['id'=>$post->types[$i]->id])->one();
             $type->price = $post->types[$i]->price;
-            $type->update();
+            $type->save();
         }
         return [
             'error' => FALSE,
@@ -507,7 +507,7 @@ class SiteController extends \app\components\Controller
             ];
         }
         $user->verified = 1;
-        $user->update();
+        $user->save();
         $code->delete();
         return [
             'error' => FALSE,
@@ -573,7 +573,7 @@ class SiteController extends \app\components\Controller
             ];
         }
         $user->notification = $post->notification;
-        $user->update();
+        $user->save();
         return [
             'error' => FALSE,
             'message' => NULL,
