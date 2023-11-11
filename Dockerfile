@@ -1,7 +1,7 @@
 FROM php:8.1-apache
 
 ENV LIB_DEPS="zlib1g-dev libzip-dev libpng-dev"
-ENV ICU_RELEASE=68.1
+ENV ICU_RELEASE=61.1
 ENV CXXFLAGS "--std=c++0x"
 
 RUN apt-get update \

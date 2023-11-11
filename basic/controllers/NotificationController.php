@@ -43,7 +43,6 @@ class NotificationController extends \app\components\Controller
                 SendSMS::sms_send($params, $token);
             }
         }
-        return $users;
         return [
             'error'=>FALSE,
             'message'=>NULL
