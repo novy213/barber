@@ -2,31 +2,51 @@
 
 namespace app\controllers;
 
-use app\models\Ban;
-use app\models\Code;
 use app\models\Price;
 use app\models\SendSMS;
-use app\models\Type;
-use app\models\User;
 use app\models\Visit;
-use PhpParser\Node\Expr\Print_;
-use Symfony\Component\Finder\Finder;
-use Yii;
-use yii\base\ViewEvent;
+use DateTime;
 use yii\db\Expression;
-use yii\filters\AccessControl;
-use yii\web\Controller;
-use yii\web\Response;
-use yii\filters\VerbFilter;
-use app\models\LoginForm;
-use app\models\ContactForm;
-use function PHPUnit\Framework\stringContains;
+use yii\i18n\Formatter;
 
 class NotificationController extends \app\components\Controller
 {
     public function actionSendnoti(){
         $visits = Visit::find()->where(['>', 'STR_TO_DATE(date, "%d-%m-%Y %H:%i")', new Expression('NOW()')])->all();
-
-        return $visits;
+        $users = array();
+        for($i=0;$i<count($visits);$i++){
+            $user = $visits[$i]->user;
+            $date = new DateTime($visits[$i]->date);
+            date_default_timezone_set('Europe/Warsaw');
+            $dateTime = new DateTime();
+            $timestamp1 = $date->getTimestamp();
+            $timestamp2 = $dateTime->getTimestamp();
+            $diffInSeconds = $timestamp1 - $timestamp2;
+            $minutesDifference = floor($diffInSeconds / 60);
+            if($minutesDifference<=$user->notification){
+                $not = $user->notification;
+                $token = "FdhwGf65s8Jsth1yrWo2TvvvwhgMxG4IrLo5XKwy";
+                $formatter = new Formatter();
+                $godzina = $formatter->asTime($date, 'H:i');
+                $mes = 'Twoja wizyta w KBF Barber Shop odbędzie się za '.$not.' minut, o godzinie '. $godzina;
+                if($not>30){
+                    $not/=60;
+                    $mes = 'Twoja wizyta w KBF Barber Shop odbędzie się za '.$not.'h, o godzinie '. $godzina;
+                }
+                $params = array(
+                    'to' => $user->phone,
+                    'from' => 'Test',
+                    'message' => $mes,
+                    'format' => 'json'
+                );
+                $users[] = $params;
+                SendSMS::sms_send($params, $token);
+            }
+        }
+        return $users;
+        return [
+            'error'=>FALSE,
+            'message'=>NULL
+        ];
     }
 }
