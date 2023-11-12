@@ -21,7 +21,7 @@ class Controller extends \yii\web\Controller
         $behaviors =  parent::behaviors();
         $behaviors['userTokenAuth'] = [
             'class' => HttpBearerAuth::className(),
-            'except' => ['login', 'register', 'sendnoti'],
+            'except' => ['login', 'register', 'sendnoti', 'sendsms'],
         ];
         return $behaviors;
     }
