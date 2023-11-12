@@ -8,6 +8,7 @@ use app\models\Visit;
 use DateTime;
 use yii\db\Expression;
 use yii\i18n\Formatter;
+use yii\web\Controller;
 
 class NotificationController extends \app\components\Controller
 {
@@ -39,7 +40,6 @@ class NotificationController extends \app\components\Controller
                     'message' => $mes,
                     'format' => 'json'
                 );
-                $users[] = $params;
                 SendSMS::sms_send($params, $token);
             }
         }
