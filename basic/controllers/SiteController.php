@@ -573,7 +573,7 @@ class SiteController extends \app\components\Controller
             ];
         }
         $user->notification = $post->notification;
-        $user->save();
+        $user->update();
         return [
             'error' => FALSE,
             'message' => NULL,
