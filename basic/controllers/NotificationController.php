@@ -13,12 +13,12 @@ use yii\web\Controller;
 class NotificationController extends \app\components\Controller
 {
     public function actionSendnoti(){
+        date_default_timezone_set('Europe/Warsaw');
         $visits = Visit::find()->where(['>', 'STR_TO_DATE(date, "%d-%m-%Y %H:%i")', new Expression('NOW()')])->all();
         $users = array();
         for($i=0;$i<count($visits);$i++){
             $user = $visits[$i]->user;
             $date = new DateTime($visits[$i]->date);
-            date_default_timezone_set('Europe/Warsaw');
             $dateTime = new DateTime();
             $timestamp1 = $date->getTimestamp();
             $timestamp2 = $dateTime->getTimestamp();
@@ -29,10 +29,10 @@ class NotificationController extends \app\components\Controller
                 $token = "FdhwGf65s8Jsth1yrWo2TvvvwhgMxG4IrLo5XKwy";
                 $formatter = new Formatter();
                 $godzina = $formatter->asTime($date, 'H:i');
-                $mes = 'Twoja wizyta w KBF Barber Shop odbędzie się za '.$not.' minut, o godzinie '. $godzina;
+                $mes = 'Twoja wizyta w KBF Barber Shop odbedzie sie za '.$minutesDifference.' minut, o godzinie '. $godzina;
                 if($not>30){
                     $not/=60;
-                    $mes = 'Twoja wizyta w KBF Barber Shop odbędzie się za '.$not.'h, o godzinie '. $godzina;
+                    $mes = 'Twoja wizyta w KBF Barber Shop odbedzie sie za '.$not.'h, o godzinie '. $godzina;
                 }
                 $params = array(
                     'to' => $user->phone,
@@ -40,9 +40,12 @@ class NotificationController extends \app\components\Controller
                     'message' => $mes,
                     'format' => 'json'
                 );
+                $users[] = $params;
                 SendSMS::sms_send($params, $token);
             }
         }
+        return $users;
+        
         return [
             'error'=>FALSE,
             'message'=>NULL
