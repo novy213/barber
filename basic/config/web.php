@@ -162,6 +162,11 @@ $config = [
                     'route' => '/notification/deletetype',
                     'verb' => 'DELETE',
                 ],
+                [
+                    'pattern' => '/smsforpassword',
+                    'route' => '/notification/smsforpassword',
+                    'verb' => 'PUT',
+                ],
             ],
         ],
     ],

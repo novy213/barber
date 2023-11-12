@@ -544,12 +544,38 @@ class SiteController extends \app\components\Controller
         $code->code = rand(1000, 9999);
         $code->user_id = $user->id;
         $code->save();
-        if(!isset($code)){
+        $token = "FdhwGf65s8Jsth1yrWo2TvvvwhgMxG4IrLo5XKwy";
+        $params = array(
+            'to' => $user->phone,
+            'from' => 'Test',
+            'message' => $code->code,
+            'format' => 'json'
+        );
+        SendSMS::sms_send($params, $token);
+        return [
+            'error' => FALSE,
+            'message' => NULL,
+        ];
+    }
+    public function actionSmsforpassword(){
+        $post = $this->getJsonInput();
+        if(!isset($post->phone)){
             return [
                 'error' => TRUE,
-                'message' => 'there is no code for user',
+                'message' => 'phone is required',
             ];
         }
+        $user = User::find()->andWhere(['phone'=>$post->phone])->one();
+        if(!isset($post->phone)){
+            return [
+                'error' => TRUE,
+                'message' => 'incorrect phone',
+            ];
+        }
+        $code = new Code();
+        $code->code = rand(1000, 9999);
+        $code->user_id = $user->id;
+        $code->save();
         $token = "FdhwGf65s8Jsth1yrWo2TvvvwhgMxG4IrLo5XKwy";
         $params = array(
             'to' => $user->phone,
