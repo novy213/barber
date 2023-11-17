@@ -12,6 +12,7 @@ use Yii;
  * @property int $barber_id
  * @property float $price
  * @property int $type_id
+ * @property boolean $notified
  * @property float $time
  * @property string|null $additional_info
  * @property int $user_id

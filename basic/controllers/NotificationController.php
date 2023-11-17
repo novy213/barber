@@ -18,13 +18,23 @@ class NotificationController extends \app\components\Controller
         $users = array();
         for($i=0;$i<count($visits);$i++){
             $user = $visits[$i]->user;
+            $time = $visits[$i]->time/30;
+            for($j=1;$j<$time;$j++){
+                if($i+$j < count($visits))
+                if($visits[$i+$j]->user == $user){
+                    $visits[$i+$j]->notified = true;
+                    $visits[$i+$j]->update();
+                }
+            }
             $date = new DateTime($visits[$i]->date);
             $dateTime = new DateTime();
             $timestamp1 = $date->getTimestamp();
             $timestamp2 = $dateTime->getTimestamp();
             $diffInSeconds = $timestamp1 - $timestamp2;
             $minutesDifference = floor($diffInSeconds / 60);
-            if($minutesDifference<=$user->notification){
+            if($minutesDifference<=$user->notification && !$visits[$i]->notified){
+                $visits[$i]->notified = true;
+                $visits[$i]->update();
                 $not = $user->notification;
                 $token = "FdhwGf65s8Jsth1yrWo2TvvvwhgMxG4IrLo5XKwy";
                 $formatter = new Formatter();
@@ -40,12 +50,9 @@ class NotificationController extends \app\components\Controller
                     'message' => $mes,
                     'format' => 'json'
                 );
-                $users[] = $params;
                 SendSMS::sms_send($params, $token);
             }
         }
-        return $users;
-
         return [
             'error'=>FALSE,
             'message'=>NULL
