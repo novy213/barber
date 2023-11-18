@@ -119,7 +119,19 @@ class User extends ActiveRecord implements \yii\web\IdentityInterface
     {
         return password_verify($password, $this->password);
     }
-
+    public function changeNoti($noti){
+        $this->notification = $noti;
+        $this->updateAttributes(['notification']);
+    }
+    public function changeData($name, $last_name, $phone){
+        $this->name = $name;
+        $this->last_name = $last_name;
+        $this->phone = 48;
+        $this->phone .= $phone;
+        $this->updateAttributes(['name']);
+        $this->updateAttributes(['last_name']);
+        $this->updateAttributes(['phone']);
+    }
     public function beforeSave($insert)
     {
         if (parent::beforeSave($insert)) {

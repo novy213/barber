@@ -218,10 +218,7 @@ class SiteController extends \app\components\Controller
         $post = $this->getJsonInput();
         $user = Yii::$app->user->identity;
         if(isset($post->phone) && isset($post->name) && isset($post->last_name)){
-            $user->phone = $post->phone;
-            $user->name = $post->name;
-            $user->last_name = $post->last_name;
-            $user->save();
+            $user->changeData($post->name, $post->last_name, $post->phone);
             return [
                 'error' => FALSE,
                 'message' => NULL,
@@ -598,8 +595,7 @@ class SiteController extends \app\components\Controller
                 'message' => 'notification parameter is required',
             ];
         }
-        $user->notification = $post->notification;
-        $user->update();
+        $user->changeNoti($post->notification);
         return [
             'error' => FALSE,
             'message' => NULL,
