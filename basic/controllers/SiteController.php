@@ -5,12 +5,14 @@ namespace app\controllers;
 use app\models\AdditionalServices;
 use app\models\AdditionalType;
 use app\models\Ban;
+use app\models\Barber;
 use app\models\Code;
 use app\models\Price;
 use app\models\SendSMS;
 use app\models\Type;
 use app\models\User;
 use app\models\Visit;
+use app\models\VisitAdditional;
 use PhpParser\Node\Expr\Print_;
 use Symfony\Component\Finder\Finder;
 use Yii;
@@ -124,23 +126,23 @@ class SiteController extends \app\components\Controller
         if(isset($post->additional_info)){
             $visit->additional_info = $post->additional_info;
         }
-        $type = Type::find()->andWhere(['id'=>$post->type_id])->one();
-        $visit->price = $type->price;
-        if(isset($post->razor) && $post->razor==1){
-            $type = Type::find()->andWhere(['type'=>'razor'])->one();
-            $visit->price=$visit->price+$type->price;
-            $visit->razor = 1;
-        }
-        if(isset($post->coloring) && $post->coloring==1){
-            $type = Type::find()->andWhere(['type'=>'coloring'])->one();
-            $visit->price=$visit->price+$type->price;
-            $visit->coloring = 1;
-        }
-        $time = Type::find()->andWhere(['id'=>$post->type_id])->one();
-        $visit->time = $time->time;
         $visit->user_id = $user->id;
         if($visit->validate()){
             $visit->save();
+            for($i=0;$i<count($post->additions);$i++){
+                $add = new VisitAdditional();
+                $add->visit_id = $visit->id;
+                $add->additional_id = $post->additions[$i]->additional_id;
+                if($add->validate()) {
+                    $add->save();
+                }
+                else {
+                    return [
+                        'error' => true,
+                        'message' => $add->getErrorSummary(false),
+                    ];
+                }
+            }
             return [
                 'error' => FALSE,
                 'message' => NULL,
@@ -164,10 +166,12 @@ class SiteController extends \app\components\Controller
             ];
         }
         $visit = Visit::find()->andWhere(['barber_id'=>$barber_id])->all();
+        $barber = Barber::find()->andWhere(['id'=>$barber_id])->one();
         $visits = array();
         $minutes =0;
-        $hours=9;
-        for($i=0;$i<19;$i++) {
+        $hours=$barber->hour_start;
+        $iterations =($barber->hour_end-$barber->hour_start)*2;
+        for($i=0;$i<=$iterations;$i++) {
             $string = "0";
             if ($minutes == 60) {
                 $hours++;
@@ -192,10 +196,9 @@ class SiteController extends \app\components\Controller
                     $visits[$i]['name'] = $user->name;
                     $visits[$i]['last_name'] = $user->last_name;
                     $visits[$i]['phone'] = $user->phone;
-                    $type = Type::find()->andWhere(['id'=>$visit[$j]->type_id])->one();
                     $dateTime = new \DateTime($visit[$j]->date);
                     $dateTime->modify('+30 minutes');
-                    $visits[$i]['date_end'] = $dateTime->format('d-m-Y H:i');
+                    $visits[$i]['date_end'] = $dateTime->format('Y-m-d H:i');
                 }
             }
         }

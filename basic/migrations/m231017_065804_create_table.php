@@ -45,8 +45,8 @@ class m231017_065804_create_table extends Migration
             'name' => $this->string()->notNull(),
             'last_name' => $this->string()->notNull(),
             'user_id' => $this->integer()->notNull(),
-            'hour_start' => $this->string()->notNull(),
-            'hour_end' => $this->string()->notNull(),
+            'hour_start' => $this->float()->notNull(),
+            'hour_end' => $this->float()->notNull(),
         ]);
         $this -> alterColumn('barber','id', $this->integer().' AUTO_INCREMENT');
         $this->createTable('type', [

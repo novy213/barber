@@ -11,8 +11,8 @@ use Yii;
  * @property string $name
  * @property string $last_name
  * @property int $user_id
- * @property string $hour_start
- * @property string $hour_end
+ * @property int $hour_start
+ * @property int $hour_end
  *
  * @property User $user
  * @property Visit[] $visits
@@ -34,8 +34,8 @@ class Barber extends \yii\db\ActiveRecord
     {
         return [
             [['name', 'last_name', 'user_id', 'hour_start', 'hour_end'], 'required'],
-            [['user_id'], 'integer'],
-            [['name', 'last_name', 'hour_start', 'hour_end'], 'string', 'max' => 255],
+            [['user_id', 'hour_start', 'hour_end'], 'integer'],
+            [['name', 'last_name'], 'string', 'max' => 255],
             [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::class, 'targetAttribute' => ['user_id' => 'id']],
         ];
     }
