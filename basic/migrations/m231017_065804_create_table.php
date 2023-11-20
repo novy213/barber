@@ -28,20 +28,25 @@ class m231017_065804_create_table extends Migration
             'id' => $this->primaryKey()->notNull()->unique(),
             'date' => $this->string()->notNull(),
             'barber_id' => $this->integer()->notNull(),
-            'price' => $this->float()->notNull(),
             'type_id' => $this->integer()->notNull(),
-            'coloring' => $this->boolean()->defaultValue(0)->notNull(),
-            'razor' => $this->boolean()->defaultValue(0)->notNull(),
-            'time' => $this->float()->notNull(),
             'additional_info' => $this->string(),
             'user_id' => $this->integer()->notNull(),
+            'notified' => $this->boolean()->defaultValue(0)->notNull(),
         ]);
         $this -> alterColumn('visit','id', $this->integer().' AUTO_INCREMENT');
+        $this->createTable('visit_additional', [
+            'id' => $this->primaryKey()->notNull()->unique(),
+            'visit_id' => $this->integer()->notNull(),
+            'additional_id' => $this->integer()->notNull(),
+        ]);
+        $this -> alterColumn('visit_additional','id', $this->integer().' AUTO_INCREMENT');
         $this->createTable('barber', [
             'id' => $this->primaryKey()->notNull()->unique(),
             'name' => $this->string()->notNull(),
             'last_name' => $this->string()->notNull(),
             'user_id' => $this->integer()->notNull(),
+            'hour_start' => $this->string()->notNull(),
+            'hour_end' => $this->string()->notNull(),
         ]);
         $this -> alterColumn('barber','id', $this->integer().' AUTO_INCREMENT');
         $this->createTable('type', [
@@ -74,6 +79,22 @@ class m231017_065804_create_table extends Migration
             'user_id' => $this->integer()->notNull(),
         ]);
         $this -> alterColumn('code','id', $this->integer().' AUTO_INCREMENT');
+        $this->addForeignKey(
+            'fk-additional-visit',
+            'visit_additional',
+            'visit_id',
+            'visit',
+            'id',
+            'CASCADE'
+        );
+        $this->addForeignKey(
+            'fk-visit-additional',
+            'visit_additional',
+            'additional_id',
+            'additional_services',
+            'id',
+            'CASCADE'
+        );
         $this->addForeignKey(
             'fk-additional-add',
             'additional_type',
@@ -145,6 +166,8 @@ class m231017_065804_create_table extends Migration
      */
     public function safeDown()
     {
+        $this->dropForeignKey('fk-visit-additional', 'visit_additional');
+        $this->dropForeignKey('fk-additional-visit', 'visit_additional');
         $this->dropForeignKey('fk-barber-user', 'barber');
         $this->dropForeignKey('fk-ban-user', 'ban');
         $this->dropForeignKey('fk-visit-barber', 'visit');
@@ -156,6 +179,7 @@ class m231017_065804_create_table extends Migration
         $this->dropTable('ban');
         $this->dropTable('additional_services');
         $this->dropTable('additional_type');
+        $this->dropTable('visit_additional');
         $this->dropTable('code');
         $this->dropTable('user');
         $this->dropTable('visit');

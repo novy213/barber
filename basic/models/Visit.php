@@ -10,16 +10,15 @@ use Yii;
  * @property int $id
  * @property string $date
  * @property int $barber_id
- * @property float $price
  * @property int $type_id
- * @property boolean $notified
- * @property float $time
  * @property string|null $additional_info
  * @property int $user_id
+ * @property int $notified
  *
  * @property Barber $barber
  * @property Type $type
  * @property User $user
+ * @property VisitAdditional[] $visitAdditionals
  */
 class Visit extends \yii\db\ActiveRecord
 {
@@ -37,9 +36,8 @@ class Visit extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['date', 'barber_id', 'price', 'type_id', 'time', 'user_id'], 'required'],
-            [['barber_id', 'type_id', 'user_id'], 'integer'],
-            [['price', 'time'], 'number'],
+            [['date', 'barber_id', 'type_id', 'user_id'], 'required'],
+            [['barber_id', 'type_id', 'user_id', 'notified'], 'integer'],
             [['date', 'additional_info'], 'string', 'max' => 255],
             [['barber_id'], 'exist', 'skipOnError' => true, 'targetClass' => Barber::class, 'targetAttribute' => ['barber_id' => 'id']],
             [['type_id'], 'exist', 'skipOnError' => true, 'targetClass' => Type::class, 'targetAttribute' => ['type_id' => 'id']],
@@ -56,11 +54,10 @@ class Visit extends \yii\db\ActiveRecord
             'id' => 'ID',
             'date' => 'Date',
             'barber_id' => 'Barber ID',
-            'price' => 'Price',
             'type_id' => 'Type ID',
-            'time' => 'Time',
             'additional_info' => 'Additional Info',
             'user_id' => 'User ID',
+            'notified' => 'Notified',
         ];
     }
 
@@ -92,5 +89,15 @@ class Visit extends \yii\db\ActiveRecord
     public function getUser()
     {
         return $this->hasOne(User::class, ['id' => 'user_id']);
+    }
+
+    /**
+     * Gets query for [[VisitAdditionals]].
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function getVisitAdditionals()
+    {
+        return $this->hasMany(VisitAdditional::class, ['visit_id' => 'id']);
     }
 }
