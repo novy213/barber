@@ -274,6 +274,17 @@ class SiteController extends \app\components\Controller
             ];
         }
         $visit->delete();
+        if($user->admin==1){
+            $token = "FdhwGf65s8Jsth1yrWo2TvvvwhgMxG4IrLo5XKwy";
+            $userVisit = $visit->user;
+            $params = array(
+                'to' => $userVisit->phone,
+                'from' => 'Test',
+                'message' => 'Twoja wizyta o godzinie '.$visit->date.' zostala odwolana',
+                'format' => 'json'
+            );
+            SendSMS::sms_send($params, $token);
+        }
         return [
             'error' => FALSE,
             'message' => null,
@@ -347,13 +358,41 @@ class SiteController extends \app\components\Controller
         }
         $visits = Visit::find()->all();
         $date = $post->date;
+        $test = array();
         for($i=0;$i<count($visits);$i++){
             if(str_contains($visits[$i]->date, $date)) {
                 $user = $visits[$i]->user;
-                //kod na wyslanie smsa
-                $visits[$i]->delete();
+                $token = "FdhwGf65s8Jsth1yrWo2TvvvwhgMxG4IrLo5XKwy";
+                $liczba = 0;
+                if($visits[$i]->user == $user && $visits[$i+1]->user == $user){
+                    $liczba = 1;
+                }
+                else if($visits[$i]->user == $user && $visits[$i+1]->user == $user && $visits[$i+2]->user == $user){
+                    $liczba = 2;
+                }
+                $params = array(
+                    'to' => $user->phone,
+                    'from' => 'Test',
+                    'message' => 'Twoja wizyta o godzinie '.$visits[$i]->date.' zostala odwolana',
+                    'format' => 'json'
+                );
+                $test[] = $params;
+                SendSMS::sms_send($params, $token);
+                if($liczba == 0) $visits[$i]->delete();
+                if($liczba == 1) {
+                    $visits[$i]->delete();
+                    $visits[$i+1]->delete();
+                    $i++;
+                }
+                if($liczba == 2) {
+                    $visits[$i]->delete();
+                    $visits[$i+1]->delete();
+                    $visits[$i+2]->delete();
+                    $i+=2;
+                }
             }
         }
+        return $test;
         $allDay = false;
         if(strlen($date)<11){
             $allDay=true;
