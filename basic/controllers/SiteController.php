@@ -211,10 +211,33 @@ class SiteController extends \app\components\Controller
     public function actionGetuservisit(){
         $user = Yii::$app->user->identity;
         $visit = Visit::find()->andWhere(['user_id'=>$user->id])->all();
+        $visits = array();
+        for($i=0;$i<count($visit);$i++){
+            $barber = $visit[$i]->barber;
+            $type = $visit[$i]->type;
+            $additional = $visit[$i]->visitAdditionals;
+            $price = $type->price;
+            for($j=0;$j<count($additional);$j++){
+                $add = $additional[$j]->additional;
+                $price+=$add->price;
+            }
+            $visits[] = [
+                'id'=>$visit[$i]->id,
+                'date'=>$visit[$i]->date,
+                'barber_name'=>$barber->name,
+                'barber_last_name'=>$barber->last_name,
+                'type'=>$type->type,
+                'additional_info'=>$visit[$i]->additional_info,
+                'user_id'=>$visit[$i]->user_id,
+                'notified'=>$visit[$i]->notified,
+                'price'=>$price,
+                'time'=>$type->time,
+            ];
+        }
         return [
             'error' => FALSE,
             'message' => NULL,
-            'visit' => $visit
+            'visit' => $visits
         ];
     }
     public function actionChangephone(){
