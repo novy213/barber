@@ -503,8 +503,7 @@ class SiteController extends \app\components\Controller
                 'message' => 'try again later',
             ];
         }
-        $user->verified = 1;
-        $user->save();
+        $user->verify();
         $code->delete();
         return [
             'error' => FALSE,
