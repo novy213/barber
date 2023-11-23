@@ -10,8 +10,10 @@ use Yii;
  * @property int $id
  * @property string $type
  * @property int $price
+ * @property int $time
  *
  * @property AdditionalType[] $additionalTypes
+ * @property VisitAdditional[] $visitAdditionals
  */
 class AdditionalServices extends \yii\db\ActiveRecord
 {
@@ -29,8 +31,8 @@ class AdditionalServices extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['type', 'price'], 'required'],
-            [['price'], 'integer'],
+            [['type', 'price', 'time'], 'required'],
+            [['price', 'time'], 'integer'],
             [['type'], 'string', 'max' => 255],
         ];
     }
@@ -44,6 +46,7 @@ class AdditionalServices extends \yii\db\ActiveRecord
             'id' => 'ID',
             'type' => 'Type',
             'price' => 'Price',
+            'time' => 'Time',
         ];
     }
 
@@ -55,5 +58,15 @@ class AdditionalServices extends \yii\db\ActiveRecord
     public function getAdditionalTypes()
     {
         return $this->hasMany(AdditionalType::class, ['additional_id' => 'id']);
+    }
+
+    /**
+     * Gets query for [[VisitAdditionals]].
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function getVisitAdditionals()
+    {
+        return $this->hasMany(VisitAdditional::class, ['additional_id' => 'id']);
     }
 }

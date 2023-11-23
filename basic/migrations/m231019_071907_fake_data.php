@@ -47,8 +47,8 @@ class m231019_071907_fake_data extends Migration
         $this->insert('type', ['id'=>6, 'type'=>'broda_razor', 'time'=>30,'price'=>30]);
         $this->insert('type', ['id'=>7, 'type'=>'broda_golarka', 'time'=>30,'price'=>30]);
         $this->insert('type', ['id'=>8, 'type'=>'offday', 'time'=>0,'price'=>0]);
-        $this->insert('additional_services', ['id'=>1, 'type'=>'razor', 'price'=>5]);
-        $this->insert('additional_services', ['id'=>2, 'type'=>'coloring', 'price'=>15]);
+        $this->insert('additional_services', ['id'=>1, 'type'=>'razor', 'price'=>5, 'time'=>0]);
+        $this->insert('additional_services', ['id'=>2, 'type'=>'coloring', 'price'=>15, 'time'=>15]);
         $this->insert('additional_type', ['id'=>1, 'additional_id'=>1, 'type_id'=>2]);
         $this->insert('additional_type', ['id'=>2, 'additional_id'=>2, 'type_id'=>2]);
         $this->insert('type', ['id'=>9, 'type'=>'buzz cut', 'time'=>30,'price'=>20]);

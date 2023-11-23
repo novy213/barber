@@ -14,17 +14,19 @@ class NotificationController extends \app\components\Controller
 {
     public function actionSendnoti(){
         date_default_timezone_set('Europe/Warsaw');
-        $visits = Visit::find()->where(['>', 'STR_TO_DATE(date, "%d-%m-%Y %H:%i")', new Expression('DATE_SUB(NOW(), INTERVAL 1 HOUR)')])->all();
+        $visits = Visit::find()->where(['>', 'date', new Expression('DATE_SUB(NOW(), INTERVAL 1 HOUR)')])->all();
         for($i=0;$i<count($visits);$i++){
             $user = $visits[$i]->user;
-            $time = $visits[$i]->time/30;
-            for($j=1;$j<$time;$j++){
+            $type = $visits[$i]->type;
+            $time = $type->time/15;
+            //stary kod, tutaj nalezy sprawdzic czy wizyta ma ustaiowne group i jesli ma to trzeba zeminic notified=1 i zrobić continue
+            /*for($j=1;$j<$time;$j++){
                 if($i+$j < count($visits))
                 if($visits[$i+$j]->user == $user){
                     $visits[$i+$j]->notified = true;
                     $visits[$i+$j]->update();
                 }
-            }
+            }*/
             $date = new DateTime($visits[$i]->date);
             $dateTime = new DateTime();
             $timestamp1 = $date->getTimestamp();

@@ -13,6 +13,7 @@ use app\models\Type;
 use app\models\User;
 use app\models\Visit;
 use app\models\VisitAdditional;
+use Cassandra\Date;
 use PhpParser\Node\Expr\Print_;
 use Symfony\Component\Finder\Finder;
 use Yii;
@@ -106,56 +107,95 @@ class SiteController extends \app\components\Controller
     public function actionAddvisit(){
         $post = $this->getJsonInput();
         $user = Yii::$app->user->identity;
-        $visit = Visit::find()->andWhere(['date'=>$post->date])->one();
-        if(isset($visit)){
+        if(!$user->verified){
             return [
                 'error' => true,
-                'message_user' => 'ta godzina jest zajeta',
+                'message_user' => 'ten uzytkownik nie jest zweryfikowany',
             ];
         }
-        $visit = new Visit();
-        if(isset($post->date)){
-            $visit->date = $post->date;
+        $type = Type::find()->andWhere(['id'=>$post->type_id])->one();
+        $visitNumber = $type->time;
+        for($i=0;$i<count($post->additions);$i++){
+            $add = AdditionalServices::find()->andWhere(['id'=>$post->additions[$i]->additional_id])->one();
+            $visitNumber += $add->time;
         }
-        if(isset($post->barber_id)){
-            $visit->barber_id = $post->barber_id;
-        }
-        if(isset($post->type_id)){
-            $visit->type_id = $post->type_id;
-        }
-        if(isset($post->additional_info)){
-            $visit->additional_info = $post->additional_info;
-        }
-        $visit->user_id = $user->id;
-        if($visit->validate()){
-            $visit->save();
-            for($i=0;$i<count($post->additions);$i++){
-                $add = new VisitAdditional();
-                $add->visit_id = $visit->id;
-                $add->additional_id = $post->additions[$i]->additional_id;
-                if($add->validate()) {
-                    $add->save();
-                }
-                else {
-                    return [
-                        'error' => true,
-                        'message' => $add->getErrorSummary(false),
-                    ];
-                }
+        $visitNumber/=15;
+        $startMinute = 0;
+        for($i=0;$i<$visitNumber;$i++){
+            $startMinute = $i * 15;
+            $visitDate = new \DateTime($post->date);
+            $visitDate = $visitDate->modify('+' . $startMinute . ' minutes');
+            $v = Visit::find()->andWhere(['date'=>$visitDate->format('Y-m-d H:i')])->one();
+            if(isset($v)){
+                return [
+                    'error' => true,
+                    'message_user' => 'nie mozna utworzyc wizyty w tym czasie',
+                ];
             }
-            return [
-                'error' => FALSE,
-                'message' => NULL,
-            ];
-        } else {
-            return [
-                'error' => true,
-                'message' => $visit->getErrorSummary(false),
-            ];
         }
+        $groupVisit = null;
+        $startMinute = 0;
+        for($i=0;$i<$visitNumber;$i++) {
+            $startMinute = $i * 15;
+            $visit = new Visit();
+            if (isset($post->date)) {
+                $visit->date = $post->date;
+            }
+            if (isset($post->barber_id)) {
+                $visit->barber_id = $post->barber_id;
+            }
+            if (isset($post->type_id)) {
+                $visit->type_id = $post->type_id;
+            }
+            if (isset($post->additional_info)) {
+                $visit->additional_info = $post->additional_info;
+            }
+            $visit->user_id = $user->id;
+            if($visit->validate()){
+                if($i!=0){
+                    $visit->group = $groupVisit->id;
+                    $visDate = new \DateTime($visit->date);
+                    $visDate = $visDate->modify('+' . $startMinute . ' minutes');
+                    $visit->date = $visDate->format('Y-m-d H:i');
+                }
+                $visit->save();
+                if($i==0) {
+                    $groupVisit = $visit;
+                    for ($j = 0; $j < count($post->additions); $j++) {
+                        $add = new VisitAdditional();
+                        $add->visit_id = $visit->id;
+                        $add->additional_id = $post->additions[$j]->additional_id;
+                        if ($add->validate()) {
+                            $add->save();
+                        } else {
+                            return [
+                                'error' => true,
+                                'message' => $add->getErrorSummary(false),
+                            ];
+                        }
+                    }
+                }
+            } else {
+                return [
+                    'error' => true,
+                    'message' => $visit->getErrorSummary(false),
+                ];
+            }
+        }
+        return [
+            'error' => false,
+            'message' => null,
+        ];
     }
     public function actionGetvisits($barber_id){
         $post = $this->getJsonInput();
+        $user = Yii::$app->user->identity;
+        if(!$user->verified){
+            return [
+                'error' => true,
+                'message_user' => 'ten uzytkownik nie jest zweryfikowany',
+            ];
+        }
         if(isset($post->date)){
             $day = $post->date;
         }
@@ -170,7 +210,7 @@ class SiteController extends \app\components\Controller
         $visits = array();
         $minutes =0;
         $hours=$barber->hour_start;
-        $iterations =($barber->hour_end-$barber->hour_start)*2;
+        $iterations =($barber->hour_end-$barber->hour_start)/0.25;
         for($i=0;$i<=$iterations;$i++) {
             $string = "0";
             if ($minutes == 60) {
@@ -186,7 +226,7 @@ class SiteController extends \app\components\Controller
                 'date_end' => null
             ];
             if ($minutes == 0) $visits[$i]['date'] .= $string;
-            $minutes += 30;
+            $minutes += 15;
         }
         for($i=0;$i<count($visits);$i++) {
             for($j=0;$j<count($visit);$j++) {
@@ -197,7 +237,7 @@ class SiteController extends \app\components\Controller
                     $visits[$i]['last_name'] = $user->last_name;
                     $visits[$i]['phone'] = $user->phone;
                     $dateTime = new \DateTime($visit[$j]->date);
-                    $dateTime->modify('+30 minutes');
+                    $dateTime->modify('+15 minutes');
                     $visits[$i]['date_end'] = $dateTime->format('Y-m-d H:i');
                 }
             }
@@ -356,43 +396,8 @@ class SiteController extends \app\components\Controller
                 'message'=>'Date is required'
             ];
         }
-        $visits = Visit::find()->all();
         $date = $post->date;
         $test = array();
-        for($i=0;$i<count($visits);$i++){
-            if(str_contains($visits[$i]->date, $date)) {
-                $user = $visits[$i]->user;
-                $token = "FdhwGf65s8Jsth1yrWo2TvvvwhgMxG4IrLo5XKwy";
-                $liczba = 0;
-                if($visits[$i]->user == $user && $visits[$i+1]->user == $user){
-                    $liczba = 1;
-                }
-                else if($visits[$i]->user == $user && $visits[$i+1]->user == $user && $visits[$i+2]->user == $user){
-                    $liczba = 2;
-                }
-                $params = array(
-                    'to' => $user->phone,
-                    'from' => 'Test',
-                    'message' => 'Twoja wizyta o godzinie '.$visits[$i]->date.' zostala odwolana',
-                    'format' => 'json'
-                );
-                $test[] = $params;
-                SendSMS::sms_send($params, $token);
-                if($liczba == 0) $visits[$i]->delete();
-                if($liczba == 1) {
-                    $visits[$i]->delete();
-                    $visits[$i+1]->delete();
-                    $i++;
-                }
-                if($liczba == 2) {
-                    $visits[$i]->delete();
-                    $visits[$i+1]->delete();
-                    $visits[$i+2]->delete();
-                    $i+=2;
-                }
-            }
-        }
-        return $test;
         $allDay = false;
         if(strlen($date)<11){
             $allDay=true;
@@ -400,7 +405,43 @@ class SiteController extends \app\components\Controller
         $visits = array();
         $minutes =0;
         $hours=9;
+        $barber = $user->barber;
         if($allDay) {
+            $visits = Visit::find()->all();
+            for($i=0;$i<count($visits);$i++){
+                if(str_contains($visits[$i]->date, $date)) {
+                    $user = $visits[$i]->user;
+                    $token = "FdhwGf65s8Jsth1yrWo2TvvvwhgMxG4IrLo5XKwy";
+                    $liczba = 0;
+                    if($i+3<=count($visits)) {
+                        if ($visits[$i]->user == $user && $visits[$i + 1]->user == $user) {
+                            $liczba = 1;
+                        } else if ($visits[$i]->user == $user && $visits[$i + 1]->user == $user && $visits[$i + 2]->user == $user) {
+                            $liczba = 2;
+                        }
+                    }
+                    $params = array(
+                        'to' => $user->phone,
+                        'from' => 'Test',
+                        'message' => 'Twoja wizyta o godzinie '.$visits[$i]->date.' zostala odwolana',
+                        'format' => 'json'
+                    );
+                    $test[] = $params;
+                    SendSMS::sms_send($params, $token);
+                    if($liczba == 0) $visits[$i]->delete();
+                    if($liczba == 1) {
+                        $visits[$i]->delete();
+                        $visits[$i+1]->delete();
+                        $i++;
+                    }
+                    if($liczba == 2) {
+                        $visits[$i]->delete();
+                        $visits[$i+1]->delete();
+                        $visits[$i+2]->delete();
+                        $i+=2;
+                    }
+                }
+            }
             for ($i = 0; $i < 19; $i++) {
                 $string = "0";
                 if ($minutes == 60) {
@@ -411,15 +452,12 @@ class SiteController extends \app\components\Controller
                 if ($minutes == 0) $visits[$i] .= $string;
                 $minutes += 30;
             }
-
             for ($i = 0; $i < 19; $i++) {
                 $visit = new Visit();
                 $visit->date = $visits[$i];
                 $visit->barber_id = $user->id;
                 $visit->user_id = $user->id;
-                $visit->price = 0;
                 $visit->type_id = 4;
-                $visit->time = 30;
                 if ($visit->validate()) {
                     $visit->save();
                 } else {
@@ -435,9 +473,7 @@ class SiteController extends \app\components\Controller
             $visit->date = $date;
             $visit->barber_id = $user->id;
             $visit->user_id = $user->id;
-            $visit->price = 0;
             $visit->type_id = 4;
-            $visit->time = 30;
             if ($visit->validate()) {
                 $visit->save();
             } else {
@@ -450,6 +486,7 @@ class SiteController extends \app\components\Controller
         return [
             'error' => FALSE,
             'message' => NULL,
+            'licznik' => $test
         ];
     }
     public function actionUserdata(){
