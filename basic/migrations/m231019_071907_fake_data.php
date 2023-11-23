@@ -39,14 +39,6 @@ class m231019_071907_fake_data extends Migration
         $this->update('user',['admin'=>1],['id'=>1]);
         $this->insert('barber', ['id'=>1, 'name'=>'barber1','last_name'=>'barber1', 'user_id'=>1]);
         $this->insert('barber', ['id'=>2, 'name'=>'barber2','last_name'=>'barber2', 'user_id'=>2]);
-        $this->insert('type', ['id'=>1, 'type'=>'combo_razor', 'time'=>60,'price'=>50]);
-        $this->insert('type', ['id'=>2, 'type'=>'combo_golarka', 'time'=>60,'price'=>50]);
-        $this->insert('type', ['id'=>3, 'type'=>'combo_razorFarb', 'time'=>90,'price'=>50]);
-        $this->insert('type', ['id'=>4, 'type'=>'combo_golarkaFarb', 'time'=>90,'price'=>50]);
-        $this->insert('type', ['id'=>5, 'type'=>'wlosy', 'time'=>30,'price'=>35]);
-        $this->insert('type', ['id'=>6, 'type'=>'broda_razor', 'time'=>30,'price'=>30]);
-        $this->insert('type', ['id'=>7, 'type'=>'broda_golarka', 'time'=>30,'price'=>30]);
-        $this->insert('type', ['id'=>8, 'type'=>'offday', 'time'=>0,'price'=>0]);
         $this->insert('additional_services', ['id'=>1, 'type'=>'razor', 'price'=>5]);
         $this->insert('additional_services', ['id'=>2, 'type'=>'coloring', 'price'=>15]);
         $this->insert('type', ['id'=>9, 'type'=>'buzz cut', 'time'=>30,'price'=>20]);
