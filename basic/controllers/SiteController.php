@@ -5,6 +5,7 @@ namespace app\controllers;
 use app\models\AdditionalServices;
 use app\models\AdditionalType;
 use app\models\Ban;
+use app\models\Barber;
 use app\models\Code;
 use app\models\Price;
 use app\models\SendSMS;
@@ -306,6 +307,7 @@ class SiteController extends \app\components\Controller
     }
     public function actionDayoff(){
         $user = Yii::$app->user->identity;
+        $barber =Barber::find()->andWhere(['user_id'=>$user->id])->one();
         if($user->admin==0){
             return [
                 'error' => TRUE,
@@ -350,7 +352,7 @@ class SiteController extends \app\components\Controller
             for ($i = 0; $i < 19; $i++) {
                 $visit = new Visit();
                 $visit->date = $visits[$i];
-                $visit->barber_id = $user->id;
+                $visit->barber_id = $barber->id;
                 $visit->user_id = $user->id;
                 $visit->price = 0;
                 $visit->type_id = 4;
@@ -368,7 +370,7 @@ class SiteController extends \app\components\Controller
         else{
             $visit = new Visit();
             $visit->date = $date;
-            $visit->barber_id = $user->id;
+            $visit->barber_id = $barber->id;
             $visit->user_id = $user->id;
             $visit->price = 0;
             $visit->type_id = 4;
