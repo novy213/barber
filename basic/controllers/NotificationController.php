@@ -14,7 +14,7 @@ class NotificationController extends \app\components\Controller
 {
     public function actionSendnoti(){
         date_default_timezone_set('Europe/Warsaw');
-        $visits = Visit::find()->where(['>', 'STR_TO_DATE(date, "%d-%m-%Y %H:%i")', new Expression('DATE_SUB(NOW(), INTERVAL 1 HOUR)')])->andWhere(['!', 'id'=>4])->all();
+        $visits = Visit::find()->where(['>', 'STR_TO_DATE(date, "%d-%m-%Y %H:%i")', new Expression('DATE_SUB(NOW(), INTERVAL 1 HOUR)')])->andWhere(['!', 'id'=>7])->all();
         for($i=0;$i<count($visits);$i++){
             $user = $visits[$i]->user;
             $time = $visits[$i]->time/30;

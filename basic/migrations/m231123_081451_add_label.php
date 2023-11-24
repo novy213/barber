@@ -19,6 +19,7 @@ class m231123_081451_add_label extends Migration
         $this->insert('type', ['id'=>4, 'type'=>'broda', 'label'=>"Strzyżenie brody", 'time'=>30,'price'=>35]);
         $this->insert('type', ['id'=>5, 'type'=>'strzyzenie', 'label'=>"Strzyżenie maszynką na jedną długość", 'time'=>30,'price'=>25]);
         $this->insert('type', ['id'=>6, 'type'=>'buzzcut', 'label'=>"Buzz cut", 'time'=>30,'price'=>25]);
+        $this->insert('type', ['id'=>7, 'type'=>'dayoff', 'label'=>"Dayoff", 'time'=>30,'price'=>0]);
     }
 
     /**
