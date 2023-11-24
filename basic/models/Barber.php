@@ -55,6 +55,21 @@ class Barber extends \yii\db\ActiveRecord
         ];
     }
 
+    public function validateHour($visitDate){
+        $postHour = $visitDate->format('H');
+        $postMin = $visitDate->format('i');
+        $postTime = new \DateTime();
+        $postTime->setTime($postHour, $postMin, 0);
+        $startWorkDateTime = new \DateTime($this->hour_start);
+        $endWorkDateTime = new \DateTime($this->hour_end);
+
+        if ($postTime > $startWorkDateTime && $postTime < $endWorkDateTime) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     /**
      * Gets query for [[User]].
      *

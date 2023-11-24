@@ -113,6 +113,13 @@ class SiteController extends \app\components\Controller
                 'message_user' => 'ten uzytkownik nie jest zweryfikowany',
             ];
         }
+        $barber = Barber::find()->andWhere(['id'=>$post->barber_id])->one();
+        if(!isset($barber)){
+            return [
+                'error' => true,
+                'message_user' => 'taki barber nie istnieje',
+            ];
+        }
         $type = Type::find()->andWhere(['id'=>$post->type_id])->one();
         $visitNumber = $type->time;
         for($i=0;$i<count($post->additions);$i++){
@@ -126,7 +133,14 @@ class SiteController extends \app\components\Controller
             $visitDate = new \DateTime($post->date);
             $visitDate = $visitDate->modify('+' . $startMinute . ' minutes');
             $v = Visit::find()->andWhere(['date'=>$visitDate->format('Y-m-d H:i')])->one();
-            if(isset($v)){
+            $postMin = $visitDate->format('i');
+            if ($postMin != '00' && $postMin != '15' && $postMin != '30' && $postMin != '45') {
+                return [
+                    'error' => true,
+                    'message_user' => 'data jest w niepoprawnym formacie',
+                ];
+            }
+            if(isset($v) || !$barber->validateHour($visitDate)){
                 return [
                     'error' => true,
                     'message_user' => 'nie mozna utworzyc wizyty w tym czasie',
@@ -209,8 +223,10 @@ class SiteController extends \app\components\Controller
         $barber = Barber::find()->andWhere(['id'=>$barber_id])->one();
         $visits = array();
         $minutes =0;
-        $hours=$barber->hour_start;
-        $iterations =($barber->hour_end-$barber->hour_start)/0.25;
+        $hStartTimestamp = strtotime('1970-01-01 ' . $barber->hour_start);
+        $hEndTimestamp = strtotime('1970-01-01 ' . $barber->hour_end);
+        $hours=$hStartTimestamp/3600;
+        $iterations =(($hEndTimestamp/3600)-($hStartTimestamp/3600))/0.25;
         for($i=0;$i<=$iterations;$i++) {
             $string = "0";
             if ($minutes == 60) {
