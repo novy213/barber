@@ -209,10 +209,28 @@ class SiteController extends \app\components\Controller
     public function actionGetuservisit(){
         $user = Yii::$app->user->identity;
         $visit = Visit::find()->andWhere(['user_id'=>$user->id])->all();
+        $visits = array();
+        for($i=0;$i<count($visit);$i++){
+            $type = $visit[$i]->type;
+            $visits[] = [
+                'id' => $visit[$i]->id,
+                'date' => $visit[$i]->date,
+                'barber_id' => $visit[$i]->barber_id,
+                'price' => $visit[$i]->price,
+                'type_id' => $visit[$i]->type_id,
+                'coloring' => $visit[$i]->coloring,
+                'razor' => $visit[$i]->razor,
+                'time' => $visit[$i]->time,
+                'additional_info' => $visit[$i]->additional_info,
+                'user_id' => $visit[$i]->user_id,
+                'notified' => $visit[$i]->notified,
+                'label' => $type->label
+            ];
+        }
         return [
             'error' => FALSE,
             'message' => NULL,
-            'visit' => $visit
+            'visit' => $visits
         ];
     }
     public function actionChangephone(){
@@ -505,8 +523,7 @@ class SiteController extends \app\components\Controller
                 'message' => 'try again later',
             ];
         }
-        $user->verified = 1;
-        $user->save();
+        $user->verify();
         $code->delete();
         return [
             'error' => FALSE,

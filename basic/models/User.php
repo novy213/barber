@@ -132,6 +132,10 @@ class User extends ActiveRecord implements \yii\web\IdentityInterface
         $this->updateAttributes(['last_name']);
         $this->updateAttributes(['phone']);
     }
+    public function verify(){
+        $this->verified = 1;
+        $this->updateAttributes(['verified']);
+    }
     public function beforeSave($insert)
     {
         if (parent::beforeSave($insert)) {
