@@ -159,7 +159,7 @@ $config = [
                 ],
                 [
                     'pattern' => '/deletetype',
-                    'route' => '/notification/deletetype',
+                    'route' => '/site/deletetype',
                     'verb' => 'DELETE',
                 ],
                 [

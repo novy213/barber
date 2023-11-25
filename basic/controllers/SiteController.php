@@ -467,6 +467,8 @@ class SiteController extends \app\components\Controller
         for($i=0;$i<count($post->types);$i++){
             $type = Type::find()->andWhere(['id'=>$post->types[$i]->id])->one();
             $type->price = $post->types[$i]->price;
+            $type->type = $post->types[$i]->type;
+            $type->label = $post->types[$i]->label;
             $type->save();
         }
         return [
@@ -487,6 +489,7 @@ class SiteController extends \app\components\Controller
         $type->type = $post->type;
         $type->price = $post->price;
         $type->time = $post->time;
+        $type->label = $post->label;
         if($type->validate()){
             $type->save();
             return [
