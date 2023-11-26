@@ -1,3 +1,9 @@
+<?php
+session_start();
+if(!isset($_SESSION['loged'])){
+    header('Location: '.'/admin/sites/login.php');
+}
+?>
 <!doctype html>
 <html lang="en">
 <head>
@@ -13,7 +19,8 @@
     <h3>Dodaj pracownika</h3>
     <form>
         <?php
-        $conn = mysqli_connect('localhost', 'root', 'admin', 'barber1');
+        include 'php/db.php';
+        //unset($_SESSION['loged']);
         ?>
     </form>
 </div>

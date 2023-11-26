@@ -52,14 +52,14 @@ class m231017_065804_create_table extends Migration
         $this -> alterColumn('barber','id', $this->integer().' AUTO_INCREMENT');
         $this->createTable('type', [
             'id' => $this->primaryKey()->notNull()->unique(),
-            'type' => $this->string()->notNull(),
+            'label' => $this->string()->notNull(),
             'time' => $this->integer()->notNull(),
             'price'=>$this->integer()->notNull(),
         ]);
         $this -> alterColumn('type','id', $this->integer().' AUTO_INCREMENT');
         $this->createTable('additional_services', [
             'id' => $this->primaryKey()->notNull()->unique(),
-            'type' => $this->string()->notNull(),
+            'label' => $this->string()->notNull(),
             'price'=>$this->integer()->notNull(),
             'time'=>$this->integer()->notNull()
         ]);

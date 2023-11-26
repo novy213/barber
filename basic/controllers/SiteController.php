@@ -266,28 +266,36 @@ class SiteController extends \app\components\Controller
     }
     public function actionGetuservisit(){
         $user = Yii::$app->user->identity;
-        $visit = Visit::find()->andWhere(['user_id'=>$user->id])->all();
+        if(!$user->verified){
+            return [
+                'error' => true,
+                'message_user' => 'ten uzytkownik nie jest zweryfikowany',
+            ];
+        }
+        $visit = Visit::find()->andWhere(['user_id'=>$user->id])->andWhere(['group'=>null])->all();
         $visits = array();
         for($i=0;$i<count($visit);$i++){
             $barber = $visit[$i]->barber;
             $type = $visit[$i]->type;
             $additional = $visit[$i]->visitAdditionals;
             $price = $type->price;
+            $time = $type->time;
             for($j=0;$j<count($additional);$j++){
                 $add = $additional[$j]->additional;
                 $price+=$add->price;
+                $time+=$add->time;
             }
             $visits[] = [
                 'id'=>$visit[$i]->id,
                 'date'=>$visit[$i]->date,
                 'barber_name'=>$barber->name,
                 'barber_last_name'=>$barber->last_name,
-                'type'=>$type->type,
+                'label'=>$type->label,
                 'additional_info'=>$visit[$i]->additional_info,
                 'user_id'=>$visit[$i]->user_id,
                 'notified'=>$visit[$i]->notified,
                 'price'=>$price,
-                'time'=>$type->time,
+                'time'=>$time,
             ];
         }
         return [

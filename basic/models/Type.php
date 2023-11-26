@@ -8,7 +8,7 @@ use Yii;
  * This is the model class for table "type".
  *
  * @property int $id
- * @property string $type
+ * @property string $label
  * @property int $time
  * @property int $price
  *
@@ -31,9 +31,9 @@ class Type extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['type', 'time', 'price'], 'required'],
+            [['label', 'time', 'price'], 'required'],
             [['time', 'price'], 'integer'],
-            [['type'], 'string', 'max' => 255],
+            [['label'], 'string', 'max' => 255],
         ];
     }
 
@@ -44,7 +44,7 @@ class Type extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'type' => 'Type',
+            'label' => 'Label',
             'time' => 'Time',
             'price' => 'Price',
         ];
