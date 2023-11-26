@@ -3,7 +3,7 @@ $servername = "barber-db-1";
 $username = "root";
 $password = "admin";
 $i=0;
-$dbname = "barber_admin"; // dodać tutaj $i
+$dbname = "barber"; // dodać tutaj $i
 $conn = mysqli_connect($servername, $username, $password, $dbname);
 if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
