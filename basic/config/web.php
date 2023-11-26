@@ -167,6 +167,11 @@ $config = [
                     'route' => '/notification/smsforpassword',
                     'verb' => 'PUT',
                 ],
+                [
+                    'pattern' => '/dayon',
+                    'route' => '/site/dayon',
+                    'verb' => 'DELETE',
+                ],
             ],
         ],
     ],

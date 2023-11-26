@@ -373,7 +373,7 @@ class SiteController extends \app\components\Controller
                 $visit->barber_id = $barber->id;
                 $visit->user_id = $user->id;
                 $visit->price = 0;
-                $visit->type_id = 4;
+                $visit->type_id = 7;
                 $visit->time = 30;
                 if ($visit->validate()) {
                     $visit->save();
@@ -391,7 +391,7 @@ class SiteController extends \app\components\Controller
             $visit->barber_id = $barber->id;
             $visit->user_id = $user->id;
             $visit->price = 0;
-            $visit->type_id = 4;
+            $visit->type_id = 7;
             $visit->time = 30;
             if ($visit->validate()) {
                 $visit->save();
@@ -464,13 +464,11 @@ class SiteController extends \app\components\Controller
             ];
         }
         $post = $this->getJsonInput();
-        for($i=0;$i<count($post->types);$i++){
-            $type = Type::find()->andWhere(['id'=>$post->types[$i]->id])->one();
-            $type->price = $post->types[$i]->price;
-            $type->type = $post->types[$i]->type;
-            $type->label = $post->types[$i]->label;
-            $type->save();
-        }
+        $type = Type::find()->andWhere(['id'=>$post->type_id])->one();
+        $type->price = $post->price;
+        $type->type = $post->type;
+        $type->label = $post->label;
+        $type->save();
         return [
             'error' => FALSE,
             'message' => NULL,
@@ -649,6 +647,28 @@ class SiteController extends \app\components\Controller
         return [
             'error' => FALSE,
             'message' => NULL,
+        ];
+    }
+    public function actionDayon(){
+        $user = Yii::$app->user->identity;
+        if($user->admin==0){
+            return [
+                'error' => TRUE,
+                'message' => 'you are not an admin',
+            ];
+        }
+        $post = $this->getJsonInput();
+        if(!isset($post->date)){
+            return [
+                'error' => TRUE,
+                'message' => 'date is required',
+            ];
+        }
+        $formattedDate = \DateTime::createFromFormat('d-m-Y', $post->date)->format('d-m-Y');
+        Visit::deleteAll("date LIKE '$formattedDate%' AND type_id = 7");
+        return [
+            'error' => false,
+            'message' => null,
         ];
     }
 }
