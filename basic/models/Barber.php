@@ -11,8 +11,9 @@ use Yii;
  * @property string $name
  * @property string $last_name
  * @property int $user_id
- * @property int $hour_start
- * @property int $hour_end
+ * @property string $hour_start
+ * @property string $hour_end
+ * @property string|null $img_url
  *
  * @property User $user
  * @property Visit[] $visits
@@ -34,8 +35,8 @@ class Barber extends \yii\db\ActiveRecord
     {
         return [
             [['name', 'last_name', 'user_id', 'hour_start', 'hour_end'], 'required'],
-            [['user_id', 'hour_start', 'hour_end'], 'integer'],
-            [['name', 'last_name'], 'string', 'max' => 255],
+            [['user_id'], 'integer'],
+            [['name', 'last_name', 'hour_start', 'hour_end', 'img_url'], 'string', 'max' => 255],
             [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::class, 'targetAttribute' => ['user_id' => 'id']],
         ];
     }
@@ -52,22 +53,8 @@ class Barber extends \yii\db\ActiveRecord
             'user_id' => 'User ID',
             'hour_start' => 'Hour Start',
             'hour_end' => 'Hour End',
+            'img_url' => 'Img Url',
         ];
-    }
-
-    public function validateHour($visitDate){
-        $postHour = $visitDate->format('H');
-        $postMin = $visitDate->format('i');
-        $postTime = new \DateTime();
-        $postTime->setTime($postHour, $postMin, 0);
-        $startWorkDateTime = new \DateTime($this->hour_start);
-        $endWorkDateTime = new \DateTime($this->hour_end);
-
-        if ($postTime > $startWorkDateTime && $postTime < $endWorkDateTime) {
-            return true;
-        } else {
-            return false;
-        }
     }
 
     /**
