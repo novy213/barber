@@ -1,4 +1,10 @@
 body{
     margin: 0;
+    background: #1b3f5f;
+}
 
+.con{
+    margin-right: auto;
+    margin-left: auto;
+    width: 50%;
 }

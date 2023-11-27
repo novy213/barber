@@ -27,10 +27,10 @@ if(!isset($_SESSION['loged'])){
 <div class="con">
     <h3>Dodaj pracownika</h3>
     <form method="post">
-        <input type="text" name="name" placeholder="Imie barbera">
-        <input type="text" name="last_name" placeholder="Nazwisko barbera">
-        <input type="text" name="hour_start" placeholder="Godzina rozpoczęcia np. 9:00">
-        <input type="text" name="hour_end" placeholder="Godzina zakończenia np. 18:00">
+        <input type="text" name="name" placeholder="Imie barbera"><br><br>
+        <input type="text" name="last_name" placeholder="Nazwisko barbera"><br><br>
+        <input type="text" name="hour_start" placeholder="Godzina rozpoczęcia np. 9:00"><br><br>
+        <input type="text" name="hour_end" placeholder="Godzina zakończenia np. 18:00"><br><br>
         <label for="users">Wybierz użytkownika</label>
         <select name="selected_user" id="users">
         <?php
@@ -42,6 +42,7 @@ if(!isset($_SESSION['loged'])){
             }
         ?>
         </select>
+        <br><br>
         <input type="submit" name="add" value="Dodaj barbera">
         <?php
         if(isset($_POST['add'])) {
