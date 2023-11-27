@@ -26,7 +26,7 @@ if(!isset($_SESSION['loged'])){
 </header>
 <div class="con">
     <h3>Dodaj pracownika</h3>
-    <form method="post">
+    <form method="post" action="/admin/php/Upload.php" enctype="multipart/form-data">
         <input type="text" name="name" placeholder="Imie barbera"><br><br>
         <input type="text" name="last_name" placeholder="Nazwisko barbera"><br><br>
         <input type="text" name="hour_start" placeholder="Godzina rozpoczęcia np. 9:00"><br><br>
@@ -43,28 +43,8 @@ if(!isset($_SESSION['loged'])){
         ?>
         </select>
         <br><br>
+        <input type="file" name="file"> <br><br>
         <input type="submit" name="add" value="Dodaj barbera">
-        <?php
-        if(isset($_POST['add'])) {
-            $id = $_POST['selected_user'];
-            $name = $_POST['name'];
-            $last_name = $_POST['last_name'];
-            $hour_start = $_POST['hour_start'];
-            $hour_end = $_POST['hour_end'];
-            $q = array();
-            $q[] = "insert into barber values(null, '$name', '$last_name', $id, '$hour_start' , '$hour_end');";
-            $q[] = "update user set admin = 1 where id = $id;";
-            $q[] = "update user set verified = 1 where id = $id;";
-            $licznik = 0;
-            for($i=0; $i<count($q);$i++){
-                $wynik = mysqli_query($conn, $q[$i]);
-                $licznik++;
-            }
-            if($licznik = 2){
-                echo "Barber został dodany poprawnie";
-            }
-        }
-        ?>
     </form>
 </div>
 </body>
