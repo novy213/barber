@@ -24,9 +24,9 @@ if(!isset($_SESSION['loged'])){
         ?>
     </form>
 </header>
-<div class="con">
-    <h3>Dodaj pracownika</h3>
-    <form method="post" action="./php/Upload.php" enctype="multipart/form-data">
+<div class="con" style="text-align: center; width: 30%">
+    <h2>Dodaj pracownika</h2>
+    <form method="post" action="./php/Upload.php" enctype="multipart/form-data" style="border: 1px solid black;text-align: center">
         <input type="text" name="name" placeholder="Imie barbera"><br><br>
         <input type="text" name="last_name" placeholder="Nazwisko barbera"><br><br>
         <input type="text" name="hour_start" placeholder="Godzina rozpoczęcia np. 9:00"><br><br>
@@ -45,6 +45,60 @@ if(!isset($_SESSION['loged'])){
         <br><br>
         <input type="file" name="file"> <br><br>
         <input type="submit" name="add" value="Dodaj barbera">
+    </form>
+    <h2>Usun barbera</h2>
+    <form method="post" style="border: 1px solid black;text-align: center">
+        <p>Wybierz barbera</p>
+        <?php
+        include 'php/db.php';
+        $q = "select * from barber;";
+        $wynik = mysqli_query($conn, $q);
+        $licznik = 1;
+        while($row = mysqli_fetch_row($wynik)){
+            echo "<label for='$row[0]'>$licznik. $row[1] $row[2]</label>";
+            echo "<input type='checkbox' name='barberzy[]' value='$row[0]' id='$row[0]'><br>";
+            $licznik++;
+        }
+        ?>
+        <br><br>
+        <input type="submit" name="delete_barber" value="usuń">
+        <?php
+        if(isset($_POST['delete_barber'])){
+            $barberzy = isset($_POST['barberzy']) ? $_POST['barberzy'] : array();
+            for($i=0;$i<count($barberzy);$i++){
+                $q = "delete from barber where id = $barberzy[$i];";
+                mysqli_query($conn, $q);
+                echo "<script>location.href = 'index.php';</script>";
+            }
+        }
+        ?>
+    </form>
+    <h2>Usun uzytkownika</h2>
+    <form method="post" style="border: 1px solid black;text-align: center">
+        <p>Wybierz barbera</p>
+        <?php
+        include 'php/db.php';
+        $q = "select * from user;";
+        $wynik = mysqli_query($conn, $q);
+        $licznik = 1;
+        while($row = mysqli_fetch_row($wynik)){
+            echo "<label for='$row[0]'>$licznik. $row[2] $row[3]</label>";
+            echo "<input type='checkbox' name='users[]' value='$row[0]' id='$row[0]'><br>";
+            $licznik++;
+        }
+        ?>
+        <br><br>
+        <input type="submit" name="delete_user" value="usuń">
+        <?php
+        if(isset($_POST['delete_user'])){
+            $barberzy = isset($_POST['users']) ? $_POST['users'] : array();
+            for($i=0;$i<count($barberzy);$i++){
+                $q = "delete from user where id = $barberzy[$i];";
+                mysqli_query($conn, $q);
+                echo "<script>location.href = 'index.php';</script>";
+            }
+        }
+        ?>
     </form>
 </div>
 </body>

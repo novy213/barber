@@ -5,12 +5,13 @@ if(isset($_POST['add'])) {
     $location = "../barber_img/".$filename;
     //$serverPath = 'https://jakubsolarek.pl/test/barber/admin/barber_img/'.$filename;
     $serverPath = 'http://localhost/admin/barber_img/'.$filename;
-    if(move_uploaded_file($_FILES['file']['tmp_name'], $location)){
-        echo "Zdjęcie zostało przesłane poprawnie<br>";
-    }
-    else{
-        echo "Zdjęcie nie zostało przesłane poprawnie<br>";
-        die;
+    if($filename) {
+        if (move_uploaded_file($_FILES['file']['tmp_name'], $location)) {
+            echo "Zdjęcie zostało przesłane poprawnie<br>";
+        } else {
+            echo "Zdjęcie nie zostało przesłane poprawnie<br>";
+            die;
+        }
     }
 
     $id = $_POST['selected_user'];
@@ -30,4 +31,11 @@ if(isset($_POST['add'])) {
     if($licznik = 2){
         echo "Barber został dodany poprawnie";
     }
+    echo "
+<script>
+function cofnij(){
+    location.href = '../index.php';
+}
+</script>
+<button onclick='cofnij()'>Cofnij</button>";
 }
