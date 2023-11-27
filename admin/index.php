@@ -46,9 +46,9 @@ if(!isset($_SESSION['loged'])){
         <input type="file" name="file"> <br><br>
         <input type="submit" name="add" value="Dodaj barbera">
     </form>
-    <h2>Usun barbera</h2>
+    <h2>Usun pracownika</h2>
     <form method="post" style="border: 1px solid black;text-align: center">
-        <p>Wybierz barbera</p>
+        <p>Wybierz pracownika</p>
         <?php
         include 'php/db.php';
         $q = "select * from barber;";
@@ -75,7 +75,7 @@ if(!isset($_SESSION['loged'])){
     </form>
     <h2>Usun uzytkownika</h2>
     <form method="post" style="border: 1px solid black;text-align: center">
-        <p>Wybierz barbera</p>
+        <p>Wybierz uzytkownika</p>
         <?php
         include 'php/db.php';
         $q = "select * from user;";

@@ -132,7 +132,7 @@ class SiteController extends \app\components\Controller
             $startMinute = $i * 15;
             $visitDate = new \DateTime($post->date);
             $visitDate = $visitDate->modify('+' . $startMinute . ' minutes');
-            $v = Visit::find()->andWhere(['date'=>$visitDate->format('Y-m-d H:i')])->one();
+            $v = Visit::find()->andWhere(['date'=>$visitDate->format('Y-m-d H:i')])->andWhere(['barber_id'=>$barber->id])->one();
             $postMin = $visitDate->format('i');
             if ($postMin != '00' && $postMin != '15' && $postMin != '30' && $postMin != '45') {
                 return [
@@ -290,6 +290,7 @@ class SiteController extends \app\components\Controller
                 'date'=>$visit[$i]->date,
                 'barber_name'=>$barber->name,
                 'barber_last_name'=>$barber->last_name,
+                'img_url'=>$barber->img_url,
                 'label'=>$type->label,
                 'additional_info'=>$visit[$i]->additional_info,
                 'user_id'=>$visit[$i]->user_id,
@@ -304,7 +305,7 @@ class SiteController extends \app\components\Controller
             'visit' => $visits
         ];
     }
-    public function actionChangephone(){
+    public function actionChangeuserdata(){
         $post = $this->getJsonInput();
         $user = Yii::$app->user->identity;
         if(isset($post->phone) && isset($post->name) && isset($post->last_name)){
@@ -323,6 +324,12 @@ class SiteController extends \app\components\Controller
     }
     public function actionDeletevisit(){
         $user = Yii::$app->user->identity;
+        if(!$user->verified){
+            return [
+                'error' => true,
+                'message_user' => 'ten uzytkownik nie jest zweryfikowany',
+            ];
+        }
         $post = $this->getJsonInput();
         $visit = Visit::find()->andWhere(['id' => $post->visit_id])->one();
         if(is_null($visit)){

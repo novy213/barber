@@ -78,8 +78,8 @@ $config = [
                     'verb' => 'GET',
                 ],
                 [
-                    'pattern' => '/changephone',
-                    'route' => '/site/changephone',
+                    'pattern' => '/changeuserdata',
+                    'route' => '/site/changeuserdata',
                     'verb' => 'POST',
                 ],
                 [

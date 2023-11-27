@@ -75,17 +75,6 @@ class Visit extends \yii\db\ActiveRecord
     {
         return $this->hasOne(Barber::class, ['id' => 'barber_id']);
     }
-    public function validateHour($startHour, $endHour, $visitDate){
-        $postDateTime = new \DateTime($visitDate);
-        $startWorkDateTime = new \DateTime($startHour);
-        $endWorkDateTime = new \DateTime($endHour);
-
-        if ($postDateTime >= $startWorkDateTime && $postDateTime <= $endWorkDateTime) {
-            return true;
-        } else {
-            return false;
-        }
-    }
     public function checkBarberHours(){
 
     }

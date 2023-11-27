@@ -4,8 +4,9 @@ if(isset($_POST['add'])) {
     $filename = $_FILES['file']['name'];
     $location = "../barber_img/".$filename;
     //$serverPath = 'https://jakubsolarek.pl/test/barber/admin/barber_img/'.$filename;
-    $serverPath = 'http://localhost/admin/barber_img/'.$filename;
+    $serverPath = null;
     if($filename) {
+        $serverPath = 'http://localhost/admin/barber_img/'.$filename;
         if (move_uploaded_file($_FILES['file']['tmp_name'], $location)) {
             echo "Zdjęcie zostało przesłane poprawnie<br>";
         } else {
