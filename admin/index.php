@@ -27,10 +27,10 @@ if(!isset($_SESSION['loged'])){
 <div class="con" style="text-align: center; width: 30%">
     <h2>Dodaj pracownika</h2>
     <form method="post" action="./php/Upload.php" enctype="multipart/form-data" style="border: 1px solid black;text-align: center">
-        <input type="text" name="name" placeholder="Imie barbera"><br><br>
-        <input type="text" name="last_name" placeholder="Nazwisko barbera"><br><br>
-        <input type="text" name="hour_start" placeholder="Godzina rozpoczęcia np. 9:00"><br><br>
-        <input type="text" name="hour_end" placeholder="Godzina zakończenia np. 18:00"><br><br>
+        <input type="text" name="name" placeholder="Imie"><br><br>
+        <input type="text" name="last_name" placeholder="Nazwisko"><br><br>
+        <input type="text" name="hour_start" placeholder="Godzina rozpoczęcia pracy np. 9:00"><br><br>
+        <input type="text" name="hour_end" placeholder="Godzina zakończenia pracy np. 18:00"><br><br>
         <label for="users">Wybierz użytkownika</label>
         <select name="selected_user" id="users">
         <?php
