@@ -1,7 +1,7 @@
 <?php
 session_start();
 if(!isset($_SESSION['loged'])){
-    header('Location: '.'/admin/sites/login.php');
+    header('Location: '.'../admin/sites/login.php');
 }
 ?>
 <!doctype html>
@@ -19,14 +19,14 @@ if(!isset($_SESSION['loged'])){
         <?php
         if(isset($_POST['wyloguj'])){
             unset($_SESSION['loged']);
-            echo "<script>location.href = '/admin/sites/login.php';</script>";
+            echo "<script>location.href = '../admin/sites/login.php';</script>";
         }
         ?>
     </form>
 </header>
 <div class="con">
     <h3>Dodaj pracownika</h3>
-    <form method="post" action="/admin/php/Upload.php" enctype="multipart/form-data">
+    <form method="post" action="./php/Upload.php" enctype="multipart/form-data">
         <input type="text" name="name" placeholder="Imie barbera"><br><br>
         <input type="text" name="last_name" placeholder="Nazwisko barbera"><br><br>
         <input type="text" name="hour_start" placeholder="Godzina rozpoczęcia np. 9:00"><br><br>
