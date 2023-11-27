@@ -446,7 +446,7 @@ class SiteController extends \app\components\Controller
         ];
     }
     public function actionGetprices(){
-        $types = Type::find()->andWhere(['<>', 'id', 8])->all();
+        $types = Type::find()->andWhere(['<>', 'type', 'dayoff'])->all();
         $additional = AdditionalServices::find()->all();
         return [
             'error' => FALSE,
