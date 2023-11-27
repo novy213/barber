@@ -170,7 +170,7 @@ $config = [
                 [
                     'pattern' => '/dayon',
                     'route' => '/site/dayon',
-                    'verb' => 'DELETE',
+                    'verb' => 'POST',
                 ],
             ],
         ],
