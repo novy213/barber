@@ -90,6 +90,12 @@ class SiteController extends \app\components\Controller
         if (isset($post->phone)) {
             $user->phone = 48;
             $user->phone.=$post->phone;
+            if(strlen($user->phone)>11){
+                return [
+                    'error' => true,
+                    'message' => 'nie poprawny format numeru',
+                ];
+            }
         }
         if ($user->validate()) {
             $user->save();
@@ -100,7 +106,7 @@ class SiteController extends \app\components\Controller
         } else {
             return [
                 'error' => true,
-                'message_user' => $user->getErrorSummary(false),
+                'message' => $user->getErrorSummary(false),
             ];
         }
     }
@@ -110,14 +116,14 @@ class SiteController extends \app\components\Controller
         if(!$user->verified){
             return [
                 'error' => true,
-                'message_user' => 'ten uzytkownik nie jest zweryfikowany',
+                'message' => 'ten uzytkownik nie jest zweryfikowany',
             ];
         }
         $barber = Barber::find()->andWhere(['id'=>$post->barber_id])->one();
         if(!isset($barber)){
             return [
                 'error' => true,
-                'message_user' => 'taki barber nie istnieje',
+                'message' => 'taki barber nie istnieje',
             ];
         }
         $type = Type::find()->andWhere(['id'=>$post->type_id])->one();
@@ -207,7 +213,7 @@ class SiteController extends \app\components\Controller
         if(!$user->verified){
             return [
                 'error' => true,
-                'message_user' => 'ten uzytkownik nie jest zweryfikowany',
+                'message' => 'ten uzytkownik nie jest zweryfikowany',
             ];
         }
         if(isset($post->date)){
@@ -262,7 +268,7 @@ class SiteController extends \app\components\Controller
         if(!$user->verified){
             return [
                 'error' => true,
-                'message_user' => 'ten uzytkownik nie jest zweryfikowany',
+                'message' => 'ten uzytkownik nie jest zweryfikowany',
             ];
         }
         $visit = Visit::find()->andWhere(['user_id'=>$user->id])->andWhere(['group'=>null])->all();
@@ -303,7 +309,7 @@ class SiteController extends \app\components\Controller
         if(!$user->verified){
             return [
                 'error' => true,
-                'message_user' => 'ten uzytkownik nie jest zweryfikowany',
+                'message' => 'ten uzytkownik nie jest zweryfikowany',
             ];
         }
         $post = $this->getJsonInput();
@@ -323,6 +329,21 @@ class SiteController extends \app\components\Controller
             $last_name = $user->last_name;
         }
         if(isset($post->phone)){
+            $ph = 48;
+            $ph.=$post->phone;
+            if(strlen($ph)>11){
+                return [
+                    'error' => true,
+                    'message' => 'nie poprawny format numeru',
+                ];
+            }
+            $usr = User::find()->andWhere(['phone'=>$ph])->one();
+            if($usr != null){
+                return [
+                    'error' => true,
+                    'message' => 'taki numer juz istnieje',
+                ];
+            }
             $phone = $post->phone;
         }
         else {
@@ -356,8 +377,15 @@ class SiteController extends \app\components\Controller
                 'message' => "ta wizyta nie nalezy do ciebie, lub nie jestes adminem",
             ];
         }
-        $visit->delete();
-        if($user->admin==1){
+        if($visit->group == null){
+            $visit->delete();
+        }
+        else {
+            $visitGroup = Visit::find()->andWhere(['id'=>$visit->group])->one();
+            $visit = $visitGroup;
+            $visitGroup->delete();
+        }
+        if($user->admin==1 && $visit->user!=$user){
             $token = "FdhwGf65s8Jsth1yrWo2TvvvwhgMxG4IrLo5XKwy";
             $userVisit = $visit->user;
             $params = array(
@@ -366,6 +394,7 @@ class SiteController extends \app\components\Controller
                 'message' => 'Twoja wizyta o godzinie '.$visit->date.' zostala odwolana',
                 'format' => 'json'
             );
+            return $params;
             SendSMS::sms_send($params, $token);
         }
         return [
@@ -388,9 +417,7 @@ class SiteController extends \app\components\Controller
                 'message' => 'This user does not exist',
             ];
         }
-        $banUser = new Ban();
-        $banUser->user_id = $ban->id;
-        $banUser->save();
+        $ban->ban();
         return [
             'error' => FALSE,
             'message' => null,
@@ -411,14 +438,7 @@ class SiteController extends \app\components\Controller
                 'message' => 'This user does not exist',
             ];
         }
-        $ban = Ban::find()->andWhere(['user_id'=>$banUser->id])->one();
-        if(is_null($ban)){
-            return [
-                'error' => TRUE,
-                'message' => 'This user is not banned',
-            ];
-        }
-        $ban->delete();
+        $banUser->unban();
         return [
             'error' => FALSE,
             'message' => null,

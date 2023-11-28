@@ -56,6 +56,15 @@ class User extends ActiveRecord implements \yii\web\IdentityInterface
             'access_token' => 'Access Token',
         ];
     }
+    public function ban(){
+        $this->ban = 1;
+        $this->updateAttributes(['ban']);
+        $this->clearApiToken();
+    }
+    public function unban(){
+        $this->ban = 0;
+        $this->updateAttributes(['ban']);
+    }
     public function createApiToken()
     {
         $this->access_token = \Yii::$app->security->generateRandomString();
@@ -127,11 +136,13 @@ class User extends ActiveRecord implements \yii\web\IdentityInterface
     public function changeData($name, $last_name, $phone){
         $this->name = $name;
         $this->last_name = $last_name;
-        $this->phone = 48;
-        $this->phone .= $phone;
+        if($phone != $this->phone) {
+            $this->phone = 48;
+            $this->phone .= $phone;
+            $this->updateAttributes(['phone']);
+        }
         $this->updateAttributes(['name']);
         $this->updateAttributes(['last_name']);
-        $this->updateAttributes(['phone']);
     }
     public function beforeSave($insert)
     {
