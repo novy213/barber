@@ -1,3 +1,5 @@
 db.php
-setup.php
-barber_img/
+*.png
+*.jpeg
+*.jpg
+*.raw

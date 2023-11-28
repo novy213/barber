@@ -21,6 +21,7 @@ class m231017_065804_create_table extends Migration
             'admin' => $this->boolean()->defaultValue(0),
             'notification' => $this->integer()->defaultValue(60),
             'verified' => $this->boolean()->defaultValue(0),
+            'ban' => $this->boolean()->defaultValue(0),
             'access_token' => $this->string()
         ]);
         $this -> alterColumn('user','id', $this->integer().' AUTO_INCREMENT');
@@ -71,11 +72,6 @@ class m231017_065804_create_table extends Migration
             'type_id'=>$this->integer()->notNull(),
         ]);
         $this -> alterColumn('additional_services','id', $this->integer().' AUTO_INCREMENT');
-        $this->createTable('ban', [
-            'id' => $this->primaryKey()->notNull()->unique(),
-            'user_id' => $this->integer()->notNull(),
-        ]);
-        $this -> alterColumn('ban','id', $this->integer().' AUTO_INCREMENT');
         $this->createTable('code', [
             'id' => $this->primaryKey()->notNull()->unique(),
             'code' => $this->integer()->notNull(),
@@ -139,14 +135,6 @@ class m231017_065804_create_table extends Migration
             'CASCADE'
         );
         $this->addForeignKey(
-            'fk-ban-user',
-            'ban',
-            'user_id',
-            'user',
-            'id',
-            'CASCADE'
-        );
-        $this->addForeignKey(
             'fk-visit-barber',
             'visit',
             'barber_id',
@@ -180,7 +168,6 @@ class m231017_065804_create_table extends Migration
         $this->dropForeignKey('fk-visit-additional', 'visit_additional');
         $this->dropForeignKey('fk-additional-visit', 'visit_additional');
         $this->dropForeignKey('fk-barber-user', 'barber');
-        $this->dropForeignKey('fk-ban-user', 'ban');
         $this->dropForeignKey('fk-visit-barber', 'visit');
         $this->dropForeignKey('fk-visit-type', 'visit');
         $this->dropForeignKey('fk-visit-user', 'visit');
@@ -188,7 +175,6 @@ class m231017_065804_create_table extends Migration
         $this->dropForeignKey('fk-code-user', 'code');
         $this->dropForeignKey('fk-additional-type', 'additional_type');
         $this->dropForeignKey('fk-additional-add', 'additional_type');
-        $this->dropTable('ban');
         $this->dropTable('additional_services');
         $this->dropTable('additional_type');
         $this->dropTable('visit_additional');

@@ -11,13 +11,13 @@ use yii\db\ActiveRecord;
  * @property string $password
  * @property string $name
  * @property string $last_name
- * @property int $notification
  * @property int $phone
  * @property int|null $admin
+ * @property int|null $notification
  * @property int|null $verified
+ * @property int|null $ban
  * @property string|null $access_token
  *
- * @property Ban[] $bans
  * @property Barber[] $barbers
  * @property Code[] $codes
  * @property Visit[] $visits
@@ -33,7 +33,7 @@ class User extends ActiveRecord implements \yii\web\IdentityInterface
     {
         return [
             [['password', 'name', 'last_name', 'phone'], 'required'],
-            [['phone', 'admin', 'verified', 'notification'], 'integer'],
+            [['phone', 'admin', 'notification', 'verified', 'ban'], 'integer'],
             [['password', 'name', 'last_name', 'access_token'], 'string', 'max' => 255],
         ];
     }
@@ -50,9 +50,10 @@ class User extends ActiveRecord implements \yii\web\IdentityInterface
             'last_name' => 'Last Name',
             'phone' => 'Phone',
             'admin' => 'Admin',
-            'verified' => 'Verified',
-            'access_token' => 'Access Token',
             'notification' => 'Notification',
+            'verified' => 'Verified',
+            'ban' => 'Ban',
+            'access_token' => 'Access Token',
         ];
     }
     public function createApiToken()
