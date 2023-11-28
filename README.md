@@ -259,3 +259,60 @@ moze byc albo to albo to albo wszystko.
   "message": null
 }
 ```
+## Delete visit
+```
+DELETE /deletevisit
+```
+### Params:
+```
+(null)
+```
+### Body:
+```
+visit_id - id of the visit
+```
+### Response: 
+```
+{
+  "error": false,
+  "message": null
+}
+```
+## Ban user
+```
+POST /banuser/{phone}
+```
+### Params:
+```
+(null)
+```
+### Body:
+```
+(null)
+```
+### Response: 
+```
+{
+  "error": false,
+  "message": null
+}
+```
+## Unban user
+```
+POST /unbanuser/{phone}
+```
+### Params:
+```
+(null)
+```
+### Body:
+```
+(null)
+```
+### Response: 
+```
+{
+  "error": false,
+  "message": null
+}
+```
