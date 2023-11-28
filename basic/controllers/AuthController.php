@@ -44,8 +44,7 @@ class AuthController extends Controller
             Yii::$app->response->statusCode = 400;
             return ['error' => TRUE, 'message' => 'Incorrect  phone or password.'];
         }
-        $ban = Ban::find()->andWhere(['user_id'=>$user->id])->one();
-        if(isset($ban)) {
+        if($user->ban) {
             return [
                 'error' => TRUE,
                 'message' => 'you are banned'

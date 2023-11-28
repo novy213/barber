@@ -236,9 +236,6 @@ class SiteController extends \app\components\Controller
             $visits[] = [
                 'date' => $day . " " . $hours . ":" . $minutes,
                 'status' => 0,
-                'name' => null,
-                'last_name' => null,
-                'phone' => null,
                 'date_end' => null
             ];
             if ($minutes == 0) $visits[$i]['date'] .= $string;
@@ -248,10 +245,6 @@ class SiteController extends \app\components\Controller
             for($j=0;$j<count($visit);$j++) {
                 if (str_contains($visits[$i]['date'], $visit[$j]['date'])) {
                     $visits[$i]['status'] = 1;
-                    $user = $visit[$j]->user;
-                    $visits[$i]['name'] = $user->name;
-                    $visits[$i]['last_name'] = $user->last_name;
-                    $visits[$i]['phone'] = $user->phone;
                     $dateTime = new \DateTime($visit[$j]->date);
                     $dateTime->modify('+15 minutes');
                     $visits[$i]['date_end'] = $dateTime->format('Y-m-d H:i');
@@ -306,21 +299,40 @@ class SiteController extends \app\components\Controller
         ];
     }
     public function actionChangeuserdata(){
-        $post = $this->getJsonInput();
         $user = Yii::$app->user->identity;
-        if(isset($post->phone) && isset($post->name) && isset($post->last_name)){
-            $user->changeData($post->name, $post->last_name, $post->phone);
+        if(!$user->verified){
             return [
-                'error' => FALSE,
-                'message' => NULL,
+                'error' => true,
+                'message_user' => 'ten uzytkownik nie jest zweryfikowany',
             ];
+        }
+        $post = $this->getJsonInput();
+        $name = null;
+        $last_name = null;
+        $phone = null;
+        if(isset($post->name)){
+            $name = $post->name;
+        }
+        else{
+            $name = $user->name;
+        }
+        if(isset($post->last_name)){
+            $last_name = $post->last_name;
         }
         else {
-            return [
-                'error' => TRUE,
-                'message' => "new phone number or name or last name is required",
-            ];
+            $last_name = $user->last_name;
         }
+        if(isset($post->phone)){
+            $phone = $post->phone;
+        }
+        else {
+            $phone = $user->phone;
+        }
+        $user->changeData($name, $last_name, $phone);
+        return [
+            'error' => FALSE,
+            'message' => NULL,
+        ];
     }
     public function actionDeletevisit(){
         $user = Yii::$app->user->identity;

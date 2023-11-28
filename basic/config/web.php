@@ -80,7 +80,7 @@ $config = [
                 [
                     'pattern' => '/changeuserdata',
                     'route' => '/site/changeuserdata',
-                    'verb' => 'POST',
+                    'verb' => 'PUT',
                 ],
                 [
                     'pattern' => '/deletevisit',

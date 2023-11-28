@@ -15,8 +15,10 @@ if(isset($_SESSION['loged'])){
 </head>
 <body>
     <form method="post">
-        <input type="text" name="login">
-        <input type="password" name="pass">
+        <label for="login">login: </label>
+        <input type="text" name="login" id="login">
+        <label for="pass">haslo: </label>
+        <input type="password" name="pass" id="pass">
         <input type="submit" name="submit">
         <?php
         include '../php/db.php';

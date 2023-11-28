@@ -27,10 +27,10 @@ if(!isset($_SESSION['loged'])){
 <div class="con" style="text-align: center; width: 30%">
     <h2>Dodaj pracownika</h2>
     <form method="post" action="./php/Upload.php" enctype="multipart/form-data" style="border: 1px solid black;text-align: center">
-        <input type="text" name="name" placeholder="Imie"><br><br>
-        <input type="text" name="last_name" placeholder="Nazwisko"><br><br>
-        <input type="text" name="hour_start" placeholder="Godzina rozpoczęcia pracy np. 9:00"><br><br>
-        <input type="text" name="hour_end" placeholder="Godzina zakończenia pracy np. 18:00"><br><br>
+        <label for="start">godzina rozpoczecia pracy: </label>
+        <input type="time" name="hour_start" id="start" placeholder="Godzina rozpoczęcia pracy np. 9:00"><br><br>
+        <label for="end">godzina zakonczenia pracy: </label>
+        <input type="time" name="hour_end" id="end" placeholder="Godzina zakończenia pracy np. 18:00"><br><br>
         <label for="users">Wybierz użytkownika</label>
         <select name="selected_user" id="users">
         <?php
@@ -43,7 +43,8 @@ if(!isset($_SESSION['loged'])){
         ?>
         </select>
         <br><br>
-        <input type="file" name="file"> <br><br>
+        <label for="file">awatar pracownika: </label>
+        <input type="file" name="file" id="file"> <br><br>
         <input type="submit" name="add" value="Dodaj barbera">
     </form>
     <h2>Usun pracownika</h2>
@@ -66,6 +67,15 @@ if(!isset($_SESSION['loged'])){
         if(isset($_POST['delete_barber'])){
             $barberzy = isset($_POST['barberzy']) ? $_POST['barberzy'] : array();
             for($i=0;$i<count($barberzy);$i++){
+                $q = "select img_url from barber where id = $barberzy[$i];";
+                $wynik = mysqli_fetch_row(mysqli_query($conn, $q));
+                if($wynik[0]!=null || $wynik[0]!="") {
+                    $file_name = basename($wynik[0]);
+                    $filePath = "barber_img/".$file_name;
+                    if (file_exists($filePath)) {
+                        unlink($filePath);
+                    }
+                }
                 $q = "delete from barber where id = $barberzy[$i];";
                 mysqli_query($conn, $q);
             }
@@ -105,7 +115,7 @@ if(!isset($_SESSION['loged'])){
         <p>Wybierz uzytkownika</p>
         <?php
         include 'php/db.php';
-        $q = "select * from user;";
+        $q = "select * from user where ban = 0;";
         $wynik = mysqli_query($conn, $q);
         $licznik = 1;
         while($row = mysqli_fetch_row($wynik)){
@@ -120,7 +130,7 @@ if(!isset($_SESSION['loged'])){
         if(isset($_POST['ban_user'])){
             $users = isset($_POST['users']) ? $_POST['users'] : array();
             for($i=0;$i<count($users);$i++){
-                $q = "insert into ban values(null, $users[$i]);";
+                $q = "update user set ban = 1 where id = $users[$i];";
                 mysqli_query($conn, $q);
             }
             echo "<script>location.href = 'index.php';</script>";
@@ -147,7 +157,7 @@ if(!isset($_SESSION['loged'])){
         if(isset($_POST['unban_user'])){
             $users = isset($_POST['users']) ? $_POST['users'] : array();
             for($i=0;$i<count($users);$i++){
-                $q = "delete from ban where id = $users[$i];";
+                $q = "update user set ban = 0 where id = $users[$i];";
                 mysqli_query($conn, $q);
             }
             echo "<script>location.href = 'index.php';</script>";
