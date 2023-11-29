@@ -468,59 +468,57 @@ class SiteController extends \app\components\Controller
         $visits = array();
         $minutes =0;
         $hours=9;
-        $barber = $user->barber;
+        $barber = Barber::find()->andWhere(['id'=>$user->id])->one();
+        $token = "FdhwGf65s8Jsth1yrWo2TvvvwhgMxG4IrLo5XKwy";
         if($allDay) {
-            $visits = Visit::find()->all();
+            $visits = Visit::find()->andWhere(['like','date', $date])->all();
             for($i=0;$i<count($visits);$i++){
-                if(str_contains($visits[$i]->date, $date)) {
-                    $user = $visits[$i]->user;
-                    $token = "FdhwGf65s8Jsth1yrWo2TvvvwhgMxG4IrLo5XKwy";
-                    $liczba = 0;
-                    if($i+3<=count($visits)) {
-                        if ($visits[$i]->user == $user && $visits[$i + 1]->user == $user) {
-                            $liczba = 1;
-                        } else if ($visits[$i]->user == $user && $visits[$i + 1]->user == $user && $visits[$i + 2]->user == $user) {
-                            $liczba = 2;
-                        }
-                    }
+                $user = $visits[$i]->user;
+                $liczba = 0;
+                if($visits[$i]->group==null){
                     $params = array(
                         'to' => $user->phone,
                         'from' => 'Test',
                         'message' => 'Twoja wizyta o godzinie '.$visits[$i]->date.' zostala odwolana',
                         'format' => 'json'
                     );
-                    $test[] = $params;
                     SendSMS::sms_send($params, $token);
-                    if($liczba == 0) $visits[$i]->delete();
-                    if($liczba == 1) {
-                        $visits[$i]->delete();
-                        $visits[$i+1]->delete();
-                        $i++;
-                    }
-                    if($liczba == 2) {
-                        $visits[$i]->delete();
-                        $visits[$i+1]->delete();
-                        $visits[$i+2]->delete();
-                        $i+=2;
-                    }
+                    $visits[$i]->delete();
+                }
+                else if($visits[$i]->group!=null){
+                    $visitGroup = $visits[$i];
+                    $params = array(
+                        'to' => $user->phone,
+                        'from' => 'Test',
+                        'message' => 'Twoja wizyta o godzinie '.$visitGroup->date.' zostala odwolana',
+                        'format' => 'json'
+                    );
+                    SendSMS::sms_send($params, $token);
+                    $visitGroup->delete();
                 }
             }
-            for ($i = 0; $i < 19; $i++) {
+            $hStartTimestamp = strtotime('1970-01-01 ' . $barber->hour_start);
+            $hEndTimestamp = strtotime('1970-01-01 ' . $barber->hour_end);
+            $hours=$hStartTimestamp/3600;
+            $iterations =(($hEndTimestamp/3600)-($hStartTimestamp/3600))/0.25;
+            $dayoff = Type::find()->andWhere(['label'=>'offday'])->one();
+            $dates = array();
+            for ($i = 0; $i <= $iterations; $i++) {
                 $string = "0";
                 if ($minutes == 60) {
                     $hours++;
                     $minutes = 0;
                 }
-                $visits[] = $date . " " . $hours . ":" . $minutes;
-                if ($minutes == 0) $visits[$i] .= $string;
-                $minutes += 30;
+                $dates[] = $date . " " . $hours . ":" . $minutes;
+                if ($minutes == 0) $dates[$i] .= $string;
+                $minutes += 15;
             }
-            for ($i = 0; $i < 19; $i++) {
+            for ($i = 0; $i <= $iterations; $i++) {
                 $visit = new Visit();
-                $visit->date = $visits[$i];
-                $visit->barber_id = $user->id;
+                $visit->date = $dates[$i];
+                $visit->barber_id = $barber->id;
                 $visit->user_id = $user->id;
-                $visit->type_id = 4;
+                $visit->type_id = $dayoff->id;
                 if ($visit->validate()) {
                     $visit->save();
                 } else {
@@ -532,11 +530,36 @@ class SiteController extends \app\components\Controller
             }
         }
         else{
+            $dayoff = Type::find()->andWhere(['label'=>'offday'])->one();
+            $oldVisit = Visit::find()->andWhere(['date'=>$date])->one();
+            if($oldVisit!=null){
+                if($oldVisit->group==null){
+                    $params = array(
+                        'to' => $user->phone,
+                        'from' => 'Test',
+                        'message' => 'Twoja wizyta o godzinie '.$oldVisit->date.' zostala odwolana',
+                        'format' => 'json'
+                    );
+                    SendSMS::sms_send($params, $token);
+                    $oldVisit->delete();
+                }
+                else if($oldVisit->group!=null){
+                    $visitGroup = $oldVisit->group0;
+                    $params = array(
+                        'to' => $user->phone,
+                        'from' => 'Test',
+                        'message' => 'Twoja wizyta o godzinie '.$visitGroup->date.' zostala odwolana',
+                        'format' => 'json'
+                    );
+                    SendSMS::sms_send($params, $token);
+                    $visitGroup->delete();
+                }
+            }
             $visit = new Visit();
             $visit->date = $date;
-            $visit->barber_id = $user->id;
+            $visit->barber_id = $barber->id;
             $visit->user_id = $user->id;
-            $visit->type_id = 4;
+            $visit->type_id = $dayoff->id;
             if ($visit->validate()) {
                 $visit->save();
             } else {
@@ -548,8 +571,7 @@ class SiteController extends \app\components\Controller
         }
         return [
             'error' => FALSE,
-            'message' => NULL,
-            'licznik' => $test
+            'message' => NULL
         ];
     }
     public function actionUserdata(){
