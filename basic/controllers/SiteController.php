@@ -501,7 +501,7 @@ class SiteController extends \app\components\Controller
             $hEndTimestamp = strtotime('1970-01-01 ' . $barber->hour_end);
             $hours=$hStartTimestamp/3600;
             $iterations =(($hEndTimestamp/3600)-($hStartTimestamp/3600))/0.25;
-            $dayoff = Type::find()->andWhere(['label'=>'offday'])->one();
+            $dayoff = Type::find()->andWhere(['label'=>'dayoff'])->one();
             $dates = array();
             for ($i = 0; $i <= $iterations; $i++) {
                 $string = "0";
@@ -530,7 +530,7 @@ class SiteController extends \app\components\Controller
             }
         }
         else{
-            $dayoff = Type::find()->andWhere(['label'=>'offday'])->one();
+            $dayoff = Type::find()->andWhere(['label'=>'dayoff'])->one();
             $oldVisit = Visit::find()->andWhere(['date'=>$date])->one();
             if($oldVisit!=null){
                 if($oldVisit->group==null){
@@ -593,15 +593,11 @@ class SiteController extends \app\components\Controller
                 'message' => 'you are not an admin',
             ];
         }
-        $ban = Ban::find()->all();
-        $users = array();
-        for($i=0;$i<count($ban);$i++){
-            $users[] = $ban[$i]->user;
-        }
+        $ban = User::find()->andWhere(['ban'=>1])->all();
         return [
             'error' => FALSE,
             'message' => NULL,
-            'users' => $users
+            'users' => $ban
         ];
     }
     public function actionCloseacc(){
@@ -612,8 +608,8 @@ class SiteController extends \app\components\Controller
             'message' => NULL,
         ];
     }
-    public function actionGetprices(){
-        $types = Type::find()->andWhere(['<>', 'id', 8])->all();
+    public function actionGettypes(){
+        $types = Type::find()->andWhere(['<>', 'label', 'dayoff'])->all();
         $additional = AdditionalServices::find()->all();
         return [
             'error' => FALSE,
@@ -622,7 +618,7 @@ class SiteController extends \app\components\Controller
             'additional' => $additional
         ];
     }
-    public function actionChangeprices(){
+    public function actionChangetype(){
         $user = Yii::$app->user->identity;
         if($user->admin==0){
             return [
@@ -631,11 +627,7 @@ class SiteController extends \app\components\Controller
             ];
         }
         $post = $this->getJsonInput();
-        for($i=0;$i<count($post->types);$i++){
-            $type = Type::find()->andWhere(['id'=>$post->types[$i]->id])->one();
-            $type->price = $post->types[$i]->price;
-            $type->save();
-        }
+        $type = Type::find()->andWhere(['id'=>$post->type_id])->one();
         return [
             'error' => FALSE,
             'message' => NULL,

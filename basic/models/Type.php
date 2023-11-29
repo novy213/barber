@@ -49,6 +49,14 @@ class Type extends \yii\db\ActiveRecord
             'price' => 'Price',
         ];
     }
+    public function changeType($label, $time, $price){
+        $this->label = $label;
+        $this->time = $time;
+        $this->price = $price;
+        $this->updateAttributes(['label']);
+        $this->updateAttributes(['time']);
+        $this->updateAttributes(['price']);
+    }
 
     /**
      * Gets query for [[AdditionalTypes]].

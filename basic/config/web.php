@@ -100,7 +100,7 @@ $config = [
                 [
                     'pattern' => '/dayoff',
                     'route' => '/site/dayoff',
-                    'verb' => 'POST',
+                    'verb' => 'PUT',
                 ],
                 [
                     'pattern' => '/bannedusers',
@@ -118,14 +118,14 @@ $config = [
                     'verb' => 'DELETE',
                 ],
                 [
-                    'pattern' => '/getprices',
-                    'route' => '/site/getprices',
+                    'pattern' => '/gettypes',
+                    'route' => '/site/gettypes',
                     'verb' => 'GET',
                 ],
                 [
-                    'pattern' => '/changeprices',
-                    'route' => '/site/changeprices',
-                    'verb' => 'POST',
+                    'pattern' => '/changetype',
+                    'route' => '/site/changetype',
+                    'verb' => 'PUT',
                 ],
                 [
                     'pattern' => '/verify',
