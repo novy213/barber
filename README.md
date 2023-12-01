@@ -458,3 +458,22 @@ GET /gettypes
   ]
 }
 ```
+## Change type or additional service
+```
+PUT /changetype
+```
+### Params:
+```
+(null)
+```
+### Body:
+```
+type_id or additional_id - zalezy co chcesz zmienic
+```
+### Response: 
+```
+{
+  "error": false,
+  "message": null,
+}
+```
