@@ -358,3 +358,103 @@ GET /userdata
   "notification": 60
 }
 ```
+## Get list of banned users
+```
+GET /bannedusers
+```
+### Params:
+```
+(null)
+```
+### Body:
+```
+(null)
+```
+### Response: 
+```
+{
+  "error": false,
+  "message": null,
+  "users": [
+    {
+      "id": 10,
+      "password": "$2y$10$8/O6f2G8IBRitCMJaJ3K0OY9VYJlz1BB9TMLmWluWYPwpiO1/FvTu",
+      "name": "John",
+      "last_name": "Doe",
+      "phone": 48111111111,
+      "admin": 0,
+      "notification": 60,
+      "verified": 0,
+      "ban": 1,
+      "access_token": null
+    }
+  ]
+}
+```
+## Close account
+```
+DELETE /closeacc
+```
+### Params:
+```
+(null)
+```
+### Body:
+```
+(null)
+```
+### Response: 
+```
+{
+  "error": false,
+  "message": null,
+}
+```
+## Get types and additional servieces
+```
+GET /gettypes
+```
+### Params:
+```
+(null)
+```
+### Body:
+```
+(null)
+```
+### Response: 
+```
+{
+  "error": false,
+  "message": null,
+  "types": [
+    {
+      "id": 1,
+      "label": "combo_razor",
+      "time": 60,
+      "price": 50
+    },
+    {
+      "id": 2,
+      "label": "combo_golarka",
+      "time": 60,
+      "price": 50
+    },
+    {...},
+  ],
+  "additional": [
+    {
+      "id": 1,
+      "label": "razor",
+      "price": 5,
+      "time": 0
+    },
+    {
+      "id": 2,
+      "label": "coloring",
+      "price": 15,
+      "time": 15
+    }
+  ]
+}
+```
