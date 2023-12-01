@@ -316,3 +316,45 @@ POST /unbanuser/{phone}
   "message": null
 }
 ```
+## Dayoff
+```
+PUT /dayoff
+```
+### Params:
+```
+(null)
+```
+### Body:
+```
+date - albo 2023-10-10 albo 2023-10-10 10:30
+```
+### Response: 
+```
+{
+  "error": false,
+  "message": null
+}
+```
+## Get user data informations
+```
+GET /userdata
+```
+### Params:
+```
+(null)
+```
+### Body:
+```
+(null)
+```
+### Response: 
+```
+{
+  "error": false,
+  "message": null,
+  "name": "adam",
+  "last_name": "adnd2",
+  "phone": 48111111113,
+  "notification": 60
+}
+```
