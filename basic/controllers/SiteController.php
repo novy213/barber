@@ -90,6 +90,13 @@ class SiteController extends \app\components\Controller
         if (isset($post->phone)) {
             $user->phone = 48;
             $user->phone.=$post->phone;
+            $user2 = User::find()->andWhere(['phone'=>$user->phone])->one();
+            if($user2){
+                return [
+                    'error' => true,
+                    'message' => 'taki numer juz istnieje'
+                ];
+            }
             if(strlen($user->phone)>11){
                 return [
                     'error' => true,
@@ -468,7 +475,7 @@ class SiteController extends \app\components\Controller
         $visits = array();
         $minutes =0;
         $hours=9;
-        $barber = Barber::find()->andWhere(['id'=>$user->id])->one();
+        $barber = Barber::find()->andWhere(['user_id'=>$user->id])->one();
         $token = "FdhwGf65s8Jsth1yrWo2TvvvwhgMxG4IrLo5XKwy";
         if($allDay) {
             $visits = Visit::find()->andWhere(['like','date', $date])->all();
@@ -576,6 +583,12 @@ class SiteController extends \app\components\Controller
     }
     public function actionUserdata(){
         $user = Yii::$app->user->identity;
+        if(!$user->verified){
+            return [
+                'error' => true,
+                'message_user' => 'ten uzytkownik nie jest zweryfikowany',
+            ];
+        }
         return[
             'error' => FALSE,
             'message' => NULL,
@@ -627,7 +640,26 @@ class SiteController extends \app\components\Controller
             ];
         }
         $post = $this->getJsonInput();
-        $type = Type::find()->andWhere(['id'=>$post->type_id])->one();
+        $type = null;
+        if(isset($post->type_id)){
+            $type = Type::find()->andWhere(['id'=>$post->type_id])->one();
+        }
+        else if(isset($post->additional_id)){
+            $type = AdditionalServices::find()->andWhere(['id'=>$post->additional_id])->one();
+        }
+        $label = $type->label;
+        $price = $type->price;
+        $time = $type->time;
+        if(isset($post->label)){
+            $label = $post->label;
+        }
+        if(isset($post->price)){
+            $price = $post->price;
+        }
+        if(isset($post->time)){
+            $time = $post->time;
+        }
+        $type->changeType($label, $time, $price);
         return [
             'error' => FALSE,
             'message' => NULL,
@@ -643,7 +675,7 @@ class SiteController extends \app\components\Controller
         }
         $post = $this->getJsonInput();
         $type = new Type();
-        $type->type = $post->type;
+        $type->label = $post->label;
         $type->price = $post->price;
         $type->time = $post->time;
         if($type->validate()){

@@ -25,6 +25,15 @@ class AdditionalServices extends \yii\db\ActiveRecord
         return 'additional_services';
     }
 
+    public function changeType($label, $time, $price){
+        $this->label = $label;
+        $this->time = $time;
+        $this->price = $price;
+        $this->updateAttributes(['label']);
+        $this->updateAttributes(['time']);
+        $this->updateAttributes(['price']);
+    }
+
     /**
      * {@inheritdoc}
      */
