@@ -6,7 +6,7 @@ Barber app made in yii2 framework for barbers
 ```
 /barber/basic/web
 ```
-## 1.1 Login
+# Login
 ```
 POST /
 ```
@@ -30,7 +30,7 @@ POST /
   "userId": 11
 }
 ```
-## 1.2 Logout
+## Logout
 ```
 DELETE /
 ```
@@ -49,7 +49,7 @@ DELETE /
   "message": null
 }
 ```
-## 1.3 Register
+## Register
 ```
 POST /register
 ```
@@ -60,10 +60,10 @@ POST /register
 ### Body:
 ```
 {
-  "login": "admin",
-  "password": "admin",
   "name": "jan",
   "last_name: "kowalski"
+  "phone": "123456789",
+  "password": "admin",
 }
 ```
 ### Response: 
@@ -73,9 +73,126 @@ POST /register
   "message": null
 }
 ```
-## 2.1 Get results list
+## Add visit
 ```
-GET /result
+POST /addvisit
+```
+### Params:
+```
+(null)
+```
+### Body:
+```
+{
+"date":"2023-11-21 15:30",
+"barber_id":11,
+"type_id":4,
+"additions":[
+{
+"additional_id":1
+},
+{
+"additional_id":2
+}
+]
+}
+
+or
+
+{
+"date":"2023-11-21 15:30",
+"barber_id":11,
+"type_id":4,
+"additions":[]
+}
+```
+### Response: 
+```
+{
+  "error":false,
+  "message": null
+}
+```
+## Get visits for barber
+```
+POST /visits/{barber_id}
+```
+### Params:
+```
+(null)
+```
+### Body:
+```
+date - 2023-11-12
+```
+### Response: 
+```
+{
+  "error": false,
+  "message": null,
+  "visit": [
+    {
+      "date": "2023-11-21 12:00",
+      "status": 0,
+      "date_end": null
+    },
+    {
+      "date": "2023-11-21 12:15",
+      "status": 0,
+      "date_end": null
+    },
+    {
+      "date": "2023-11-21 12:30",
+      "status": 0,
+      "date_end": null
+    },
+    {
+      "date": "2023-11-21 12:45",
+      "status": 1,
+      "date_end": "2023-11-21 13:00"
+    },
+    {
+      "date": "2023-11-21 13:00",
+      "status": 1,
+      "date_end": "2023-11-21 13:15"
+    },
+    {
+      "date": "2023-11-21 13:15",
+      "status": 1,
+      "date_end": "2023-11-21 13:30"
+    },
+    {
+      "date": "2023-11-21 13:30",
+      "status": 1,
+      "date_end": "2023-11-21 13:45"
+    },
+    {
+      "date": "2023-11-21 13:45",
+      "status": 1,
+      "date_end": "2023-11-21 14:00"
+    },
+    {
+      "date": "2023-11-21 14:00",
+      "status": 1,
+      "date_end": "2023-11-21 14:15"
+    },
+    {
+      "date": "2023-11-21 14:15",
+      "status": 1,
+      "date_end": "2023-11-21 14:30"
+    },
+    {
+      "date": "2023-11-21 14:30",
+      "status": 0,
+      "date_end": null
+    },
+    {...},
+  ]
+}
+```
+## Get user visits
+```
+GET /uservisits
 ```
 ### Params:
 ```
@@ -87,33 +204,83 @@ GET /result
 ```
 ### Response: 
 ```
-[
-  {
-    "id": 1,
-    "user_id": 1,
-    "game_id": 1,
-    "correct_precentage": 26,
-    "all_time": 307,
-    "avg_reaction_time_correct": 4.2,
-    "avg_reaction_time_incorrect": 9.7,
-    "best_streak": 7
-  },
-  {
-    "id": 2,
-    "user_id": 1,
-    "game_id": 2,
-    "correct_precentage": 80,
-    "all_time": 269,
-    "avg_reaction_time_correct": 5.5,
-    "avg_reaction_time_incorrect": 9.2,
-    "best_streak": 4
-  },
-  {...},
-]
+{
+  "error": false,
+  "message": null,
+  "visit": [
+    {
+      "id": 8,
+      "date": "2023-11-21 12:45",
+      "barber_name": "adam",
+      "barber_last_name": "noowa",
+      "img_url": "",
+      "label": "combo_golarkaFarb",
+      "additional_info": null,
+      "user_id": 11,
+      "notified": 0,
+      "price": 70,
+      "time": 105
+    },
+    {
+      "id": 15,
+      "date": "2023-11-21 10:00",
+      "barber_name": "tets2",
+      "barber_last_name": "test2",
+      "img_url": "http://localhost/admin/barber_img/test.png",
+      "label": "combo_golarka",
+      "additional_info": null,
+      "user_id": 11,
+      "notified": 0,
+      "price": 70,
+      "time": 75
+    }
+  ]
+}
 ```
-## 2.2 Get ranking list
+## Change user information data
 ```
-GET /ranking
+PUT /changeuserdata
+```
+### Params:
+```
+(null)
+```
+### Body:
+```
+name - not required
+last_name - not required
+phone - not required
+moze byc albo to albo to albo wszystko.
+```
+### Response: 
+```
+{
+  "error": false,
+  "message": null
+}
+```
+## Delete visit
+```
+DELETE /deletevisit
+```
+### Params:
+```
+(null)
+```
+### Body:
+```
+visit_id - id of the visit
+```
+### Response: 
+```
+{
+  "error": false,
+  "message": null
+}
+```
+## Ban user
+```
+POST /banuser/{phone}
 ```
 ### Params:
 ```
@@ -125,19 +292,188 @@ GET /ranking
 ```
 ### Response: 
 ```
-[
-  {
-    "id": 4,
-    "user_id": 6,
-    "avg_all": 9.3,
-    "fastest_correct_score": 1.5
-  },
-  {
-    "id": 3,
-    "user_id": 6,
-    "avg_all": 8.4,
-    "fastest_correct_score": 1.8
-  },
-  {...},
-]
+{
+  "error": false,
+  "message": null
+}
+```
+## Unban user
+```
+POST /unbanuser/{phone}
+```
+### Params:
+```
+(null)
+```
+### Body:
+```
+(null)
+```
+### Response: 
+```
+{
+  "error": false,
+  "message": null
+}
+```
+## Dayoff
+```
+PUT /dayoff
+```
+### Params:
+```
+(null)
+```
+### Body:
+```
+date - albo 2023-10-10 albo 2023-10-10 10:30
+```
+### Response: 
+```
+{
+  "error": false,
+  "message": null
+}
+```
+## Get user data informations
+```
+GET /userdata
+```
+### Params:
+```
+(null)
+```
+### Body:
+```
+(null)
+```
+### Response: 
+```
+{
+  "error": false,
+  "message": null,
+  "name": "adam",
+  "last_name": "adnd2",
+  "phone": 48111111113,
+  "notification": 60
+}
+```
+## Get list of banned users
+```
+GET /bannedusers
+```
+### Params:
+```
+(null)
+```
+### Body:
+```
+(null)
+```
+### Response: 
+```
+{
+  "error": false,
+  "message": null,
+  "users": [
+    {
+      "id": 10,
+      "password": "$2y$10$8/O6f2G8IBRitCMJaJ3K0OY9VYJlz1BB9TMLmWluWYPwpiO1/FvTu",
+      "name": "John",
+      "last_name": "Doe",
+      "phone": 48111111111,
+      "admin": 0,
+      "notification": 60,
+      "verified": 0,
+      "ban": 1,
+      "access_token": null
+    }
+  ]
+}
+```
+## Close account
+```
+DELETE /closeacc
+```
+### Params:
+```
+(null)
+```
+### Body:
+```
+(null)
+```
+### Response: 
+```
+{
+  "error": false,
+  "message": null,
+}
+```
+## Get types and additional servieces
+```
+GET /gettypes
+```
+### Params:
+```
+(null)
+```
+### Body:
+```
+(null)
+```
+### Response: 
+```
+{
+  "error": false,
+  "message": null,
+  "types": [
+    {
+      "id": 1,
+      "label": "combo_razor",
+      "time": 60,
+      "price": 50
+    },
+    {
+      "id": 2,
+      "label": "combo_golarka",
+      "time": 60,
+      "price": 50
+    },
+    {...},
+  ],
+  "additional": [
+    {
+      "id": 1,
+      "label": "razor",
+      "price": 5,
+      "time": 0
+    },
+    {
+      "id": 2,
+      "label": "coloring",
+      "price": 15,
+      "time": 15
+    }
+  ]
+}
+```
+## Change type or additional service
+```
+PUT /changetype
+```
+### Params:
+```
+(null)
+```
+### Body:
+```
+type_id or additional_id - zalezy co chcesz zmienic
+```
+### Response: 
+```
+{
+  "error": false,
+  "message": null,
+}
 ```
