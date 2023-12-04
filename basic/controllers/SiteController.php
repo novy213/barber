@@ -164,11 +164,16 @@ class SiteController extends \app\components\Controller
                 'message'=>'Date is required'
             ];
         }
+        $dateTime = new \DateTime($day);
         $visit = Visit::find()->andWhere(['barber_id'=>$barber_id])->all();
         $visits = array();
         $minutes =0;
         $hours=9;
-        for($i=0;$i<19;$i++) {
+        $iterations = 18;
+        if($dateTime->format('l') == 'Saturday'){
+            $iterations = 10;
+        }
+        for($i=0;$i<$iterations;$i++) {
             $string = "0";
             if ($minutes == 60) {
                 $hours++;
