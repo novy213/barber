@@ -191,6 +191,8 @@ class SiteController extends \app\components\Controller
                 'status' => 0,
                 'name' => null,
                 'last_name' => null,
+                'label' => null,
+                'additional' => null,
                 'phone' => null,
                 'date_end' => null
             ];
@@ -206,6 +208,8 @@ class SiteController extends \app\components\Controller
                     $visits[$i]['last_name'] = $user->last_name;
                     $visits[$i]['phone'] = $user->phone;
                     $type = Type::find()->andWhere(['id'=>$visit[$j]->type_id])->one();
+                    $visits[$i]['label'] = $type->label;
+                    $visits[$i]['additional'] = $visit[$j]->additional_info;
                     $dateTime = new \DateTime($visit[$j]->date);
                     $dateTime->modify('+30 minutes');
                     $visits[$i]['date_end'] = $dateTime->format('d-m-Y H:i');
@@ -458,7 +462,7 @@ class SiteController extends \app\components\Controller
         ];
     }
     public function actionGetprices(){
-        $types = Type::find()->andWhere(['<>', 'type', 'dayoff'])->all();
+        $types = Type::find()->orderBy(['label'=>SORT_ASC])->andWhere(['<>', 'type', 'dayoff'])->all();
         $additional = AdditionalServices::find()->all();
         return [
             'error' => FALSE,
@@ -478,7 +482,7 @@ class SiteController extends \app\components\Controller
         $post = $this->getJsonInput();
         $type = Type::find()->andWhere(['id'=>$post->type_id])->one();
         $type->price = $post->price;
-        $type->type = $post->type;
+        $type->time = $post->time;
         $type->label = $post->label;
         $type->save();
         return [
