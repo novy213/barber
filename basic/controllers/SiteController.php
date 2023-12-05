@@ -192,7 +192,7 @@ class SiteController extends \app\components\Controller
                 'name' => null,
                 'last_name' => null,
                 'label' => null,
-                'additional' => null,
+                'additional_info' => null,
                 'phone' => null,
                 'date_end' => null
             ];
@@ -209,7 +209,7 @@ class SiteController extends \app\components\Controller
                     $visits[$i]['phone'] = $user->phone;
                     $type = Type::find()->andWhere(['id'=>$visit[$j]->type_id])->one();
                     $visits[$i]['label'] = $type->label;
-                    $visits[$i]['additional'] = $visit[$j]->additional_info;
+                    $visits[$i]['additional_info'] = $visit[$j]->additional_info;
                     $dateTime = new \DateTime($visit[$j]->date);
                     $dateTime->modify('+30 minutes');
                     $visits[$i]['date_end'] = $dateTime->format('d-m-Y H:i');
