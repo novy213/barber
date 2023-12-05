@@ -88,6 +88,13 @@ class SiteController extends \app\components\Controller
         if (isset($post->phone)) {
             $user->phone = 48;
             $user->phone.=$post->phone;
+            $user2 = User::find()->andWhere(['phone'=>$user->phone])->one();
+            if(isset($user2)){
+                return [
+                    'error' => true,
+                    'message' => "Taki użytkownik juz istnieje",
+                ];
+            }
         }
         if ($user->validate()) {
             $user->save();
