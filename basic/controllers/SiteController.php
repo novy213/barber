@@ -687,4 +687,32 @@ class SiteController extends \app\components\Controller
             'message' => null,
         ];
     }
+    public function actionUpdatevisit(){
+        $user = Yii::$app->user->identity;
+        if(!$user->verified){
+            return [
+                'error' => true,
+                'message' => 'ten uzytkownik nie jest zweryfikowany',
+            ];
+        }
+        $post = $this->getJsonInput();
+        if(!isset($post->visit_id)){
+            return [
+                'error' => true,
+                'message' => 'id wizyty jest wymagane',
+            ];
+        }
+        $visit = Visit::find()->andWhere(['id'=>$post->visit_id])->one();
+        if(!$user->admin && $visit->user!=$user){
+            return [
+                'error' => true,
+                'message' => 'nie mozesz edytowac tej wizyty',
+            ];
+        }
+        $visit->updateVisit($post->additional_info);
+        return [
+            'error' => FALSE,
+            'message' => NULL,
+        ];
+    }
 }

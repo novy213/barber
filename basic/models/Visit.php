@@ -63,6 +63,10 @@ class Visit extends \yii\db\ActiveRecord
             'user_id' => 'User ID',
         ];
     }
+    public function updateVisit($additional_info){
+        $this->additional_info = $additional_info;
+        $this->updateAttributes(['additional_info']);
+    }
 
     /**
      * Gets query for [[Barber]].

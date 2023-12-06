@@ -172,6 +172,11 @@ $config = [
                     'route' => '/site/dayon',
                     'verb' => 'POST',
                 ],
+                [
+                    'pattern' => '/updatevisit',
+                    'route' => '/site/updatevisit',
+                    'verb' => 'PUT',
+                ],
             ],
         ],
     ],
