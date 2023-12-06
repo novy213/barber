@@ -477,3 +477,25 @@ type_id or additional_id - zalezy co chcesz zmienic
   "message": null,
 }
 ```
+## Add type or additional service
+```
+POST /changetype
+```
+### Params:
+```
+(null)
+```
+### Body:
+```
+type_id or additional_id - zalezy co chcesz zmienic
+label
+price
+time
+```
+### Response:
+```
+{
+  "error": false,
+  "message": null,
+}
+```

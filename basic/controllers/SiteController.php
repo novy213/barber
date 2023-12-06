@@ -674,10 +674,57 @@ class SiteController extends \app\components\Controller
             ];
         }
         $post = $this->getJsonInput();
+        $additional = false;
+        if(isset($post->additional)){
+            if($post->additional) $additional= true;
+        }
+        if($additional){
+            $add = new AdditionalServices();
+            if(isset($post->label)){
+                $add->label = $post->label;
+            }
+            if(isset($post->price)){
+                if($post->price%15!=0){
+                    return [
+                        'error' => TRUE,
+                        'message' => 'niepoprawny format czasu',
+                    ];
+                }
+                $add->price = $post->price;
+            }
+            if(isset($post->time)){
+                $add->time = $post->time;
+            }
+            if($add->validate()){
+                $add->save();
+                return [
+                    'error' => false,
+                    'message' => null,
+                ];
+            }
+            else{
+                return [
+                    'error' => TRUE,
+                    'message' => $add->getErrorSummary(false),
+                ];
+            }
+        }
         $type = new Type();
-        $type->label = $post->label;
-        $type->price = $post->price;
-        $type->time = $post->time;
+        if(isset($post->label)){
+            $type->label = $post->label;
+        }
+        if(isset($post->price)){
+            if($post->price%15!=0){
+                return [
+                    'error' => TRUE,
+                    'message' => 'niepoprawny format czasu',
+                ];
+            }
+            $type->price = $post->price;
+        }
+        if(isset($post->time)){
+            $type->time = $post->time;
+        }
         if($type->validate()){
             $type->save();
             return [
