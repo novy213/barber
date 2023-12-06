@@ -499,3 +499,159 @@ time
   "message": null,
 }
 ```
+## Verificate account
+```
+PUT /verify
+```
+### Params:
+```
+(null)
+```
+### Body:
+```
+code - kod generujesz w funkcji sendsms(opisana ponizej)
+```
+### Response:
+```
+{
+  "error": false,
+  "message": null,
+}
+```
+## Change password for account
+```
+PUT /changepassword
+```
+### Params:
+```
+(null)
+```
+### Body:
+```
+code - kod mozesz wygenerowac w funkcji send sms for password(opisana ponizej)
+password - new password
+```
+### Response:
+```
+{
+  "error": false,
+  "message": null,
+}
+```
+## Send sms
+```
+POST /sendsms
+```
+Ta funkcja jest wykorzystywana do weryfikacji konta
+### Params:
+```
+(null)
+```
+### Body:
+```
+(null)
+```
+### Response:
+```
+{
+  "error": false,
+  "message": null,
+}
+```
+## Send sms for password
+```
+POST /smsforpassword
+```
+Ta funkcja jest wykorzystywana do zmiany hasla
+### Params:
+```
+(null)
+```
+### Body:
+```
+phone
+```
+### Response:
+```
+{
+  "error": false,
+  "message": null,
+}
+```
+## Change notification
+```
+PUT /changenotification
+```
+### Params:
+```
+(null)
+```
+### Body:
+```
+notification
+```
+### Response:
+```
+{
+  "error": false,
+  "message": null,
+}
+```
+## Delete type
+```
+DELETE /deletetype
+```
+### Params:
+```
+(null)
+```
+### Body:
+```
+type_id
+```
+### Response:
+```
+{
+  "error": false,
+  "message": null,
+}
+```
+## Day on
+```
+DELETE /dayon
+```
+### Params:
+```
+(null)
+```
+### Body:
+```
+date - albo 2023-11-12 albo 2023-11-12 10:30
+```
+### Response:
+```
+{
+  "error": false,
+  "message": null,
+}
+```
+## Update visit
+```
+PUT /updatevisit
+```
+### Params:
+```
+(null)
+```
+### Body:
+```
+visit_id
+additional_info
+```
+### Response:
+```
+{
+  "error": false,
+  "message": null,
+}
+```

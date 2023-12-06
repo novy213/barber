@@ -130,7 +130,7 @@ $config = [
                 [
                     'pattern' => '/verify',
                     'route' => '/site/verificateacc',
-                    'verb' => 'POST',
+                    'verb' => 'PUT',
                 ],
                 [
                     'pattern' => '/sendsms',
@@ -145,12 +145,12 @@ $config = [
                 [
                     'pattern' => '/changepassword',
                     'route' => '/site/changepass',
-                    'verb' => 'POST',
+                    'verb' => 'PUT',
                 ],
                 [
                     'pattern' => '/changenotification',
                     'route' => '/site/changenot',
-                    'verb' => 'POST',
+                    'verb' => 'PUT',
                 ],
                 [
                     'pattern' => '/send',
@@ -159,12 +159,22 @@ $config = [
                 ],
                 [
                     'pattern' => '/deletetype',
-                    'route' => '/notification/deletetype',
+                    'route' => '/site/deletetype',
                     'verb' => 'DELETE',
                 ],
                 [
                     'pattern' => '/smsforpassword',
-                    'route' => '/notification/smsforpassword',
+                    'route' => '/site/smsforpassword',
+                    'verb' => 'PUT',
+                ],
+                [
+                    'pattern' => '/dayon',
+                    'route' => '/site/dayon',
+                    'verb' => 'DELETE',
+                ],
+                [
+                    'pattern' => '/updatevisit',
+                    'route' => '/site/updatevisit',
                     'verb' => 'PUT',
                 ],
             ],

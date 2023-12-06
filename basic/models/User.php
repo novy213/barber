@@ -56,6 +56,14 @@ class User extends ActiveRecord implements \yii\web\IdentityInterface
             'access_token' => 'Access Token',
         ];
     }
+    public function changePassword($pass){
+        $this->password = password_hash($pass, PASSWORD_BCRYPT);
+        $this->updateAttributes(['password']);
+    }
+    public function verify(){
+        $this->verified = 1;
+        $this->updateAttributes(['verified']);
+    }
     public function ban(){
         $this->ban = 1;
         $this->updateAttributes(['ban']);

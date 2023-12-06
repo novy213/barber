@@ -46,7 +46,7 @@ class m231019_071907_fake_data extends Migration
         $this->insert('type', ['id'=>5, 'label'=>'wlosy', 'time'=>30,'price'=>35]);
         $this->insert('type', ['id'=>6, 'label'=>'broda_razor', 'time'=>30,'price'=>30]);
         $this->insert('type', ['id'=>7, 'label'=>'broda_golarka', 'time'=>30,'price'=>30]);
-        $this->insert('type', ['id'=>8, 'label'=>'offday', 'time'=>0,'price'=>0]);
+        $this->insert('type', ['id'=>8, 'label'=>'dayoff', 'time'=>0,'price'=>0]);
         $this->insert('type', ['id'=>9, 'label'=>'buzz cut', 'time'=>30,'price'=>20]);
         $this->insert('additional_services', ['id'=>1, 'label'=>'razor', 'price'=>5, 'time'=>0]);
         $this->insert('additional_services', ['id'=>2, 'label'=>'coloring', 'price'=>15, 'time'=>15]);
@@ -63,7 +63,6 @@ class m231019_071907_fake_data extends Migration
         $this->delete('barber', []);
         $this->delete('type', []);
         $this->delete('visit', []);
-        $this->delete('ban', []);
         $this->delete('additional_services', []);
         $this->delete('additional_type', []);
         $this->delete('code', []);

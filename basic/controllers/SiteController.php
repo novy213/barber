@@ -467,6 +467,14 @@ class SiteController extends \app\components\Controller
             ];
         }
         $date = $post->date;
+        $visitDate = new \DateTime($date);
+        $postMin = $visitDate->format('i');
+        if ($postMin != '00' && $postMin != '15' && $postMin != '30' && $postMin != '45') {
+            return [
+                'error' => true,
+                'message_user' => 'data jest w niepoprawnym formacie',
+            ];
+        }
         $test = array();
         $allDay = false;
         if(strlen($date)<11){
@@ -758,11 +766,10 @@ class SiteController extends \app\components\Controller
         if(is_null($user)){
             return [
                 'error' => TRUE,
-                'message' => 'try again later',
+                'message' => 'code is incorrect',
             ];
         }
-        $user->verified = 1;
-        $user->save();
+        $user->verify();
         $code->delete();
         return [
             'error' => FALSE,
@@ -785,8 +792,7 @@ class SiteController extends \app\components\Controller
                 'message' => 'code is incorrect',
             ];
         }
-        $user->password = $post->password;
-        $user->save();
+        $user->changePassword($post->password);
         $code->delete();
         return [
             'error' => FALSE,
@@ -881,7 +887,75 @@ class SiteController extends \app\components\Controller
                 'message' => 'this type does not exist',
             ];
         }
+        if($type->label == 'dayoff'){
+            return [
+                'error' => TRUE,
+                'message' => 'nie mozna usunac tego typu',
+            ];
+        }
         $type->delete();
+        return [
+            'error' => FALSE,
+            'message' => NULL,
+        ];
+    }
+    public function actionDayon(){
+        $user = Yii::$app->user->identity;
+        if($user->admin==0){
+            return [
+                'error' => TRUE,
+                'message' => 'you are not an admin',
+            ];
+        }
+        $post = $this->getJsonInput();
+        if(!isset($post->date)){
+            return[
+                'error'=>TRUE,
+                'message'=>'Date is required'
+            ];
+        }
+        $formattedDate = \DateTime::createFromFormat('Y-m-d', $post->date)->format('Y-m-d');
+        $dayoff = Type::find()->andWhere(['label'=>'dayoff'])->one();
+        Visit::deleteAll("date LIKE '$formattedDate%' AND type_id = $dayoff->id");
+        return [
+            'error' => FALSE,
+            'message' => NULL,
+        ];
+    }
+    public function actionUpdatevisit(){
+        $user = Yii::$app->user->identity;
+        if(!$user->verified){
+            return [
+                'error' => true,
+                'message' => 'ten uzytkownik nie jest zweryfikowany',
+            ];
+        }
+        $post = $this->getJsonInput();
+        if(!isset($post->visit_id)){
+            return [
+                'error' => true,
+                'message' => 'id wizyty jest wymagane',
+            ];
+        }
+        $visit = Visit::find()->andWhere(['id'=>$post->visit_id])->one();
+        if(!$user->admin && $visit->user!=$user){
+            return [
+                'error' => true,
+                'message' => 'nie mozesz edytowac tej wizyty',
+            ];
+        }
+        $visits = null;
+        if(!is_null($visit->group)){
+            $visits = Visit::find()->andWhere(['group'=>$visit->group])->all();
+            $visit = Visit::find()->andWhere(['id'=>$visits[0]->group])->one();
+        }
+        else if(is_null($visit->group)){
+            $visits = $visit->visits;
+        }
+        for($i=0;$i<count($visits);$i++){
+            $visits[$i]->updateVisit($post->additional_info);
+        }
+        $visit->updateVisit($post->additional_info);
         return [
             'error' => FALSE,
             'message' => NULL,
