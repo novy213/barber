@@ -65,6 +65,10 @@ class Visit extends \yii\db\ActiveRecord
             'group' => 'Group',
         ];
     }
+    public function notify(){
+        $this->notified = 1;
+        $this->updateAttributes(['notified']);
+    }
     public function updateVisit($additional_info){
         $this->additional_info = $additional_info;
         $this->updateAttributes(['additional_info']);

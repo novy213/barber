@@ -29,9 +29,9 @@ class m231017_065804_create_table extends Migration
             'id' => $this->primaryKey()->notNull()->unique(),
             'date' => $this->string()->notNull(),
             'barber_id' => $this->integer()->notNull(),
-            'type_id' => $this->integer()->notNull(),
+            'type_id' => $this->integer(),
             'additional_info' => $this->string(),
-            'user_id' => $this->integer()->notNull(),
+            'user_id' => $this->integer(),
             'notified' => $this->boolean()->defaultValue(0)->notNull(),
             'group' => $this->integer(),
         ]);

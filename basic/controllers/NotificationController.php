@@ -14,19 +14,9 @@ class NotificationController extends \app\components\Controller
 {
     public function actionSendnoti(){
         date_default_timezone_set('Europe/Warsaw');
-        $visits = Visit::find()->where(['>', 'date', new Expression('DATE_SUB(NOW(), INTERVAL 1 HOUR)')])->all();
+        $visits = Visit::find()->where(['>', 'date', new Expression('DATE_SUB(NOW(), INTERVAL 1 HOUR)')])->andWhere(['group'=>null])->all();
         for($i=0;$i<count($visits);$i++){
             $user = $visits[$i]->user;
-            $type = $visits[$i]->type;
-            $time = $type->time/15;
-            //stary kod, tutaj nalezy sprawdzic czy wizyta ma ustaiowne group i jesli ma to trzeba zeminic notified=1 i zrobić continue
-            /*for($j=1;$j<$time;$j++){
-                if($i+$j < count($visits))
-                if($visits[$i+$j]->user == $user){
-                    $visits[$i+$j]->notified = true;
-                    $visits[$i+$j]->update();
-                }
-            }*/
             $date = new DateTime($visits[$i]->date);
             $dateTime = new DateTime();
             $timestamp1 = $date->getTimestamp();
@@ -34,12 +24,14 @@ class NotificationController extends \app\components\Controller
             $diffInSeconds = $timestamp1 - $timestamp2;
             $minutesDifference = floor($diffInSeconds / 60);
             if($minutesDifference<=$user->notification && !$visits[$i]->notified){
-                $visits[$i]->notified = true;
-                $visits[$i]->update();
+                $visits[$i]->notify();
+                $visitsGroup = $visits[$i]->visits;
+                for($j=0;$j<count($visitsGroup);$j++){
+                    $visitsGroup[$j]->notify();
+                }
                 $not = $user->notification;
                 $token = "FdhwGf65s8Jsth1yrWo2TvvvwhgMxG4IrLo5XKwy";
-                $formatter = new Formatter();
-                $godzina = $formatter->asTime($date, 'H:i');
+                $godzina = $dateTime->format('Y-m-d H:i');
                 $mes = 'Twoja wizyta w KBF Barber Shop odbedzie sie za '.$minutesDifference.' minut, o godzinie '. $godzina;
                 if($not>30){
                     $not/=60;
