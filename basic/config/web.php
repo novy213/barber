@@ -177,6 +177,11 @@ $config = [
                     'route' => '/site/updatevisit',
                     'verb' => 'PUT',
                 ],
+                [
+                    'pattern' => '/pushnoti',
+                    'route' => '/push/pushnoti',
+                    'verb' => 'POST',
+                ],
             ],
         ],
     ],

@@ -5,6 +5,7 @@
       <sourceFolder url="file://$MODULE_DIR$/basic/tests" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/tests" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/spec" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/basic/spec" isTestSource="true" />
       <excludeFolder url="file://$MODULE_DIR$/basic/vendor/behat/gherkin" />
       <excludeFolder url="file://$MODULE_DIR$/basic/vendor/bower-asset/bootstrap" />
       <excludeFolder url="file://$MODULE_DIR$/basic/vendor/bower-asset/inputmask" />
@@ -23,8 +24,6 @@
       <excludeFolder url="file://$MODULE_DIR$/basic/vendor/codeception/verify" />
       <excludeFolder url="file://$MODULE_DIR$/basic/vendor/composer" />
       <excludeFolder url="file://$MODULE_DIR$/basic/vendor/doctrine/instantiator" />
-      <excludeFolder url="file://$MODULE_DIR$/basic/vendor/doctrine/lexer" />
-      <excludeFolder url="file://$MODULE_DIR$/basic/vendor/egulias/email-validator" />
       <excludeFolder url="file://$MODULE_DIR$/basic/vendor/ezyang/htmlpurifier" />
       <excludeFolder url="file://$MODULE_DIR$/basic/vendor/fakerphp/faker" />
       <excludeFolder url="file://$MODULE_DIR$/basic/vendor/guzzlehttp/psr7" />
@@ -45,7 +44,6 @@
       <excludeFolder url="file://$MODULE_DIR$/basic/vendor/psr/event-dispatcher" />
       <excludeFolder url="file://$MODULE_DIR$/basic/vendor/psr/http-factory" />
       <excludeFolder url="file://$MODULE_DIR$/basic/vendor/psr/http-message" />
-      <excludeFolder url="file://$MODULE_DIR$/basic/vendor/psr/log" />
       <excludeFolder url="file://$MODULE_DIR$/basic/vendor/psy/psysh" />
       <excludeFolder url="file://$MODULE_DIR$/basic/vendor/ralouphie/getallheaders" />
       <excludeFolder url="file://$MODULE_DIR$/basic/vendor/sebastian/cli-parser" />
@@ -72,14 +70,10 @@
       <excludeFolder url="file://$MODULE_DIR$/basic/vendor/symfony/event-dispatcher" />
       <excludeFolder url="file://$MODULE_DIR$/basic/vendor/symfony/event-dispatcher-contracts" />
       <excludeFolder url="file://$MODULE_DIR$/basic/vendor/symfony/finder" />
-      <excludeFolder url="file://$MODULE_DIR$/basic/vendor/symfony/mailer" />
-      <excludeFolder url="file://$MODULE_DIR$/basic/vendor/symfony/mime" />
       <excludeFolder url="file://$MODULE_DIR$/basic/vendor/symfony/polyfill-ctype" />
       <excludeFolder url="file://$MODULE_DIR$/basic/vendor/symfony/polyfill-intl-grapheme" />
-      <excludeFolder url="file://$MODULE_DIR$/basic/vendor/symfony/polyfill-intl-idn" />
       <excludeFolder url="file://$MODULE_DIR$/basic/vendor/symfony/polyfill-intl-normalizer" />
       <excludeFolder url="file://$MODULE_DIR$/basic/vendor/symfony/polyfill-mbstring" />
-      <excludeFolder url="file://$MODULE_DIR$/basic/vendor/symfony/polyfill-php72" />
       <excludeFolder url="file://$MODULE_DIR$/basic/vendor/symfony/service-contracts" />
       <excludeFolder url="file://$MODULE_DIR$/basic/vendor/symfony/string" />
       <excludeFolder url="file://$MODULE_DIR$/basic/vendor/symfony/var-dumper" />
@@ -91,11 +85,10 @@
       <excludeFolder url="file://$MODULE_DIR$/basic/vendor/yiisoft/yii2-debug" />
       <excludeFolder url="file://$MODULE_DIR$/basic/vendor/yiisoft/yii2-faker" />
       <excludeFolder url="file://$MODULE_DIR$/basic/vendor/yiisoft/yii2-gii" />
-      <excludeFolder url="file://$MODULE_DIR$/basic/vendor/yiisoft/yii2-symfonymailer" />
-      <excludeFolder url="file://$MODULE_DIR$/basic/vendor/codeception/phpunit-wrapper" />
-      <excludeFolder url="file://$MODULE_DIR$/basic/vendor/doctrine/deprecations" />
-      <excludeFolder url="file://$MODULE_DIR$/basic/vendor/symfony/polyfill-php73" />
-      <excludeFolder url="file://$MODULE_DIR$/basic/vendor/symfony/polyfill-php80" />
+      <excludeFolder url="file://$MODULE_DIR$/basic/vendor/guzzlehttp/guzzle" />
+      <excludeFolder url="file://$MODULE_DIR$/basic/vendor/guzzlehttp/promises" />
+      <excludeFolder url="file://$MODULE_DIR$/basic/vendor/psr/http-client" />
+      <excludeFolder url="file://$MODULE_DIR$/basic/vendor/redjanym/php-firebase-cloud-messaging" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
