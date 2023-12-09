@@ -5,7 +5,6 @@
       <sourceFolder url="file://$MODULE_DIR$/basic/tests" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/tests" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/spec" isTestSource="true" />
-      <sourceFolder url="file://$MODULE_DIR$/basic/spec" isTestSource="true" />
       <excludeFolder url="file://$MODULE_DIR$/basic/vendor/behat/gherkin" />
       <excludeFolder url="file://$MODULE_DIR$/basic/vendor/bower-asset/bootstrap" />
       <excludeFolder url="file://$MODULE_DIR$/basic/vendor/bower-asset/inputmask" />
