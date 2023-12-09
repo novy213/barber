@@ -1,4 +1,4 @@
-FROM php:8.1-apache
+FROM php:8.2-apache
 
 ENV LIB_DEPS="zlib1g-dev libzip-dev libpng-dev"
 ENV ICU_RELEASE=61.1
