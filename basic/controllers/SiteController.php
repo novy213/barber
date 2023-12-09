@@ -87,6 +87,9 @@ class SiteController extends \app\components\Controller
         if (isset($post->last_name)) {
             $user->last_name = $post->last_name;
         }
+        if (isset($post->notification_token)) {
+            $user->notification_token = $post->notification_token;
+        }
         if (isset($post->phone)) {
             $user->phone = 48;
             $user->phone.=$post->phone;
@@ -959,6 +962,21 @@ class SiteController extends \app\components\Controller
         return [
             'error' => FALSE,
             'message' => NULL,
+        ];
+    }
+    public function actionGetbarbers(){
+        $user = Yii::$app->user->identity;
+        if(!$user->verified){
+            return [
+                'error' => true,
+                'message' => 'ten uzytkownik nie jest zweryfikowany',
+            ];
+        }
+        $barbers = Barber::find()->all();
+        return [
+            'error' => false,
+            'message' => null,
+            'barbers' => $barbers
         ];
     }
 }

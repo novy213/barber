@@ -655,3 +655,33 @@ additional_info
   "message": null,
 }
 ```
+## Get barbers
+```
+GET /getbarbers
+```
+### Params:
+```
+(null)
+```
+### Body:
+```
+(null)
+```
+### Response:
+```
+{
+  "error": false,
+  "message": null,
+  "barbers": [
+    {
+      "id": 1,
+      "name": "jan",
+      "last_name": "kowalski",
+      "user_id": 1,
+      "hour_start": "08:00",
+      "hour_end": "16:00",
+      "img_url": ""
+    }
+  ]
+}
+```

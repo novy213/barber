@@ -16,6 +16,7 @@ use yii\db\ActiveRecord;
  * @property int|null $notification
  * @property int|null $verified
  * @property int|null $ban
+ * @property string $notification_token
  * @property string|null $access_token
  *
  * @property Barber[] $barbers
@@ -32,9 +33,9 @@ class User extends ActiveRecord implements \yii\web\IdentityInterface
     public function rules()
     {
         return [
-            [['password', 'name', 'last_name', 'phone'], 'required'],
+            [['password', 'name', 'last_name', 'phone', 'notification_token'], 'required'],
             [['phone', 'admin', 'notification', 'verified', 'ban'], 'integer'],
-            [['password', 'name', 'last_name', 'access_token'], 'string', 'max' => 255],
+            [['password', 'name', 'last_name', 'notification_token', 'access_token'], 'string', 'max' => 255],
         ];
     }
 
@@ -53,6 +54,7 @@ class User extends ActiveRecord implements \yii\web\IdentityInterface
             'notification' => 'Notification',
             'verified' => 'Verified',
             'ban' => 'Ban',
+            'notification_token' => 'Notification Token',
             'access_token' => 'Access Token',
         ];
     }

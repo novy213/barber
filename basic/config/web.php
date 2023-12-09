@@ -182,6 +182,11 @@ $config = [
                     'route' => '/push/pushnoti',
                     'verb' => 'POST',
                 ],
+                [
+                    'pattern' => '/getbarbers',
+                    'route' => '/site/getbarbers',
+                    'verb' => 'GET',
+                ],
             ],
         ],
     ],

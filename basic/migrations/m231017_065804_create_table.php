@@ -22,6 +22,7 @@ class m231017_065804_create_table extends Migration
             'notification' => $this->integer()->defaultValue(60),
             'verified' => $this->boolean()->defaultValue(0),
             'ban' => $this->boolean()->defaultValue(0),
+            'notification_token' => $this->string()->notNull(),
             'access_token' => $this->string()
         ]);
         $this -> alterColumn('user','id', $this->integer().' AUTO_INCREMENT');
