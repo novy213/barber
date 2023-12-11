@@ -8,12 +8,14 @@ use app\models\Ban;
 use app\models\Barber;
 use app\models\Code;
 use app\models\Price;
+use app\models\PushNotification;
 use app\models\SendSMS;
 use app\models\Type;
 use app\models\User;
 use app\models\Visit;
 use app\models\VisitAdditional;
 use Cassandra\Date;
+use ExpoSDK\ExpoMessage;
 use PhpParser\Node\Expr\Print_;
 use Symfony\Component\Finder\Finder;
 use Yii;
@@ -393,11 +395,20 @@ class SiteController extends \app\components\Controller
         else {
             $visitGroup = Visit::find()->andWhere(['id'=>$visit->group])->one();
             $visit = $visitGroup;
+            $userVisit = $visit->user;
+            $mes = new ExpoMessage();
+            $mes->setBody('Twoja wizyta o godzinie '.$visitGroup->date.' zostala odwolana');
+            $mes->setTitle('Odwolana wizyta');
+            PushNotification::pushNoti($userVisit->notification_token, $mes);
             $visitGroup->delete();
         }
         if($user->admin==1 && $visit->user!=$user){
             $token = "FdhwGf65s8Jsth1yrWo2TvvvwhgMxG4IrLo5XKwy";
             $userVisit = $visit->user;
+            $mes = new ExpoMessage();
+            $mes->setBody('Twoja wizyta o godzinie '.$visit->date.' zostala odwolana');
+            $mes->setTitle('Odwolana wizyta');
+            PushNotification::pushNoti($userVisit->notification_token, $mes);
             $params = array(
                 'to' => $userVisit->phone,
                 'from' => 'Test',
@@ -462,6 +473,7 @@ class SiteController extends \app\components\Controller
                 'message' => 'you are not an admin',
             ];
         }
+        $mes = new ExpoMessage();
         $post = $this->getJsonInput();
         if(!isset($post->date)){
             return[
@@ -494,6 +506,9 @@ class SiteController extends \app\components\Controller
                 $user = $visits[$i]->user;
                 $liczba = 0;
                 if($visits[$i]->group==null){
+                    $mes->setBody('Twoja wizyta o godzinie '.$visits[$i]->date.' zostala odwolana');
+                    $mes->setTitle('Odwolana wizyta');
+                    PushNotification::pushNoti($user->notification_token, $mes);
                     $params = array(
                         'to' => $user->phone,
                         'from' => 'Test',
@@ -505,6 +520,9 @@ class SiteController extends \app\components\Controller
                 }
                 else if($visits[$i]->group!=null){
                     $visitGroup = $visits[$i];
+                    $mes->setBody('Twoja wizyta o godzinie '.$visitGroup->date.' zostala odwolana');
+                    $mes->setTitle('Odwolana wizyta');
+                    PushNotification::pushNoti($user->notification_token, $mes);
                     $params = array(
                         'to' => $user->phone,
                         'from' => 'Test',
@@ -550,8 +568,12 @@ class SiteController extends \app\components\Controller
         else{
             $dayoff = Type::find()->andWhere(['label'=>'dayoff'])->one();
             $oldVisit = Visit::find()->andWhere(['date'=>$date])->one();
+            $user = $oldVisit->user;
             if($oldVisit!=null){
                 if($oldVisit->group==null){
+                    $mes->setBody('Twoja wizyta o godzinie '.$oldVisit->date.' zostala odwolana');
+                    $mes->setTitle('Odwolana wizyta');
+                    PushNotification::pushNoti($user->notification_token, $mes);
                     $params = array(
                         'to' => $user->phone,
                         'from' => 'Test',
@@ -563,6 +585,9 @@ class SiteController extends \app\components\Controller
                 }
                 else if($oldVisit->group!=null){
                     $visitGroup = $oldVisit->group0;
+                    $mes->setBody('Twoja wizyta o godzinie '.$visitGroup->date.' zostala odwolana');
+                    $mes->setTitle('Odwolana wizyta');
+                    PushNotification::pushNoti($user->notification_token, $mes);
                     $params = array(
                         'to' => $user->phone,
                         'from' => 'Test',
