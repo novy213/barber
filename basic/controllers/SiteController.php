@@ -189,6 +189,7 @@ class SiteController extends \app\components\Controller
             $visits[] = [
                 'date' => $day . " " . $hours . ":" . $minutes,
                 'status' => 0,
+                'visit_id' => null,
                 'name' => null,
                 'last_name' => null,
                 'label' => null,
@@ -204,6 +205,7 @@ class SiteController extends \app\components\Controller
                 if (str_contains($visits[$i]['date'], $visit[$j]['date'])) {
                     $visits[$i]['status'] = 1;
                     $user = $visit[$j]->user;
+                    $visits[$i]['visit_id'] = $visit[$j]->id;
                     $visits[$i]['name'] = $user->name;
                     $visits[$i]['last_name'] = $user->last_name;
                     $visits[$i]['phone'] = $user->phone;
