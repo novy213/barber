@@ -22,7 +22,7 @@ class m231017_065804_create_table extends Migration
             'notification' => $this->integer()->defaultValue(60),
             'verified' => $this->boolean()->defaultValue(0),
             'ban' => $this->boolean()->defaultValue(0),
-            'notification_token' => $this->string()->notNull(),
+            'notification_token' => $this->string(),
             'access_token' => $this->string()
         ]);
         $this -> alterColumn('user','id', $this->integer().' AUTO_INCREMENT');
@@ -79,6 +79,30 @@ class m231017_065804_create_table extends Migration
             'user_id' => $this->integer()->notNull(),
         ]);
         $this -> alterColumn('code','id', $this->integer().' AUTO_INCREMENT');
+        $this->createTable('message', [
+            'id' => $this->primaryKey()->notNull()->unique(),
+            'message' => $this->string()->notNull(),
+            'barber_id' => $this->integer()->notNull(),
+            'user_id' => $this->integer()->notNull(),
+            'date' => $this->string()->notNull(),
+        ]);
+        $this -> alterColumn('message','id', $this->integer().' AUTO_INCREMENT');
+        $this->addForeignKey(
+            'fk-message-barber',
+            'message',
+            'barber_id',
+            'barber',
+            'id',
+            'CASCADE'
+        );
+        $this->addForeignKey(
+            'fk-message-user',
+            'message',
+            'user_id',
+            'user',
+            'id',
+            'CASCADE'
+        );
         $this->addForeignKey(
             'fk-visit-group',
             'visit',
@@ -166,6 +190,8 @@ class m231017_065804_create_table extends Migration
      */
     public function safeDown()
     {
+        $this->dropForeignKey('fk-message-user', 'message');
+        $this->dropForeignKey('fk-message-barber', 'message');
         $this->dropForeignKey('fk-visit-additional', 'visit_additional');
         $this->dropForeignKey('fk-additional-visit', 'visit_additional');
         $this->dropForeignKey('fk-barber-user', 'barber');
@@ -182,6 +208,7 @@ class m231017_065804_create_table extends Migration
         $this->dropTable('code');
         $this->dropTable('user');
         $this->dropTable('visit');
+        $this->dropTable('message');
         $this->dropTable('type');
         $this->dropTable('barber');
     }

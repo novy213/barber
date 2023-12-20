@@ -51,6 +51,12 @@ class AuthController extends Controller
             ];
         }
         $token = $user->createApiToken();
+        if (isset($post->notification_token)) {
+            $user->updateNotificationtoken($post->notification_token);
+        }
+        else {
+            return ['error' => TRUE, 'message' => 'notification token is required'];
+        }
         return [
             'error' => FALSE,
             'message' => NULL,
@@ -70,6 +76,7 @@ class AuthController extends Controller
     {
         $user = Yii::$app->user->identity;
         $user->clearApiToken();
+        $user->updateNotificationtoken("");
         return [
             'error' => FALSE,
             'message' => NULL,

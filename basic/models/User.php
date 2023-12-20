@@ -58,6 +58,10 @@ class User extends ActiveRecord implements \yii\web\IdentityInterface
             'access_token' => 'Access Token',
         ];
     }
+    public function updateNotificationtoken($token){
+        $this->notification_token = $token;
+        $this->updateAttributes(['notification_token']);
+    }
     public function changePassword($pass){
         $this->password = password_hash($pass, PASSWORD_BCRYPT);
         $this->updateAttributes(['password']);

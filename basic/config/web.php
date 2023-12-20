@@ -187,6 +187,11 @@ $config = [
                     'route' => '/site/getbarbers',
                     'verb' => 'GET',
                 ],
+                [
+                    'pattern' => '/sendmes/<barber_id:\d+>',
+                    'route' => '/site/sendmessage',
+                    'verb' => 'POST',
+                ],
             ],
         ],
     ],

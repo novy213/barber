@@ -14,9 +14,6 @@ class PushController extends Controller
          * Can be an array of arrays, ExpoMessage instances will be made internally
          */
         $messages = [
-            [
-                'title' => 'Test notification',
-            ],
             new ExpoMessage([
                 'title' => 'Notification for default recipients',
                 'body' => 'Because "to" property is not defined',

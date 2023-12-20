@@ -7,6 +7,7 @@ use app\models\AdditionalType;
 use app\models\Ban;
 use app\models\Barber;
 use app\models\Code;
+use app\models\Message;
 use app\models\Price;
 use app\models\PushNotification;
 use app\models\SendSMS;
@@ -15,6 +16,7 @@ use app\models\User;
 use app\models\Visit;
 use app\models\VisitAdditional;
 use Cassandra\Date;
+use ExpoSDK\Expo;
 use ExpoSDK\ExpoMessage;
 use PhpParser\Node\Expr\Print_;
 use Symfony\Component\Finder\Finder;
@@ -88,9 +90,6 @@ class SiteController extends \app\components\Controller
         }
         if (isset($post->last_name)) {
             $user->last_name = $post->last_name;
-        }
-        if (isset($post->notification_token)) {
-            $user->notification_token = $post->notification_token;
         }
         if (isset($post->phone)) {
             $user->phone = 48;
@@ -1003,5 +1002,53 @@ class SiteController extends \app\components\Controller
             'message' => null,
             'barbers' => $barbers
         ];
+    }
+    public function actionSendmessage($barber_id){
+        $user = Yii::$app->user->identity;
+        if(!$user->verified){
+            return [
+                'error' => true,
+                'message' => 'ten uzytkownik nie jest zweryfikowany',
+            ];
+        }
+        $post = $this->getJsonInput();
+        $barber = Barber::find()->andWhere(['id'=>$barber_id])->one();
+        $barber_user = $barber->user;
+        if(!isset($post->message)){
+            return [
+                'error' => true,
+                'message' => 'tresc wiadomosci jest wymagana',
+            ];
+        }
+        $message = $post->message;
+        $mes = new Message();
+        $mes->message = $message;
+        $mes->user_id = $user->id;
+        $mes->barber_id = $barber->id;
+        $mes->date = \date('Y-m-d H:s');
+        if($mes->validate()){
+            $mes->save();
+            $messages = [
+                new ExpoMessage([
+                    'title' => 'Nowa wiadomosc od '.$user->name.' '.$user->last_name,
+                    'body' => $mes->message,
+                ]),
+            ];
+            $defaultRecipients[] = $barber_user->notification_token;
+            (new Expo)->send($messages)->to($defaultRecipients)->push();
+            return [
+                'error' => false,
+                'message' => null,
+            ];
+        }
+        else{
+            return [
+                'error' => true,
+                'message' => $mes->getErrorSummary(false),
+            ];
+        }
+    }
+    public function actionGetchat(){
+        
     }
 }
