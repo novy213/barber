@@ -3,6 +3,7 @@
 namespace app\controllers;
 
 use app\models\Ban;
+use app\models\Barber;
 use app\models\Teacher;
 use Yii;
 
@@ -51,6 +52,11 @@ class AuthController extends Controller
             ];
         }
         $token = $user->createApiToken();
+        $barber = Barber::find()->andWhere(['user_id'=>$user->id])->one();
+        $barber_id = null;
+        if(!is_null($barber)) {
+            $barber_id = $barber->id;
+        }
         if (isset($post->notification_token)) {
             $user->updateNotificationtoken($post->notification_token);
         }
@@ -64,6 +70,7 @@ class AuthController extends Controller
             'userId' => $user->id,
             'admin' => $user->admin,
             'verified' => $user->verified,
+            'barber_id'=>$barber_id
         ];
     }
     /**

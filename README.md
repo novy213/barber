@@ -18,7 +18,8 @@ POST /
 ```
 {
   "phone": "123456789",
-  "password": "test"
+  "password": "test",
+  "notification_token": "Expo bla bla bla"
 }
 ```
 ### Response: 
