@@ -29,6 +29,7 @@ use yii\filters\VerbFilter;
 use app\models\LoginForm;
 use app\models\ContactForm;
 use function PHPUnit\Framework\stringContains;
+use const Grpc\CHANNEL_TRANSIENT_FAILURE;
 
 class SiteController extends \app\components\Controller
 {
@@ -1003,7 +1004,7 @@ class SiteController extends \app\components\Controller
             'barbers' => $barbers
         ];
     }
-    public function actionSendmessage($barber_id){
+    public function actionSendmessage(){
         $user = Yii::$app->user->identity;
         if(!$user->verified){
             return [
@@ -1012,20 +1013,37 @@ class SiteController extends \app\components\Controller
             ];
         }
         $post = $this->getJsonInput();
-        $barber = Barber::find()->andWhere(['id'=>$barber_id])->one();
-        $barber_user = $barber->user;
+        $barber = null;
+        if(!isset($post->message)){
+            return [
+                'error' => true,
+                'message' => 'wiadomosc jest wymagana',
+            ];
+        }
+        $message = $post->message;
+        $barber_user = null;
+        $mes = new Message();
+        $mes->message = $message;
+        $mes->date = \date('Y-m-d H:i');
+        if(isset($post->barber_id)){
+            $barber = Barber::find()->andWhere(['id'=>$post->barber_id])->one();
+            $mes->user_id = $user->id;
+            $mes->barber_id = $barber->id;
+            $barber_user = $barber->user;
+        }
+        else if(isset($post->user_id)){
+            $barber = Barber::find()->andWhere(['user_id'=>$user->id])->one();
+            $mes->user_id = $post->user_id;
+            $mes->barber_id = $barber->id;
+            $barber_user = User::find()->andWhere(['id'=>$post->user_id])->one();
+        }
+
         if(!isset($post->message)){
             return [
                 'error' => true,
                 'message' => 'tresc wiadomosci jest wymagana',
             ];
         }
-        $message = $post->message;
-        $mes = new Message();
-        $mes->message = $message;
-        $mes->user_id = $user->id;
-        $mes->barber_id = $barber->id;
-        $mes->date = \date('Y-m-d H:s');
         if($mes->validate()){
             $mes->save();
             $messages = [
@@ -1034,8 +1052,10 @@ class SiteController extends \app\components\Controller
                     'body' => $mes->message,
                 ]),
             ];
-            $defaultRecipients[] = $barber_user->notification_token;
-            (new Expo)->send($messages)->to($defaultRecipients)->push();
+            if(isset($barber_user->notification_token)) {
+                $defaultRecipients[] = $barber_user->notification_token;
+                (new Expo)->send($messages)->to($defaultRecipients)->push();
+            }
             return [
                 'error' => false,
                 'message' => null,
@@ -1048,7 +1068,19 @@ class SiteController extends \app\components\Controller
             ];
         }
     }
-    public function actionGetchat(){
-        
+    public function actionGetchat($barber_id){
+        $user = Yii::$app->user->identity;
+        if(!$user->verified){
+            return [
+                'error' => true,
+                'message' => 'ten uzytkownik nie jest zweryfikowany',
+            ];
+        }
+        $chat = Message::find()->andWhere(['user_id'=>$user->id])->andWhere(['barber_id'=>$barber_id])->all();
+        return [
+            'error' => false,
+            'message' => null,
+            'chat'=>$chat
+        ];
     }
 }

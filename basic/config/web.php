@@ -188,8 +188,13 @@ $config = [
                     'verb' => 'GET',
                 ],
                 [
-                    'pattern' => '/sendmes/<barber_id:\d+>',
+                    'pattern' => '/sendmes',
                     'route' => '/site/sendmessage',
+                    'verb' => 'POST',
+                ],
+                [
+                    'pattern' => '/getchat/<barber_id:\d+>',
+                    'route' => '/site/getchat',
                     'verb' => 'POST',
                 ],
             ],

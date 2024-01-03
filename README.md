@@ -686,3 +686,23 @@ GET /getbarbers
   ]
 }
 ```
+## Send message
+```
+POST /sendmessage
+```
+### Params:
+```
+(null)
+```
+### Body:
+```
+message
+barber_id or user_id - zalezy co chcesz
+```
+### Response:
+```
+{
+  "error": false,
+  "message": null,
+}
+```
