@@ -193,7 +193,7 @@ $config = [
                     'verb' => 'POST',
                 ],
                 [
-                    'pattern' => '/getchat/<barber_id:\d+>',
+                    'pattern' => '/getchat',
                     'route' => '/site/getchat',
                     'verb' => 'POST',
                 ],

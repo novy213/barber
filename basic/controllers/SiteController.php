@@ -1068,7 +1068,7 @@ class SiteController extends \app\components\Controller
             ];
         }
     }
-    public function actionGetchat($barber_id){
+    public function actionGetchat(){
         $user = Yii::$app->user->identity;
         if(!$user->verified){
             return [
@@ -1076,7 +1076,15 @@ class SiteController extends \app\components\Controller
                 'message' => 'ten uzytkownik nie jest zweryfikowany',
             ];
         }
-        $chat = Message::find()->andWhere(['user_id'=>$user->id])->andWhere(['barber_id'=>$barber_id])->all();
+        $post = $this->getJsonInput();
+        $chat = null;
+        if(isset($post->barber_id)){
+            $chat = Message::find()->andWhere(['user_id'=>$user->id])->andWhere(['barber_id'=>$post->barber_id])->all();
+        }
+        else if(isset($post->user_id)){
+            $barber = Barber::find()->andWhere(['user_id'=>$user->id])->one();
+            $chat = Message::find()->andWhere(['user_id'=>$post->user_id])->andWhere(['barber_id'=>$barber->id])->all();
+        }
         return [
             'error' => false,
             'message' => null,

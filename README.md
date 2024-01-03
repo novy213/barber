@@ -697,12 +697,68 @@ POST /sendmessage
 ### Body:
 ```
 message
-barber_id or user_id - zalezy co chcesz
+barber_id or user_id - jak chcesz wyslac wiadomosc od barbera do uzytkownika to podajesz user_id(uzytkownika do ktorego chesz wyslac wiadomosc) a jesli chcesz wyslac wiadomosc od uzytkownika do barbera to podajesz barber_id(id barbera do ktorego chcesz wyslac) 
 ```
 ### Response:
 ```
 {
   "error": false,
   "message": null,
+}
+```
+## Get chat
+```
+GET /getchat/{barber_id}
+```
+### Params:
+```
+(null)
+```
+### Body:
+```
+(null)
+```
+### Response:
+```
+{
+  "error": false,
+  "message": null,
+  "chat": [
+    {
+      "id": 14,
+      "message": "sirema",
+      "barber_id": 1,
+      "user_id": 2,
+      "date": "2024-01-03 17:01:09"
+    },
+    {
+      "id": 15,
+      "message": "sirema",
+      "barber_id": 1,
+      "user_id": 2,
+      "date": "2024-01-03 17:01"
+    },
+    {
+      "id": 16,
+      "message": "sirema123",
+      "barber_id": 1,
+      "user_id": 2,
+      "date": "2024-01-03 17:01"
+    },
+    {
+      "id": 17,
+      "message": "siema co tam ",
+      "barber_id": 1,
+      "user_id": 2,
+      "date": "2024-01-03 17:18"
+    },
+    {
+      "id": 18,
+      "message": "siema co tam ",
+      "barber_id": 1,
+      "user_id": 2,
+      "date": "2024-01-03 17:18"
+    }
+  ]
 }
 ```

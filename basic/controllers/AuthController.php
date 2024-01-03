@@ -83,7 +83,7 @@ class AuthController extends Controller
     {
         $user = Yii::$app->user->identity;
         $user->clearApiToken();
-        $user->updateNotificationtoken("");
+        $user->updateNotificationtoken(null);
         return [
             'error' => FALSE,
             'message' => NULL,
