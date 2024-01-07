@@ -1147,7 +1147,8 @@ class SiteController extends \app\components\Controller
                         'last_message' => $messages[$i-1]->message,
                         'name' => $userB->name,
                         'last_name' => $userB->last_name,
-                        'date'=>$messages[$i-1]->date
+                        'date'=>$messages[$i-1]->date,
+                        'readed'=>$messages[$i-1]->readed
                     ];
                 }
                 else if(!in_array($messages[$i]->barber_id, array_column($chats, 'barber_id'))){
@@ -1157,7 +1158,8 @@ class SiteController extends \app\components\Controller
                         'last_message' => $messages[$i]->message,
                         'name' => $userB->name,
                         'last_name' => $userB->last_name,
-                        'date'=>$messages[$i]->date
+                        'date'=>$messages[$i]->date,
+                        'readed'=>$messages[$i]->readed
                     ];
                 }
             }
