@@ -45,7 +45,7 @@ if(!isset($_SESSION['loged'])){
         <br><br>
         <label for="file">awatar pracownika: </label>
         <input type="file" name="file" id="file"> <br><br>
-        <input type="submit" name="add" value="Dodaj barbera">
+        <input type="submit" name="add" value="Dodaj pracownika">
     </form>
     <h2>Usun pracownika</h2>
     <form method="post" style="border: 1px solid black;text-align: center">

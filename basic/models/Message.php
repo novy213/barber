@@ -12,6 +12,7 @@ use Yii;
  * @property int $barber_id
  * @property int $user_id
  * @property string $date
+ * @property bool $readed
  *
  * @property Barber $barber
  * @property User $user
@@ -51,9 +52,13 @@ class Message extends \yii\db\ActiveRecord
             'barber_id' => 'Barber ID',
             'user_id' => 'User ID',
             'date' => 'Date',
+            'readed' => 'Readed',
         ];
     }
-
+    public function read(){
+        $this->readed = 1;
+        $this->updateAttributes(['readed']);
+    }
     /**
      * Gets query for [[Barber]].
      *

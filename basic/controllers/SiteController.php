@@ -1085,6 +1085,9 @@ class SiteController extends \app\components\Controller
             $barber = Barber::find()->andWhere(['user_id'=>$user->id])->one();
             $chat = Message::find()->andWhere(['user_id'=>$post->user_id])->andWhere(['barber_id'=>$barber->id])->all();
         }
+        for($i=0;$i<count($chat);$i++){
+            $chat[$i]->read();
+        }
         return [
             'error' => false,
             'message' => null,
