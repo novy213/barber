@@ -708,7 +708,52 @@ barber_id or user_id - jak chcesz wyslac wiadomosc od barbera do uzytkownika to 
 ```
 ## Get chat
 ```
-GET /getchat/{barber_id}
+POST /getchat
+```
+### Params:
+```
+(null)
+```
+### Body:
+```
+barber_id or user_id - jeśli chcesz pobrac czat z uzytkownkiem bedac barberem to podajesz user_id a jesli jestes uzytkownikiem i chcesz pobrac czat z barberem to podajesz barber_id 
+```
+### Response:
+```
+{
+  "error": false,
+  "message": null,
+  "chat": [
+    {
+      "id": 1,
+      "message": "nowa wiadomosc testowa do jan4",
+      "barber_id": 1,
+      "user_id": 2,
+      "readed": 1,
+      "date": "2024-01-07 09:17"
+    },
+    {
+      "id": 2,
+      "message": "siema janek",
+      "barber_id": 1,
+      "user_id": 2,
+      "readed": 1,
+      "date": "2024-01-07 09:17"
+    },
+    {
+      "id": 3,
+      "message": "co tam ",
+      "barber_id": 1,
+      "user_id": 2,
+      "readed": 1,
+      "date": "2024-01-07 09:17"
+    }
+  ]
+}
+```
+## Get chats
+```
+GET /getchats
 ```
 ### Params:
 ```
@@ -723,41 +768,13 @@ GET /getchat/{barber_id}
 {
   "error": false,
   "message": null,
-  "chat": [
+  "chats": [
     {
-      "id": 14,
-      "message": "sirema",
-      "barber_id": 1,
-      "user_id": 2,
-      "date": "2024-01-03 17:01:09"
-    },
-    {
-      "id": 15,
-      "message": "sirema",
-      "barber_id": 1,
-      "user_id": 2,
-      "date": "2024-01-03 17:01"
-    },
-    {
-      "id": 16,
-      "message": "sirema123",
-      "barber_id": 1,
-      "user_id": 2,
-      "date": "2024-01-03 17:01"
-    },
-    {
-      "id": 17,
-      "message": "siema co tam ",
-      "barber_id": 1,
-      "user_id": 2,
-      "date": "2024-01-03 17:18"
-    },
-    {
-      "id": 18,
-      "message": "siema co tam ",
-      "barber_id": 1,
-      "user_id": 2,
-      "date": "2024-01-03 17:18"
+      "user_id": 3,
+      "last_message": "nowa wiadomosc testowa do jan4",
+      "name": "jan3",
+      "last_name": "kowalski3",
+      "date": "2024-01-07 09:08"
     }
   ]
 }
