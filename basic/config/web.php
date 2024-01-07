@@ -197,6 +197,11 @@ $config = [
                     'route' => '/site/getchat',
                     'verb' => 'POST',
                 ],
+                [
+                    'pattern' => '/getchats',
+                    'route' => '/site/getchats',
+                    'verb' => 'GET',
+                ],
             ],
         ],
     ],

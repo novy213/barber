@@ -1091,4 +1091,78 @@ class SiteController extends \app\components\Controller
             'chat'=>$chat
         ];
     }
+    public function actionGetchats(){
+        $user = Yii::$app->user->identity;
+        if(!$user->verified){
+            return [
+                'error' => true,
+                'message' => 'ten uzytkownik nie jest zweryfikowany',
+            ];
+        }
+        $isBarber = false;
+        $barber = Barber::find()->andWhere(['user_id'=>$user->id])->one();
+        if(!is_null($barber)) $isBarber = true;
+        if($isBarber){
+            $messages = Message::find()->andWhere(['barber_id'=>$barber->id])->all();
+            $chats = array();
+            for($i=count($messages);$i>=0;$i--){
+                if($i==count($messages)){
+                    $userM = $messages[$i-1]->user;
+                    $chats[] = [
+                        'user_id'=>$userM->id,
+                        'last_message' => $messages[$i-1]->message,
+                        'name' => $userM->name,
+                        'last_name' => $userM->last_name,
+                        'date'=>$messages[$i-1]->date
+                    ];
+                }
+                else if(!in_array($messages[$i]->user_id, array_column($chats, 'user_id'))){
+                    $userM = $messages[$i]->user;
+                    $chats[] = [
+                        'user_id'=>$userM->id,
+                        'last_message' => $messages[$i]->message,
+                        'name' => $userM->name,
+                        'last_name' => $userM->last_name,
+                        'date'=>$messages[$i]->date
+                    ];
+                }
+            }
+            return [
+                'error' => false,
+                'message'=> null,
+                'chats' => $chats
+            ];
+        }
+        else {
+            $messages = Message::find()->andWhere(['user_id'=>$user->id])->all();
+            $chats = array();
+            for($i=count($messages);$i>=0;$i--){
+                if($i==count($messages)){
+                    $userB = $messages[$i-1]->barber;
+                    $chats[] = [
+                        'barber_id'=>$userB->id,
+                        'last_message' => $messages[$i-1]->message,
+                        'name' => $userB->name,
+                        'last_name' => $userB->last_name,
+                        'date'=>$messages[$i-1]->date
+                    ];
+                }
+                else if(!in_array($messages[$i]->barber_id, array_column($chats, 'barber_id'))){
+                    $userB = $messages[$i]->barber;
+                    $chats[] = [
+                        'barber_id'=>$userB->id,
+                        'last_message' => $messages[$i]->message,
+                        'name' => $userB->name,
+                        'last_name' => $userB->last_name,
+                        'date'=>$messages[$i]->date
+                    ];
+                }
+            }
+            return [
+                'error' => false,
+                'message'=> null,
+                'chats' => $chats
+            ];
+        }
+    }
 }
