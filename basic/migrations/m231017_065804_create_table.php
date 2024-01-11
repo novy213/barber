@@ -84,7 +84,8 @@ class m231017_065804_create_table extends Migration
             'message' => $this->string()->notNull(),
             'barber_id' => $this->integer()->notNull(),
             'user_id' => $this->integer()->notNull(),
-            'readed' => $this->boolean()->defaultValue(0),
+            'barber_readed' => $this->boolean()->defaultValue(0),
+            'user_readed' => $this->boolean()->defaultValue(0),
             'date' => $this->string()->notNull(),
         ]);
         $this -> alterColumn('message','id', $this->integer().' AUTO_INCREMENT');

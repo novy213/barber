@@ -725,28 +725,31 @@ barber_id or user_id - jeśli chcesz pobrac czat z uzytkownkiem bedac barberem t
   "message": null,
   "chat": [
     {
-      "id": 1,
-      "message": "nowa wiadomosc testowa do jan4",
+      "id": 6,
+      "message": "siema",
       "barber_id": 1,
-      "user_id": 2,
-      "readed": 1,
-      "date": "2024-01-07 09:17"
+      "user_id": 3,
+      "barber_readed": 1,
+      "user_readed": 1,
+      "date": "2024-01-10 12:58"
     },
     {
-      "id": 2,
-      "message": "siema janek",
+      "id": 7,
+      "message": "co tam u ciebie",
       "barber_id": 1,
-      "user_id": 2,
-      "readed": 1,
-      "date": "2024-01-07 09:17"
+      "user_id": 3,
+      "barber_readed": 1,
+      "user_readed": 1,
+      "date": "2024-01-10 12:58"
     },
     {
-      "id": 3,
-      "message": "co tam ",
+      "id": 8,
+      "message": "jak sie masz?",
       "barber_id": 1,
-      "user_id": 2,
-      "readed": 1,
-      "date": "2024-01-07 09:17"
+      "user_id": 3,
+      "barber_readed": 1,
+      "user_readed": 1,
+      "date": "2024-01-10 12:58"
     }
   ]
 }

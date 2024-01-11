@@ -11,8 +11,9 @@ use Yii;
  * @property string $message
  * @property int $barber_id
  * @property int $user_id
+ * @property int|null $barber_readed
+ * @property int|null $user_readed
  * @property string $date
- * @property bool $readed
  *
  * @property Barber $barber
  * @property User $user
@@ -34,7 +35,7 @@ class Message extends \yii\db\ActiveRecord
     {
         return [
             [['message', 'barber_id', 'user_id', 'date'], 'required'],
-            [['barber_id', 'user_id'], 'integer'],
+            [['barber_id', 'user_id', 'barber_readed', 'user_readed'], 'integer'],
             [['message', 'date'], 'string', 'max' => 255],
             [['barber_id'], 'exist', 'skipOnError' => true, 'targetClass' => Barber::class, 'targetAttribute' => ['barber_id' => 'id']],
             [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::class, 'targetAttribute' => ['user_id' => 'id']],
@@ -51,13 +52,18 @@ class Message extends \yii\db\ActiveRecord
             'message' => 'Message',
             'barber_id' => 'Barber ID',
             'user_id' => 'User ID',
+            'barber_readed' => 'Barber Readed',
+            'user_readed' => 'User Readed',
             'date' => 'Date',
-            'readed' => 'Readed',
         ];
     }
-    public function read(){
-        $this->readed = 1;
-        $this->updateAttributes(['readed']);
+    public function readBarber(){
+        $this->barber_readed = 1;
+        $this->updateAttributes(['barber_readed']);
+    }
+    public function readUser(){
+        $this->user_readed = 1;
+        $this->updateAttributes(['user_readed']);
     }
     /**
      * Gets query for [[Barber]].

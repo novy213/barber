@@ -1030,11 +1030,13 @@ class SiteController extends \app\components\Controller
             $mes->user_id = $user->id;
             $mes->barber_id = $barber->id;
             $barber_user = $barber->user;
+            $mes->user_readed = 1;
         }
         else if(isset($post->user_id)){
             $barber = Barber::find()->andWhere(['user_id'=>$user->id])->one();
             $mes->user_id = $post->user_id;
             $mes->barber_id = $barber->id;
+            $mes->barber_readed = 1;
             $barber_user = User::find()->andWhere(['id'=>$post->user_id])->one();
         }
 
@@ -1086,7 +1088,12 @@ class SiteController extends \app\components\Controller
             $chat = Message::find()->andWhere(['user_id'=>$post->user_id])->andWhere(['barber_id'=>$barber->id])->all();
         }
         for($i=0;$i<count($chat);$i++){
-            $chat[$i]->read();
+            if(isset($post->user_id)){
+                $chat[$i]->readBarber();
+            }
+            else{
+                $chat[$i]->readUser();
+            }
         }
         return [
             'error' => false,
@@ -1116,7 +1123,8 @@ class SiteController extends \app\components\Controller
                         'last_message' => $messages[$i-1]->message,
                         'name' => $userM->name,
                         'last_name' => $userM->last_name,
-                        'date'=>$messages[$i-1]->date
+                        'date'=>$messages[$i-1]->date,
+                        'readed'=>$messages[$i-1]->barber_readed
                     ];
                 }
                 else if(!in_array($messages[$i]->user_id, array_column($chats, 'user_id'))){
@@ -1126,7 +1134,8 @@ class SiteController extends \app\components\Controller
                         'last_message' => $messages[$i]->message,
                         'name' => $userM->name,
                         'last_name' => $userM->last_name,
-                        'date'=>$messages[$i]->date
+                        'date'=>$messages[$i]->date,
+                        'readed'=>$messages[$i]->barber_readed
                     ];
                 }
             }
@@ -1148,7 +1157,7 @@ class SiteController extends \app\components\Controller
                         'name' => $userB->name,
                         'last_name' => $userB->last_name,
                         'date'=>$messages[$i-1]->date,
-                        'readed'=>$messages[$i-1]->readed
+                        'readed'=>$messages[$i-1]->user_readed
                     ];
                 }
                 else if(!in_array($messages[$i]->barber_id, array_column($chats, 'barber_id'))){
@@ -1159,7 +1168,7 @@ class SiteController extends \app\components\Controller
                         'name' => $userB->name,
                         'last_name' => $userB->last_name,
                         'date'=>$messages[$i]->date,
-                        'readed'=>$messages[$i]->readed
+                        'readed'=>$messages[$i]->user_readed
                     ];
                 }
             }
