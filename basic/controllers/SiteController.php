@@ -1030,6 +1030,7 @@ class SiteController extends \app\components\Controller
             $mes->user_id = $user->id;
             $mes->barber_id = $barber->id;
             $barber_user = $barber->user;
+            $mes->from = "user";
             $mes->user_readed = 1;
         }
         else if(isset($post->user_id)){
@@ -1037,6 +1038,7 @@ class SiteController extends \app\components\Controller
             $mes->user_id = $post->user_id;
             $mes->barber_id = $barber->id;
             $mes->barber_readed = 1;
+            $mes->from = "barber";
             $barber_user = User::find()->andWhere(['id'=>$post->user_id])->one();
         }
 
