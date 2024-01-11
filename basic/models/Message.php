@@ -11,7 +11,6 @@ use Yii;
  * @property string $message
  * @property int $barber_id
  * @property int $user_id
- * @property int|null $readed
  * @property string $date
  *
  * @property Barber $barber
