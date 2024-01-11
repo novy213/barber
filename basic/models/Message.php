@@ -33,7 +33,7 @@ class Message extends \yii\db\ActiveRecord
     {
         return [
             [['message', 'barber_id', 'user_id', 'date'], 'required'],
-            [['barber_id', 'user_id', 'readed'], 'integer'],
+            [['barber_id', 'user_id'], 'integer'],
             [['message', 'date'], 'string', 'max' => 255],
             [['barber_id'], 'exist', 'skipOnError' => true, 'targetClass' => Barber::class, 'targetAttribute' => ['barber_id' => 'id']],
             [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::class, 'targetAttribute' => ['user_id' => 'id']],
@@ -50,7 +50,6 @@ class Message extends \yii\db\ActiveRecord
             'message' => 'Message',
             'barber_id' => 'Barber ID',
             'user_id' => 'User ID',
-            'readed' => 'Readed',
             'date' => 'Date',
         ];
     }
