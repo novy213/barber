@@ -1181,4 +1181,27 @@ class SiteController extends \app\components\Controller
             ];
         }
     }
+    public function actionCreateuser(){
+        $user = Yii::$app->user->identity;
+        if($user->admin==0){
+            return [
+                'error' => TRUE,
+                'message' => 'you are not an admin',
+            ];
+        }
+        $newUser = new User();
+        $post = $this->getJsonInput();
+        $newUser->name = $post->name;
+        $newUser->last_name = $post->last_name;
+        $newUser->phone = $post->phone;
+        $newUser->password = $post->password;
+        $newUser->verified = 1;
+        if($newUser->validate()){
+            $newUser->save();
+            return [
+                'error' => false,
+                'message'=> null,
+            ];
+        }
+    }
 }

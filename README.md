@@ -783,3 +783,36 @@ GET /getchats
   ]
 }
 ```
+## Create user
+ta funkcja pozwala barberowi strzworzyc usera z aplikacji 
+```
+POST /createuser
+```
+### Params:
+```
+(null)
+```
+### Body:
+```
+password
+name 
+last_name
+phone
+```
+### Response:
+```
+{
+  "error": false,
+  "message": null,
+  "chats": [
+    {
+      "user_id": 3,
+      "last_message": "nowa wiadomosc testowa do jan4",
+      "name": "jan3",
+      "last_name": "kowalski3",
+      "date": "2024-01-07 09:08",
+      "readed": 0
+    }
+  ]
+}
+```
