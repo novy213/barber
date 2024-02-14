@@ -1181,4 +1181,107 @@ class SiteController extends \app\components\Controller
             ];
         }
     }
+    public function actionAddvisitadmin(){
+        $user = Yii::$app->user->identity;
+        if(!$user->verified){
+            return [
+                'error' => true,
+                'message' => 'ten uzytkownik nie jest zweryfikowany',
+            ];
+        }
+        if(!$user->admin){
+            return [
+                'error' => true,
+                'message' => 'ten uzytkownik nie jest administratorem',
+            ];
+        }
+        $post = $this->getJsonInput();
+        $barber = Barber::find()->andWhere(['user_id'=>$user->id])->one();
+        if(!isset($barber)){
+            return [
+                'error' => true,
+                'message' => 'taki barber nie istnieje',
+            ];
+        }
+        $type = Type::find()->andWhere(['id'=>$post->type_id])->one();
+        $visitNumber = $type->time;
+        for($i=0;$i<count($post->additions);$i++){
+            $add = AdditionalServices::find()->andWhere(['id'=>$post->additions[$i]->additional_id])->one();
+            $visitNumber += $add->time;
+        }
+        $visitNumber/=15;
+        $startMinute = 0;
+        for($i=0;$i<$visitNumber;$i++){
+            $startMinute = $i * 15;
+            $visitDate = new \DateTime($post->date);
+            $visitDate = $visitDate->modify('+' . $startMinute . ' minutes');
+            $v = Visit::find()->andWhere(['date'=>$visitDate->format('Y-m-d H:i')])->andWhere(['barber_id'=>$barber->id])->one();
+            $postMin = $visitDate->format('i');
+            if ($postMin != '00' && $postMin != '15' && $postMin != '30' && $postMin != '45') {
+                return [
+                    'error' => true,
+                    'message_user' => 'data jest w niepoprawnym formacie',
+                ];
+            }
+            if(isset($v) || !$barber->validateHour($visitDate)){
+                return [
+                    'error' => true,
+                    'message_user' => 'nie mozna utworzyc wizyty w tym czasie',
+                ];
+            }
+        }
+        $groupVisit = null;
+        $startMinute = 0;
+        for($i=0;$i<$visitNumber;$i++) {
+            $startMinute = $i * 15;
+            $visit = new Visit();
+            if (isset($post->date)) {
+                $visit->date = $post->date;
+            }
+            if (isset($post->barber_id)) {
+                $visit->barber_id = $post->barber_id;
+            }
+            if (isset($post->type_id)) {
+                $visit->type_id = $post->type_id;
+            }
+            if (isset($post->additional_info)) {
+                $visit->additional_info = $post->additional_info;
+            }
+            $visit->user_id = $user->id;
+            if($visit->validate()){
+                if($i!=0){
+                    $visit->group = $groupVisit->id;
+                    $visDate = new \DateTime($visit->date);
+                    $visDate = $visDate->modify('+' . $startMinute . ' minutes');
+                    $visit->date = $visDate->format('Y-m-d H:i');
+                }
+                $visit->save();
+                if($i==0) {
+                    $groupVisit = $visit;
+                    for ($j = 0; $j < count($post->additions); $j++) {
+                        $add = new VisitAdditional();
+                        $add->visit_id = $visit->id;
+                        $add->additional_id = $post->additions[$j]->additional_id;
+                        if ($add->validate()) {
+                            $add->save();
+                        } else {
+                            return [
+                                'error' => true,
+                                'message' => $add->getErrorSummary(false),
+                            ];
+                        }
+                    }
+                }
+            } else {
+                return [
+                    'error' => true,
+                    'message' => $visit->getErrorSummary(false),
+                ];
+            }
+        }
+        return [
+            'error' => false,
+            'message' => null,
+        ];
+    }
 }
