@@ -660,6 +660,14 @@ class SiteController extends \app\components\Controller
     public function actionGettypes(){
         $types = Type::find()->andWhere(['<>', 'label', 'dayoff'])->all();
         $additional = AdditionalServices::find()->all();
+        $res = array();
+        for($i=0;$i<count($types);$i++){
+
+            $res[] = [
+                'type' => $types[$i],
+
+            ];
+        }
         return [
             'error' => FALSE,
             'message' => NULL,
@@ -1283,5 +1291,38 @@ class SiteController extends \app\components\Controller
             'error' => false,
             'message' => null,
         ];
+    }
+    public function actionCreateuser(){
+        $user = Yii::$app->user->identity;
+        if($user->admin==0){
+            return [
+                'error' => TRUE,
+                'message' => 'you are not an admin',
+            ];
+        }
+        $post = $this->getJsonInput();
+        $phone = 48;
+        $phone .= $post->phone;
+        $oldUser = User::find()->andWhere(['phone' => $phone])->one();
+        if($oldUser){
+            return [
+                'error' => TRUE,
+                'message' => 'uzytkownik z takim numerem telefonu juz istnieje',
+            ];
+        }
+        $newUser = new User();
+        $newUser->name = $post->name;
+        $newUser->last_name = $post->last_name;
+        $newUser->phone = 48;
+        $newUser->phone .= $post->phone;
+        $newUser->password = $post->password;
+        $newUser->verified = 1;
+        if($newUser->validate()){
+            $newUser->save();
+            return [
+                'error' => false,
+                'message'=> null,
+            ];
+        }
     }
 }

@@ -202,6 +202,11 @@ $config = [
                     'route' => '/site/getchats',
                     'verb' => 'GET',
                 ],
+                [
+                    'pattern' => '/createuser',
+                    'route' => '/site/createuser',
+                    'verb' => 'POST',
+                ],
             ],
         ],
     ],
