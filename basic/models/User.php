@@ -58,6 +58,7 @@ class User extends ActiveRecord implements \yii\web\IdentityInterface
     public function changePassword($pass)
     {
         $this->password = $pass;
+        $this->password = password_hash($this->password, PASSWORD_BCRYPT);
         $this->updateAttributes(['password']);
     }
     public function createApiToken()
