@@ -662,6 +662,13 @@ class SiteController extends \app\components\Controller
         $additional = AdditionalServices::find()->all();
         $res = array();
         for($i=0;$i<count($types);$i++){
+            $additional = AdditionalType::find()->andWhere(['type_id' => $types[$i]->id])->all();
+            // get all additional services for type
+            $services = AdditionalServices::find()->andWhere(['id'=>$additional->additional_id])->all();
+            // add radio field (id or bool but rather bool) in additional_services table
+            // and return them so it looks something like this
+            // additions: [ 'radio' => etc, checkbox => etc]
+            // additions to is an array and is returned below type in the $res array
 
             $res[] = [
                 'type' => $types[$i],
