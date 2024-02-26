@@ -164,8 +164,8 @@ $config = [
                 ],
                 [
                     'pattern' => '/smsforpassword',
-                    'route' => '/notification/smsforpassword',
-                    'verb' => 'PUT',
+                    'route' => '/site/smsforpassword',
+                    'verb' => 'POST',
                 ],
                 [
                     'pattern' => '/dayon',
@@ -175,6 +175,11 @@ $config = [
                 [
                     'pattern' => '/updatevisit',
                     'route' => '/site/updatevisit',
+                    'verb' => 'PUT',
+                ],
+                [
+                    'pattern' => '/resetpassword',
+                    'route' => '/site/resetpassword',
                     'verb' => 'PUT',
                 ],
             ],

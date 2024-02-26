@@ -624,6 +624,28 @@ class SiteController extends \app\components\Controller
             'message' => NULL,
         ];
     }
+    public function actionResetpassword(){
+        $post = $this->getJsonInput();
+        if(!isset($post->code) || !isset($post->newPassword)){
+            return [
+                'error' => TRUE,
+                'message' => 'Code and new password are required',
+            ];
+        }
+        $code = Code::find()->andWhere(['code'=>$post->code])->one();
+        if(is_null($code)){
+            return [
+                'error' => TRUE,
+                'message' => 'Invalid code',
+            ];
+        }
+        $user = $code->user;
+        $user->changePassword($post->newPassword);
+        return [
+            'error' => false,
+            'message' => null
+        ];
+    }
     public function actionChangenot(){
         $user = Yii::$app->user->identity;
         $post = $this->getJsonInput();

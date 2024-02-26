@@ -55,6 +55,11 @@ class User extends ActiveRecord implements \yii\web\IdentityInterface
             'notification' => 'Notification',
         ];
     }
+    public function changePassword($pass)
+    {
+        $this->password = $pass;
+        $this->updateAttributes(['password']);
+    }
     public function createApiToken()
     {
         $this->access_token = \Yii::$app->security->generateRandomString();
