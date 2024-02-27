@@ -757,6 +757,12 @@ class SiteController extends \app\components\Controller
         $phone = 48;
         $phone.=$post->phone;
         $user = User::find()->andWhere(['phone'=>$phone])->one();
+        if(is_null($user)){
+            return [
+                'error' => true,
+                'message' => 'nie ma takiego uzytkownika',
+            ];
+        }
         $user->delete();
         return [
             'error' => FALSE,
