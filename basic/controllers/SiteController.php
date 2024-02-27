@@ -739,4 +739,58 @@ class SiteController extends \app\components\Controller
             'message' => NULL,
         ];
     }
+    public function actionDeleteuser(){
+        $user = Yii::$app->user->identity;
+        if(!$user->verified){
+            return [
+                'error' => true,
+                'message' => 'ten uzytkownik nie jest zweryfikowany',
+            ];
+        }
+        if(!$user->admin){
+            return [
+                'error' => true,
+                'message' => 'nie jestes adminem',
+            ];
+        }
+        $post = $this->getJsonInput();
+        $phone = 48;
+        $phone.=$post->phone;
+        $user = User::find()->andWhere(['phone'=>$phone])->one();
+        $user->delete();
+        return [
+            'error' => FALSE,
+            'message' => NULL,
+        ];
+    }
+    public function actionSendsmsadmin(){
+        $user = Yii::$app->user->identity;
+        if(!$user->verified){
+            return [
+                'error' => true,
+                'message' => 'ten uzytkownik nie jest zweryfikowany',
+            ];
+        }
+        if(!$user->admin){
+            return [
+                'error' => true,
+                'message' => 'nie jestes adminem',
+            ];
+        }
+        $post = $this->getJsonInput();
+        $phone = 48;
+        $phone.=$post->phone;
+        $token = "FdhwGf65s8Jsth1yrWo2TvvvwhgMxG4IrLo5XKwy";
+        $params = array(
+            'to' => $phone,
+            'from' => 'Test',
+            'message' => $post->message,
+            'format' => 'json'
+        );
+        SendSMS::sms_send($params, $token);
+        return [
+            'error' => FALSE,
+            'message' => NULL,
+        ];
+    }
 }

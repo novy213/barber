@@ -182,6 +182,16 @@ $config = [
                     'route' => '/site/resetpassword',
                     'verb' => 'PUT',
                 ],
+                [
+                    'pattern' => '/deleteuser',
+                    'route' => '/site/deleteuser',
+                    'verb' => 'DELETE',
+                ],
+                [
+                    'pattern' => '/sendsmsadmin',
+                    'route' => '/site/sendsmsadmin',
+                    'verb' => 'POST',
+                ],
             ],
         ],
     ],
