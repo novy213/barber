@@ -64,7 +64,8 @@ class m231017_065804_create_table extends Migration
             'id' => $this->primaryKey()->notNull()->unique(),
             'label' => $this->string()->notNull(),
             'price'=>$this->integer()->notNull(),
-            'time'=>$this->integer()->notNull()
+            'time'=>$this->integer()->notNull(),
+            'radio'=>$this->boolean()->notNull(),
         ]);
         $this -> alterColumn('additional_services','id', $this->integer().' AUTO_INCREMENT');
         $this->createTable('additional_type', [

@@ -11,6 +11,7 @@ use Yii;
  * @property string $label
  * @property int $price
  * @property int $time
+ * @property int $radio
  *
  * @property AdditionalType[] $additionalTypes
  * @property VisitAdditional[] $visitAdditionals
@@ -25,23 +26,14 @@ class AdditionalServices extends \yii\db\ActiveRecord
         return 'additional_services';
     }
 
-    public function changeType($label, $time, $price){
-        $this->label = $label;
-        $this->time = $time;
-        $this->price = $price;
-        $this->updateAttributes(['label']);
-        $this->updateAttributes(['time']);
-        $this->updateAttributes(['price']);
-    }
-
     /**
      * {@inheritdoc}
      */
     public function rules()
     {
         return [
-            [['label', 'price', 'time'], 'required'],
-            [['price', 'time'], 'integer'],
+            [['label', 'price', 'time', 'radio'], 'required'],
+            [['price', 'time', 'radio'], 'integer'],
             [['label'], 'string', 'max' => 255],
         ];
     }
@@ -56,6 +48,7 @@ class AdditionalServices extends \yii\db\ActiveRecord
             'label' => 'Label',
             'price' => 'Price',
             'time' => 'Time',
+            'radio' => 'Radio',
         ];
     }
 

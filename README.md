@@ -430,34 +430,57 @@ GET /gettypes
   "message": null,
   "types": [
     {
-      "id": 1,
-      "label": "combo_razor",
-      "time": 60,
-      "price": 50
+      "type": {
+        "id": 1,
+        "label": "combo_razor",
+        "time": 60,
+        "price": 50
+      },
+      "additions": {
+        "radio": [],
+        "checkbox": []
+      }
     },
     {
-      "id": 2,
-      "label": "combo_golarka",
-      "time": 60,
-      "price": 50
+      "type": {
+        "id": 2,
+        "label": "combo_golarka",
+        "time": 60,
+        "price": 50
+      },
+      "additions": {
+        "radio": [
+          {
+            "id": 1,
+            "label": "razor",
+            "price": 5,
+            "time": 0,
+            "radio": 1
+          },
+          {
+            "id": 2,
+            "label": "coloring",
+            "price": 15,
+            "time": 15,
+            "radio": 1
+          }
+        ],
+        "checkbox": []
+      }
     },
-    {...},
-  ],
-  "additional": [
     {
-      "id": 1,
-      "label": "razor",
-      "price": 5,
-      "time": 0
+      "type": {
+        "id": 3,
+        "label": "combo_razorFarb",
+        "time": 90,
+        "price": 50
+      },
+      "additions": {
+        "radio": [],
+        "checkbox": []
+      }
     },
-    {
-      "id": 2,
-      "label": "coloring",
-      "price": 15,
-      "time": 15
-    }
-  ]
-}
+    ...
 ```
 ## Change type or additional service
 ```
