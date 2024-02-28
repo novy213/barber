@@ -839,3 +839,37 @@ phone
   ]
 }
 ```
+## Get users
+```
+GET /getusers
+```
+### Params:
+```
+(null)
+```
+### Body:
+```
+(null)
+```
+### Response:
+```
+{
+  "error": false,
+  "message": null,
+  "users": [
+    {
+      "id": 3,
+      "name": "jan3",
+      "last_name": "kowalski3",
+      "phone": 48111111113,
+      "notification": 60,
+      "verified": 0,
+      "ban": 0,
+      "access_token": null,
+      "admin": 0,
+      "password": "$2y$10$8/O6f2G8IBRitCMJaJ3K0OY9VYJlz1BB9TMLmWluWYPwpiO1/FvTu",
+      "notification_token": "Expo bla bla bla"        
+    }
+  ]
+}
+```

@@ -1336,4 +1336,19 @@ class SiteController extends \app\components\Controller
             ];
         }
     }
+    public function actionGetusers(){
+        $user = Yii::$app->user->identity;
+        if($user->admin==0){
+            return [
+                'error' => TRUE,
+                'message' => 'you are not an admin',
+            ];
+        }
+        $users = User::find()->all();
+        return [
+            'error' => false,
+            'message' => null,
+            'users' => $users
+        ];
+    }
 }
