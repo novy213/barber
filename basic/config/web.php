@@ -207,6 +207,11 @@ $config = [
                     'route' => '/site/createuser',
                     'verb' => 'POST',
                 ],
+                [
+                    'pattern' => '/test',
+                    'route' => '/mtqq/subscribe',
+                    'verb' => 'POST',
+                ],
             ],
         ],
     ],
