@@ -87,8 +87,8 @@
       <excludeFolder url="file://$MODULE_DIR$/basic/vendor/guzzlehttp/guzzle" />
       <excludeFolder url="file://$MODULE_DIR$/basic/vendor/guzzlehttp/promises" />
       <excludeFolder url="file://$MODULE_DIR$/basic/vendor/psr/http-client" />
-      <excludeFolder url="file://$MODULE_DIR$/basic/vendor/redjanym/php-firebase-cloud-messaging" />
       <excludeFolder url="file://$MODULE_DIR$/basic/vendor/ctwillie/expo-server-sdk-php" />
+      <excludeFolder url="file://$MODULE_DIR$/basic/vendor/bluerhinos/phpmqtt" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />

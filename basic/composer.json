@@ -18,7 +18,9 @@
         "yiisoft/yii2": "~2.0.45",
         "yiisoft/yii2-bootstrap5": "~2.0.2",
         "ext-curl": "*",
-        "ctwillie/expo-server-sdk-php": "^2.1"
+        "ctwillie/expo-server-sdk-php": "^2.1",
+        "bluerhinos/phpmqtt": "^1.0",
+        "ext-mosquitto-php": "*"
     },
     "require-dev": {
         "yiisoft/yii2-debug": "~2.1.0",
