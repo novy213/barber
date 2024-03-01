@@ -209,7 +209,7 @@ $config = [
                 ],
                 [
                     'pattern' => '/test',
-                    'route' => '/mqtt/subscribe',
+                    'route' => '/mqtt/index',
                     'verb' => 'POST',
                 ],
             ],

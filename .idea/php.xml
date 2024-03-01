@@ -100,7 +100,6 @@
       <path value="$PROJECT_DIR$/basic/vendor/symfony/mime" />
       <path value="$PROJECT_DIR$/basic/vendor/symfony/mailer" />
       <path value="$PROJECT_DIR$/basic/vendor/egulias/email-validator" />
-      <path value="$PROJECT_DIR$/basic/vendor/psr/log" />
       <path value="$PROJECT_DIR$/basic/vendor/doctrine/lexer" />
       <path value="$PROJECT_DIR$/basic/vendor/yiisoft/yii2-symfonymailer" />
       <path value="$PROJECT_DIR$/basic/vendor/symfony/polyfill-php80" />

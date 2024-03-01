@@ -2,57 +2,61 @@
 
 namespace app\controllers;
 
-use app\models\Message;
-use Yii;
+use Bluerhinos\phpMQTT;
 use yii\console\Controller;
-use yii\console\ExitCode;
-use yii\helpers\Console;
-use Mosquitto\Client as MosquittoClient;
+use yii\db\Connection;
+use Yii;
 
-class MqttController extends \app\components\Controller
+
+class MqttController extends Controller
 {
-    public function actionSubscribe()
+    public function actionIndex()
     {
-        $post = $this->getJsonInput();
-        $mqtt = new MosquittoClient();
+        // Utwórz połączenie z bazą danych MySQL
+        $db = Yii::$app->db;
 
-        // Konfiguracja połączenia z brokerem MQTT
-        $mqtt->connect('localhost', 1883); // Zmień na rzeczywiste dane brokera MQTT
+        // Utwórz klienta MQTT
+        $client = new phpMQTT('jakubsolarek.pl', 1883, 'client_123');
+        $client->connect();
+        $client->subscribeAndWaitForMessage('testTopic', 2);
+        //napisz mi listener na otrzymanie wiadomości
+        $client->message();
 
-        // Ustawienie callbacka dla otrzymanych wiadomości
-        $mqtt->onMessage(function($message) use ($post) {
-            $this->saveMessageToDatabase($message, $post);
-        });
+       /* $client->onMessage(function($message) use ($db) {
+            $topic = $message->topic;
+            $content = $message->payload;
 
-        // Subskrybowanie wszystkich wiadomości
-        $mqtt->subscribe('#', 0);
+            echo "Received message: $content on topic: $topic\n";
 
-        // Uruchomienie pętli głównej
-        $mqtt->loopForever();
+            // Zapisz wiadomość do bazy danych MySQL
+            $db->createCommand()
+                ->insert('messages', [
+                    'topic' => $topic,
+                    'message' => $content
+                ])->execute();
+
+            echo "Message inserted into database\n";
+        });*/
+
+        //zrób tak aby ten kod się ciągle nasłuchiwał
+        $client->proc(true);
+        return "alamakota";
     }
 
-    private function saveMessageToDatabase($message, $post)
+    private function saveMessageToDatabase($topic, $message)
     {
-        // Odczytanie czasu otrzymania wiadomości
+        // Przetwórz otrzymaną wiadomość (np. zapisz do bazy danych)
         $receivedTime = date('Y-m-d H:i:s');
 
-        $message = new Message();
-        $message->message = $post->message;
-        $message->barber_id = $post->barber_id;
-        $message->from= $post->from;
-        $message->user_id = $post->user_id;
-        $message->date = $receivedTime;
-        if($message->validate()) {
-            $message->save();
-            return[
-                'error' => false,
-                'message' => null
-            ];
+        $messageModel = new Message();
+        $messageModel->topic = $topic;
+        $messageModel->message = $message;
+        $messageModel->date = $receivedTime;
+
+        if ($messageModel->validate()) {
+            $messageModel->save();
         } else {
-            return[
-                'error' => true,
-                'message' => $message->getErrorSummary(false)
-            ];
+            Yii::error('Błąd podczas zapisywania wiadomości do bazy danych: ' . print_r($messageModel->errors, true));
         }
     }
 }
