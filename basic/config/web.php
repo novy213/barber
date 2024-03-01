@@ -207,11 +207,6 @@ $config = [
                     'route' => '/site/createuser',
                     'verb' => 'POST',
                 ],
-                [
-                    'pattern' => '/test',
-                    'route' => '/mqtt/index',
-                    'verb' => 'POST',
-                ],
             ],
         ],
     ],
