@@ -11,7 +11,7 @@ use Yii;
  * @property string $message
  * @property int $barber_id
  * @property string $topic
- * @property string $from
+ * @property string $sender
  * @property int $user_id
  * @property int|null $barber_readed
  * @property int|null $user_readed
@@ -36,9 +36,9 @@ class Message extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['message', 'barber_id', 'topic', 'from', 'user_id', 'date'], 'required'],
+            [['message', 'barber_id', 'topic', 'sender', 'user_id', 'date'], 'required'],
             [['barber_id', 'user_id', 'barber_readed', 'user_readed'], 'integer'],
-            [['message', 'topic', 'from', 'date'], 'string', 'max' => 255],
+            [['message', 'topic', 'sender', 'date'], 'string', 'max' => 255],
             [['barber_id'], 'exist', 'skipOnError' => true, 'targetClass' => Barber::class, 'targetAttribute' => ['barber_id' => 'id']],
             [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::class, 'targetAttribute' => ['user_id' => 'id']],
         ];
@@ -54,7 +54,7 @@ class Message extends \yii\db\ActiveRecord
             'message' => 'Message',
             'barber_id' => 'Barber ID',
             'topic' => 'Topic',
-            'from' => 'From',
+            'sender' => 'Sender',
             'user_id' => 'User ID',
             'barber_readed' => 'Barber Readed',
             'user_readed' => 'User Readed',

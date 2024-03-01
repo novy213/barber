@@ -31,7 +31,7 @@ use app\models\ContactForm;
 use function PHPUnit\Framework\stringContains;
 use const Grpc\CHANNEL_TRANSIENT_FAILURE;
 
-class SiteController extends \app\components\Controller
+class SiteController extends Controller
 {
     /**
      * {@inheritdoc}
@@ -1049,7 +1049,7 @@ class SiteController extends \app\components\Controller
             $mes->user_id = $user->id;
             $mes->barber_id = $barber->id;
             $barber_user = $barber->user;
-            $mes->from = "user";
+            $mes->sender = "user";
             $mes->user_readed = 1;
         }
         else if(isset($post->user_id)){
@@ -1057,7 +1057,7 @@ class SiteController extends \app\components\Controller
             $mes->user_id = $post->user_id;
             $mes->barber_id = $barber->id;
             $mes->barber_readed = 1;
-            $mes->from = "barber";
+            $mes->sender = "barber";
             $barber_user = User::find()->andWhere(['id'=>$post->user_id])->one();
         }
 

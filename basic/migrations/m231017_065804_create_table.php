@@ -85,7 +85,7 @@ class m231017_065804_create_table extends Migration
             'message' => $this->string()->notNull(),
             'barber_id' => $this->integer()->notNull(),
             'topic' => $this->string()->notNull(),
-            'from' => $this->string()->notNull(),
+            'sender' => $this->string()->notNull(),
             'user_id' => $this->integer()->notNull(),
             'barber_readed' => $this->boolean()->defaultValue(0),
             'user_readed' => $this->boolean()->defaultValue(0),
