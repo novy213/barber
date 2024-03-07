@@ -24,9 +24,23 @@ client.on('connect', () => {
 
 client.on('message', (topic, message) => {
     console.log(`Received message: ${message.toString()} on topic: ${topic}`);
-
-    // Zapisz wiadomość do bazy danych MySQL
-    const data = [null, 1, "barber", 1, 0, 0, new Date(), topic, message.toString()];
+    var response = message.toString().json();
+    /*
+    {
+        "barber_id": 1,
+        "sender": "barber",
+        "user_id": 2,
+        "message": "Hello!"
+    }
+     */
+    const data = [null, response.barber_id, response.sender, response.user_id, 0, 0, new Date(), topic, response.message];
+    if(response.sender=="barber"){
+        data[4] = 1
+    }
+    else
+    {
+        data[5] = 1
+    }
     const sql = 'INSERT INTO message (id, barber_id, sender, user_id, barber_readed, user_readed, date, topic, message) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)';
     db.query(sql, data, (err, result) => {
         if (err) throw err;

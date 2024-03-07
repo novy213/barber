@@ -31,7 +31,7 @@ use app\models\ContactForm;
 use function PHPUnit\Framework\stringContains;
 use const Grpc\CHANNEL_TRANSIENT_FAILURE;
 
-class SiteController extends Controller
+class SiteController extends \app\components\Controller
 {
     /**
      * {@inheritdoc}
