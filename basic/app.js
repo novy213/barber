@@ -25,7 +25,7 @@ client.on('connect', () => {
 
 client.on('message', (topic, message) => {
     console.log(`Received message: ${message.toString()} on topic: ${topic}`);
-    var response = message.toString().json();
+    var response = JSON.stringify(message.toString());
     /*
     {
         "barber_id": 1,
