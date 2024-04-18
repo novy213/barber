@@ -177,9 +177,13 @@ class SiteController extends \app\components\Controller
         $minutes =0;
         $hours=9;
         $iterations = 18;
-        if($dateTime->format('Y-m-d')>='2024-06-01' && ($dateTime->format('l')=='Thursday' || $dateTime->format('l')=='Friday')){
+        if($dateTime->format('Y-m-d')>='2024-05-23' && ($dateTime->format('l')=='Thursday' || $dateTime->format('l')=='Friday')){
             $hours = 7;
             $iterations = 18;
+        }
+        if($dateTime->format('l')=='Saturday'){
+            $hours = 9;
+            $iterations = 10;
         }
         for($i=0;$i<$iterations;$i++) {
             $string = "0";
