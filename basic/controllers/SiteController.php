@@ -804,4 +804,12 @@ class SiteController extends \app\components\Controller
             'message' => NULL,
         ];
     }
+    public function actionGetbarbers(){
+        $barbers = Barber::find()->all();
+        return [
+            'error' => FALSE,
+            'message' => NULL,
+            'barbers' => $barbers
+        ];
+    }
 }

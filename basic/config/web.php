@@ -192,6 +192,11 @@ $config = [
                     'route' => '/site/sendsmsadmin',
                     'verb' => 'POST',
                 ],
+                [
+                    'pattern' => '/getbarbers',
+                    'route' => '/site/getbarbers',
+                    'verb' => 'GET',
+                ]
             ],
         ],
     ],
