@@ -112,7 +112,7 @@ class SiteController extends \app\components\Controller
     public function actionAddvisit(){
         $post = $this->getJsonInput();
         $user = Yii::$app->user->identity;
-        $visit = Visit::find()->andWhere(['date'=>$post->date])->one();
+        $visit = Visit::find()->andWhere(['date'=>$post->date])->andWhere(['barber_id' => $post->barber_id])->one();
         if(isset($visit)){
             return [
                 'error' => true,
