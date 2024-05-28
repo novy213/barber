@@ -207,6 +207,16 @@ $config = [
                     'route' => '/site/createuser',
                     'verb' => 'POST',
                 ],
+                [
+                    'pattern' => '/mqtt/publish',
+                    'route' => '/mqtt/publish',
+                    'verb' => 'POST',
+                ],
+                [
+                    'pattern' => '/mqtt/subscribe',
+                    'route' => '/mqtt/subscribe',
+                    'verb' => 'POST',
+                ],
             ],
         ],
     ],
