@@ -5,7 +5,7 @@ use yii\web\Controller;
 use PhpMqtt\Client\MqttClient;
 use PhpMqtt\Client\Exceptions\MqttClientException;
 
-class MqttController extends Controller
+class MqttController extends \app\components\Controller
 {
     private $mqttClient;
 
