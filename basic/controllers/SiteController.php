@@ -188,7 +188,7 @@ class SiteController extends \app\components\Controller
                     $visit->group = $groupVisit->id;
                     $visDate = new \DateTime($visit->date);
                     $visDate = $visDate->modify('+' . $startMinute . ' minutes');
-                    $visit->date = $visDate->format('Y-m-d H:i');
+                    $visit->date = $visDate->format('Y-m-d g:i');
                 }
                 $visit->save();
                 if($i==0) {
