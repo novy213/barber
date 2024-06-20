@@ -343,7 +343,7 @@ class SiteController extends \app\components\Controller
         if(isset($post->phone)){
             $ph = 48;
             $ph.=$post->phone;
-            if(strlen($ph)>11){
+            if(strlen($ph)!=11){
                 return [
                     'error' => true,
                     'message' => 'nie poprawny format numeru',
