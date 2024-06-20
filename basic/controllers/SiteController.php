@@ -349,12 +349,14 @@ class SiteController extends \app\components\Controller
                     'message' => 'nie poprawny format numeru',
                 ];
             }
-            $usr = User::find()->andWhere(['phone'=>$ph])->one();
-            if($usr != null){
-                return [
-                    'error' => true,
-                    'message' => 'taki numer juz istnieje',
-                ];
+            if($ph != $user->phone){
+                $usr = User::find()->andWhere(['phone'=>$ph])->one();
+                if($usr != null){
+                    return [
+                        'error' => true,
+                        'message' => 'taki numer juz istnieje',
+                    ];
+                }
             }
             $phone = $post->phone;
         }
