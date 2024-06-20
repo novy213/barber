@@ -32,6 +32,7 @@ class m231019_071907_fake_data extends Migration
                 'password' => $hardcodedPasswords[$i],
                 'name' => 'John',
                 'last_name' => 'Doe',
+                'email' => 'johndoe'.$i.'@gmail.com',
                 'phone' => $phone
             ];
 
