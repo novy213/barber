@@ -64,7 +64,7 @@ class Barber extends \yii\db\ActiveRecord
         $startWorkDateTime = new \DateTime($this->hour_start);
         $endWorkDateTime = new \DateTime($this->hour_end);
 
-        if ($postTime > $startWorkDateTime && $postTime < $endWorkDateTime) {
+        if ($postTime >= $startWorkDateTime && $postTime < $endWorkDateTime) {
             return true;
         } else {
             return false;
