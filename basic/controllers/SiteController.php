@@ -155,13 +155,13 @@ class SiteController extends \app\components\Controller
             if ($postMin != '00' && $postMin != '15' && $postMin != '30' && $postMin != '45') {
                 return [
                     'error' => true,
-                    'message_user' => 'data jest w niepoprawnym formacie',
+                    'message' => 'data jest w niepoprawnym formacie',
                 ];
             }
             if(isset($v) || !$barber->validateHour($visitDate)){
                 return [
                     'error' => true,
-                    'message_user' => 'nie mozna utworzyc wizyty w tym czasie',
+                    'message' => 'nie mozna utworzyc wizyty w tym czasie',
                 ];
             }
         }
