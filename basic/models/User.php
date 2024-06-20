@@ -11,6 +11,7 @@ use yii\db\ActiveRecord;
  * @property string $password
  * @property string $name
  * @property string $last_name
+ * @property string $email
  * @property int $phone
  * @property int|null $admin
  * @property int|null $notification
@@ -33,9 +34,9 @@ class User extends ActiveRecord implements \yii\web\IdentityInterface
     public function rules()
     {
         return [
-            [['password', 'name', 'last_name', 'phone'], 'required'],
+            [['password', 'name', 'last_name', 'phone', 'email'], 'required'],
             [['phone', 'admin', 'notification', 'verified', 'ban'], 'integer'],
-            [['password', 'name', 'last_name', 'notification_token', 'access_token'], 'string', 'max' => 255],
+            [['password', 'name', 'last_name', 'notification_token', 'access_token', 'email'], 'string', 'max' => 255],
         ];
     }
 
@@ -49,6 +50,7 @@ class User extends ActiveRecord implements \yii\web\IdentityInterface
             'password' => 'Password',
             'name' => 'Name',
             'last_name' => 'Last Name',
+            'email' => 'Email',
             'phone' => 'Phone',
             'admin' => 'Admin',
             'notification' => 'Notification',

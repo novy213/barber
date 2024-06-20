@@ -92,6 +92,9 @@ class SiteController extends \app\components\Controller
         if (isset($post->last_name)) {
             $user->last_name = $post->last_name;
         }
+        if (isset($post->email)) {
+            $user->email = $post->email;
+        }
         if (isset($post->phone)) {
             $user->phone = 48;
             $user->phone.=$post->phone;
@@ -632,6 +635,7 @@ class SiteController extends \app\components\Controller
             'message' => NULL,
             'name'=>$user->name,
             'last_name'=>$user->last_name,
+            'email'=>$user->email,
             'phone'=>$user->phone,
             'notification'=>$user->notification
         ];
