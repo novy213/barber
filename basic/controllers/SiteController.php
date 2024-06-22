@@ -630,6 +630,7 @@ class SiteController extends \app\components\Controller
                 'message_user' => 'ten uzytkownik nie jest zweryfikowany',
             ];
         }
+        $barber = Barber::find()->andWhere(['user_id'=>$user->id])->one();
         return[
             'error' => FALSE,
             'message' => NULL,
@@ -637,7 +638,8 @@ class SiteController extends \app\components\Controller
             'last_name'=>$user->last_name,
             'email'=>$user->email,
             'phone'=>$user->phone,
-            'notification'=>$user->notification
+            'notification'=>$user->notification,
+            'barber' => isset($barber),
         ];
     }
     public function actionBanedusers(){
